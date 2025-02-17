@@ -6,6 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		520284522D2849A400D4DB2F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 520284512D2849A400D4DB2F /* Kingfisher */; };
+		5225455C2D0F35D6007CF713 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5225455B2D0F35D6007CF713 /* IQKeyboardManagerSwift */; };
+		524393532D08146000D99C4C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 524393522D08146000D99C4C /* Alamofire */; };
+		52575D932D13F796008EA309 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 52575D922D13F796008EA309 /* KeychainSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		523CC9CC2D06C5DC00A4E0FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +36,22 @@
 		523CC9D52D06C5DC00A4E0FD /* KhmerCookingGuideAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KhmerCookingGuideAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		52F6EBA02D06E2B9001C35D0 /* Exceptions for "KhmerCookingGuideApp" folder in "KhmerCookingGuideApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 523CC9B72D06C5D900A4E0FD /* KhmerCookingGuideApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		523CC9BA2D06C5D900A4E0FD /* KhmerCookingGuideApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				52F6EBA02D06E2B9001C35D0 /* Exceptions for "KhmerCookingGuideApp" folder in "KhmerCookingGuideApp" target */,
+			);
 			path = KhmerCookingGuideApp;
 			sourceTree = "<group>";
 		};
@@ -52,6 +72,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				520284522D2849A400D4DB2F /* Kingfisher in Frameworks */,
+				52575D932D13F796008EA309 /* KeychainSwift in Frameworks */,
+				524393532D08146000D99C4C /* Alamofire in Frameworks */,
+				5225455C2D0F35D6007CF713 /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +136,10 @@
 			);
 			name = KhmerCookingGuideApp;
 			packageProductDependencies = (
+				524393522D08146000D99C4C /* Alamofire */,
+				5225455B2D0F35D6007CF713 /* IQKeyboardManagerSwift */,
+				52575D922D13F796008EA309 /* KeychainSwift */,
+				520284512D2849A400D4DB2F /* Kingfisher */,
 			);
 			productName = KhmerCookingGuideApp;
 			productReference = 523CC9B82D06C5D900A4E0FD /* KhmerCookingGuideApp.app */;
@@ -192,9 +220,16 @@
 			knownRegions = (
 				en,
 				Base,
+				km,
 			);
 			mainGroup = 523CC9AF2D06C5D900A4E0FD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				524393512D08146000D99C4C /* XCRemoteSwiftPackageReference "Alamofire" */,
+				5225455A2D0F35D6007CF713 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
+				52575D912D13F796008EA309 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				520284502D2849A400D4DB2F /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 523CC9B92D06C5D900A4E0FD /* Products */;
 			projectDirPath = "";
@@ -392,8 +427,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"KhmerCookingGuideApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 6WDQA8RW6A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KhmerCookingGuideApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -404,7 +441,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -429,8 +466,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"KhmerCookingGuideApp/Preview Content\"";
+				DEVELOPMENT_TEAM = 6WDQA8RW6A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KhmerCookingGuideApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -441,7 +480,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -583,6 +622,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		520284502D2849A400D4DB2F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
+		5225455A2D0F35D6007CF713 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		524393512D08146000D99C4C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		52575D912D13F796008EA309 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		520284512D2849A400D4DB2F /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 520284502D2849A400D4DB2F /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		5225455B2D0F35D6007CF713 /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5225455A2D0F35D6007CF713 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
+		524393522D08146000D99C4C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 524393512D08146000D99C4C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		52575D922D13F796008EA309 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 52575D912D13F796008EA309 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 523CC9B02D06C5D900A4E0FD /* Project object */;
 }
