@@ -30,7 +30,7 @@ struct FoodRecipe: Codable, Identifiable {
     let level: String
     let averageRating: Double?
     let totalRaters: Int?
-    let isFavorite: Bool
+    var isFavorite: Bool
     let itemType: String
     let user: User
 }
@@ -86,7 +86,7 @@ struct PopularRecipe: Codable, Identifiable {
     let level: String
     let averageRating: Double?
     let totalRaters: Int?
-    let isFavorite: Bool?
+    var isFavorite: Bool?
     let itemType: String
     let user: RecipeUser
 }

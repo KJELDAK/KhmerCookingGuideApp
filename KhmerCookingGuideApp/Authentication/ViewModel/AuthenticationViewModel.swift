@@ -34,7 +34,8 @@ class AuthenticationViewModel: ObservableObject {
                     switch response.result {
                     case .success(let authResponse):
                         // MARK: - store user token
-                        HeaderToken.shared.token = authResponse.payload.accessToken 
+                        HeaderToken.shared.token = authResponse.payload.accessToken
+//                        HeaderToken.shared.role = authResponse.payload.
 
                         self.isLoading = false
                         if authResponse.statusCode == "200"{

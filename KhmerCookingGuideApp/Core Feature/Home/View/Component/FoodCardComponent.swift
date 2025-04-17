@@ -8,13 +8,16 @@
 import SwiftUI
 import Kingfisher
 struct FoodCardComponent: View {
-    @State var isLike: Bool = false
+    var id: Int?
+    @State var isFavorite: Bool
+    //    @State var isLike: Bool = false
     var fileName: String
     var name: String
     var description : String
+    
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
-
+        
         VStack(spacing: 0) {
             // Image Section
             KFImage(URL(string: imageUrl))
@@ -51,15 +54,21 @@ struct FoodCardComponent: View {
                 .stroke(Color(hex: "#E5E7EB"), lineWidth: 2)
         )
         .overlay(alignment: .topTrailing) {
-            HeartButton(isLiked: $isLike)
-                .padding()
+            HeartButton2(
+                isLiked: $isFavorite, // ideally you’d track this at view level
+                foodId: id ?? 112,
+                itemType: "FOOD_RECIPE"
+                
+            )                .
+            padding()
         }
+        
         .overlay(alignment: .topLeading) {
             TotalStarRating()
                 .padding()
         }
+        .onAppear{
+            print("this is food :", id, isFavorite)
+        }
     }
 }
-//#Preview {
-//    FoodCardComponent(isLike: true, fileName: "aa39e776-45df-422d-a68b-25504d1e6b15.png", name: "amok")
-//}

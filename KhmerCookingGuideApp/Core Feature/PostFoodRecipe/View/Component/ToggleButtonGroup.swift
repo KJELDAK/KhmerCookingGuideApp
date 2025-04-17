@@ -24,7 +24,11 @@ struct ToggleButtonGroup: View {
                         Button(action: {
 //                            if isSingleSelection {
                                 // Single selection behavior
-                                selection = item
+                            
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                                           selection = item
+                                                       }
+                                
 //                            } else {
 //                                // Multi-selection behavior
 //                                if selection.contains(item) {

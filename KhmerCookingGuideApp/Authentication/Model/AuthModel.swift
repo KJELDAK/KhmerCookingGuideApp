@@ -6,28 +6,56 @@
 //
 import Foundation
 //MARK: - log in response model
+//struct AuthResponse: Codable {
+//    let message: String
+//    let payload: Payload
+//    let statusCode: String
+//    let timestamp: String
+//    
+//    struct Payload: Codable {
+//        let accessToken: String
+//        let refreshToken: String
+//        let profileImage: String
+//        let fullName: String
+//        let email: String
+//        let createdDate: String
+//        
+//        enum CodingKeys: String, CodingKey {
+//            case accessToken = "access_token"
+//            case refreshToken = "refresh_token"
+//            case profileImage = "profile_image"
+//            case fullName = "full_name"
+//            case email
+//            case createdDate = "created_date"
+//        }
+//    }
+//}
+import Foundation
+
 struct AuthResponse: Codable {
     let message: String
     let payload: Payload
     let statusCode: String
     let timestamp: String
+}
+
+struct Payload: Codable {
+    let role: String
+    let deleted: Bool
+    let accessToken: String
+    let refreshToken: String
+    let profileImage: String
+    let fullName: String
+    let email: String
+    let createdDate: String
     
-    struct Payload: Codable {
-        let accessToken: String
-        let refreshToken: String
-        let profileImage: String
-        let fullName: String
-        let email: String
-        let createdDate: String
-        
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case refreshToken = "refresh_token"
-            case profileImage = "profile_image"
-            case fullName = "full_name"
-            case email
-            case createdDate = "created_date"
-        }
+    enum CodingKeys: String, CodingKey {
+        case role, deleted, email
+        case accessToken = "access_token"
+        case refreshToken = "refresh_token"
+        case profileImage = "profile_image"
+        case fullName = "full_name"
+        case createdDate = "created_date"
     }
 }
 //MARK: - errror response model

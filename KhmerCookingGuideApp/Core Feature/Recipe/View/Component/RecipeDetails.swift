@@ -18,6 +18,8 @@ struct RecipeDetails: View {
     @StateObject var recipeViewModel = RecipeViewModel()
     @State var image : [Photo] = []
     @State var fileName : String = ""
+    @State var isRatingFormPresent: Bool = false
+    @State var isSheetPresent: Bool = true
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         NavigationView {
@@ -56,13 +58,6 @@ struct RecipeDetails: View {
                                 .cornerRadius(14)
                                 
                                 .onAppear {
-                                    //            let photos = [
-                                    //                Photo(id: 999, photo: "mhob1"),
-                                    //                Photo(id: 1000, photo: "mhob2"),
-                                    //                Photo(id: 1001, photo: "mhob3"),
-                                    //                Photo(id: 1001, photo: "mhob3")
-                                    //            ]
-                                    //            image.append(contentsOf: photos)
                                     print(image)
                                 } .padding(.bottom, -40)
                                 
@@ -73,9 +68,14 @@ struct RecipeDetails: View {
                         .frame(height: imageHeight)
                     Spacer()
                 }
-                .sheet(isPresented: .constant(true)) {
+                .sheet(isPresented: $isSheetPresent) {
                     let sheetHeight = screenHeight - imageHeight - 79 // Calculate dynamic sheet height
-                    FoodDetails(recipeViewModel: recipeViewModel)
+                    NavigationStack {
+                           FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent)
+                               .navigationDestination(isPresented: $isRatingFormPresent) {
+                                   ReviewFormView(isPresented: $isRatingFormPresent, profile: "mhob1", userName: "reaksa",foodId: recipeViewModel.viewRecipeById?.id)
+                               }
+                       }
                         .presentationDetents([.height(sheetHeight), .height(sheetHeight + 10)])
                         .presentationBackground(.white)
                         .presentationCornerRadius(20)
@@ -83,6 +83,7 @@ struct RecipeDetails: View {
                         .presentationBackgroundInteraction(.enabled)
                         .padding(.top)
                 }
+               
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -100,6 +101,20 @@ struct RecipeDetails: View {
             }
             .edgesIgnoringSafeArea(.all)
         }
+//        .fullScreenCover(isPresented: $isRatingFormPresent, content: {
+//            ReviewFormView(isPresented: $isRatingFormPresent, action: {
+//                print("heloo")
+//            }, profile: "mhobq", userName: "reaksa")
+//        })
+//        .navigationDestination(isPresented: $isRatingFormPresent, destination: {
+//            ReviewFormView(isPresented: $isRatingFormPresent, action: {
+//                print("heloo")
+//            }, profile: "mhobq", userName: "reaksa")
+//            .onChange(of: isRatingFormPresent) {
+//                isSheetPresent = false
+//                
+//            }
+//        })
         .onAppear{
             recipeViewModel.fetchRecipeById(id: id) { success, message in
                 print(message)
@@ -117,7 +132,7 @@ struct FoodDetails : View{
     @State var isClicked: Bool = false
     @ObservedObject var recipeViewModel: RecipeViewModel
     @State private var clickedIngredients: Set<Int> = [] // Track clicked ingredients by their ID
-    
+    @Binding var isRatingFormPresent: Bool
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(recipeViewModel.viewRecipeById?.user.profileImage ?? "")"
         ScrollView{
@@ -130,7 +145,7 @@ struct FoodDetails : View{
                         .foregroundColor(.black.opacity(0.4))
                     HStack{
                         Group{
-                            Text(recipeViewModel.viewRecipeById?.categoryName ?? "")
+                            Text(recipeViewModel.viewRecipeById?.cuisineName ?? "")
                             Image("dot")
                             Text(String(recipeViewModel.viewRecipeById?.durationInMinutes ?? 0))
                             Text("minutes")
@@ -181,7 +196,8 @@ struct FoodDetails : View{
                                     .resizable()
                                     .frame(width: 24, height: 24)
                             }
-                            Text(ingredient.quantity.truncatingRemainder(dividingBy: 1) == 0 ? String(format : "%.0f", ingredient.quantity) : String(format : "%.1f", ingredient.quantity))
+//                            Text(ingredient.quantity.truncatingRemainder(dividingBy: 1) == 0 ? String(format : "%.0f", ingredient.quantity) : String(format : "%.1f", ingredient.quantity))
+                            Text(ingredient.quantity)
                                 .customFontMedium(size: 15)
                             Text(ingredient.name)
                                 .customFontMedium(size: 15)
@@ -218,8 +234,15 @@ struct FoodDetails : View{
                     Divider()
                     
                 }
-                RatingsAndReviewView()
+                RatingsAndReviewView(averageRating: recipeViewModel.viewRecipeById?.averageRating ?? 0, reviewCount: recipeViewModel.viewRecipeById?.totalRaters ?? 0)
                 Spacer()
+                ReviewSectionView {
+                    isRatingFormPresent = true
+                    print("hello")
+                }
+//                ButtonComponent(action: {
+//                    isRatingFormPresent = true
+//                }, content: "bsdjvjk")
             }.frame(maxWidth: .infinity, alignment: .leading)
         }
         //            .padding()

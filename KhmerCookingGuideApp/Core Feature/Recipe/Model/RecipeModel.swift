@@ -9,9 +9,16 @@ import SwiftUI
 import Foundation
 
 // MARK: - FoodRecipeResponse
-struct FoodRecipeResponse: Codable {
+struct FoodRecipeResponse <T: Codable>: Codable {
     let message: String
-    let payload: FoodRecipePayload
+    let payload: T
+    let statusCode: String
+    let timestamp: String
+}
+// MARK: - FoodRecipeResponseByCuisinseId
+struct FoodRecipeResponseByCuisinseId  : Codable {
+    let message: String
+    let payload: [FoodRecipeByCuisine]
     let statusCode: String
     let timestamp: String
 }
@@ -43,7 +50,7 @@ struct FoodRecipePayload: Codable {
 struct Ingredient: Codable, Identifiable {
     var id: Int
     var name: String
-    var quantity: Double
+    var quantity: String
     var price: Double
 
 }
@@ -73,15 +80,80 @@ struct RatingPercentages: Codable {
     }
 }
 
-// MARK: - Cuisine Model
+//// MARK: - Cuisine Model
+//struct CuisineResponse: Codable {
+//    let message: String
+//    let payload: [Cuisine]
+//    let statusCode: String
+//    let timestamp: String
+//}
+//
+//struct Cuisine: Codable, Identifiable , Hashable{
+//    let id: Int
+//    let cuisineName: String
+//}
+
+// MARK: - CuisineResponse
 struct CuisineResponse: Codable {
+    let paginationMeta: PaginationMeta
     let message: String
     let payload: [Cuisine]
     let statusCode: String
     let timestamp: String
 }
 
-struct Cuisine: Codable, Identifiable , Hashable{
+// MARK: - PaginationMeta
+struct PaginationMeta: Codable {
+    let totalCategories: Int
+    let totalPages: Int
+    let currentPage: Int
+    let size: Int
+    let nextLink: String?
+    let prevLink: String?
+}
+
+// MARK: - Cuisine
+struct Cuisine: Codable, Identifiable, Hashable {
     let id: Int
     let cuisineName: String
+}
+// MARK: - FoodRecipeByCuisine
+struct FoodRecipeByCuisine: Codable, Identifiable {
+    let id: Int
+    let photo: [Photo]
+    let name: String
+    let description: String
+    let level: String
+    let durationInMinutes: Int
+    let averageRating: Double?
+    let totalRaters: Int?
+    let isFavorite: Bool
+    let itemType: String
+    let user: User
+}
+
+// MARK: - FeedbackResponse
+struct FeedbackResponse: Codable {
+    let message: String
+    let payload: FeedbackPayload
+    let statusCode: String
+    let timestamp: String
+}
+
+// MARK: - FeedbackPayload
+struct FeedbackPayload: Codable {
+    let feedbackId: Int
+    let user: FeedbackUser
+    let ratingValue: Int
+    let commentText: String
+    let createdAt: String
+}
+
+// MARK: - FeedbackUser
+struct FeedbackUser: Codable {
+    let id: Int
+    let fullName: String
+    let profileImage: String
+    let role: String
+    let deleted: Bool
 }

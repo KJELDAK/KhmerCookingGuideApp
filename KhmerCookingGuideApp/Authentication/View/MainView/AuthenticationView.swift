@@ -37,6 +37,22 @@ struct AuthenticationView: View {
                     .scrollDisabled(true)
                     FooterView()
                 }
+                .onAppear{
+                    authenticationViewModel.loginUser(email: "sasaloveyou1112@gmail.com", password: "123" ){ success, message in
+                        if success {
+                            islogInSuccess = true
+                            messageFromApi = message ?? ""
+                            print(message!)
+                            profileViewModel.getUserInfo { success, message in
+                                print("get user role", HeaderToken.shared.role)
+                            }
+                        }
+                        else{
+                            isLogInFaild = true
+                            messageFromApi = message ?? ""
+                        }
+                    }
+                }
                 .navigationDestination(isPresented: $isNavigateToHome) {
                         ContentView().navigationBarBackButtonHidden()
                     

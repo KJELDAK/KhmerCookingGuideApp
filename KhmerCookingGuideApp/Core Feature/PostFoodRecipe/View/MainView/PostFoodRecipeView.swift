@@ -18,7 +18,7 @@ import SwiftUI
 import PhotosUI
 
 struct PostFoodRecipeView: View {
-    @State private var ingredients: [Ingredienth] = [Ingredienth(id: 1, name: "", quantity: 0, price: 0)]
+    @State private var ingredients: [Ingredienth] = [Ingredienth(id: 1, name: "", quantity: "", price: 0)]
      @State private var cookingSteps: [CookingStep] = [CookingStep(id: 1, description: "")]
     @StateObject private var photoPicker = PhotoPicker()
     @State var foodName = ""

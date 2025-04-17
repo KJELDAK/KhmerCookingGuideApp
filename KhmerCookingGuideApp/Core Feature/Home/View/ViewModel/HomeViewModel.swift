@@ -14,6 +14,7 @@ class HomeViewModel: ObservableObject {
     @Published var foodRecipes : [FoodRecipe] = []
     @Published var popularRecipes : [PopularRecipe] = []
     @Published var RecipeInCategory : [FoodRecipe] = []
+    
     func getAllCategories(completion:@escaping (Bool, String) -> Void) {
         let url = ("\(API.baseURL)/category/all")
         AF.request(url, method: .get,encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken)
@@ -46,15 +47,18 @@ class HomeViewModel: ObservableObject {
     }
     
     func getAllFoodRecipes(completion: @escaping(Bool, String) -> Void){
+        self.isLoading = true
         let url = ("\(API.baseURL)/food-recipe/list")
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
             .validate()
             .responseDecodable(of:FoodRecipesResponse.self){ response in
                 switch response.result {
                 case .success(let value):
+                    
                     self.foodRecipes = value.payload
                     completion(true, value.message)
-                    print("this is food recipes\(self.foodRecipes)")
+//                    print("this is food recipes\(self.foodRecipes)")
+                    self.isLoading = false
                 case .failure(let error):
                     print("errpr",error)
                     if let data = response.data{
@@ -83,7 +87,7 @@ class HomeViewModel: ObservableObject {
                 case .success(let value):
                     self.popularRecipes = value.payload.popularRecipes
                     completion(true, value.message)
-                    print("this is food recipes\(self.foodRecipes)")
+//                    print("this is food recipes\(self.foodRecipes)")
                 case .failure(let error):
                     print("cant get popular foods",error)
                     if let data = response.data{
@@ -113,7 +117,7 @@ class HomeViewModel: ObservableObject {
                 case .success(let value):
                     self.RecipeInCategory = value.payload.foodRecipes
                     completion(true, value.message)
-                    print("this is food recipes\( self.RecipeInCategory)")
+//                    print("this is food recipes\( self.RecipeInCategory)")
                 case .failure(let error):
                     print("error get food by category",error)
                     if let data = response.data{

@@ -10,6 +10,7 @@ struct FillterList: View {
     @StateObject var homeViewModel = HomeViewModel()
     @State var filters: [Cuisine] = []
     @State private var selectedFilter: String = "All"
+    @Binding var cuisineId: Int
     @StateObject var recipeViewModel = RecipeViewModel()
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -28,8 +29,9 @@ struct FillterList: View {
                             )
                             .onTapGesture {
                                 selectedFilter = filter.cuisineName
+                                cuisineId = filter.id
                                 // Compare with categoryName
-                                print(selectedFilter)
+                                print(selectedFilter, "this is cuisinId", cuisineId)
                             }
                     }
                 }
@@ -64,8 +66,4 @@ struct FillterList: View {
             .padding(.horizontal)
         }
     }
-}
-
-#Preview {
-    FillterList()
 }

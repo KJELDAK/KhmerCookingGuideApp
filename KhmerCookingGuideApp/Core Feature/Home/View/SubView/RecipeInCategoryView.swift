@@ -29,7 +29,7 @@ struct RecipeInCategoryView: View {
                                 NavigationLink(
                                     destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
                                 ) {
-                                    FoodCardComponent(fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
+                                    FoodCardComponent(isFavorite:  foodRecipe.isFavorite, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
                                         .frame(maxWidth: .infinity)
                                 }
                             }

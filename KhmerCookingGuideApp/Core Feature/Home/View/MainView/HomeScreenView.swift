@@ -18,6 +18,7 @@ struct HomeScreenView : View {
             }
             .customFontRobotoMedium(size: 24)
             SlideShowComponent()
+//                .padding(.horizontal, -16)
             Text("Category")
                 .customFontRobotoMedium(size: 16)
             CategoryView(homeViewModel: homeViewModel)

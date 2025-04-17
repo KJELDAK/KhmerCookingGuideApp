@@ -42,7 +42,7 @@ struct PopularFoodRecipes: View {
                             NavigationLink(
                                 destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
                             ) {
-                                FoodCardComponent(fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
+                                FoodCardComponent(id: foodRecipe.id, isFavorite: foodRecipe.isFavorite ?? false, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
                                     .frame(width: 300)
                             }
                         }

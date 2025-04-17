@@ -11,6 +11,7 @@
 		5225455C2D0F35D6007CF713 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5225455B2D0F35D6007CF713 /* IQKeyboardManagerSwift */; };
 		524393532D08146000D99C4C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 524393522D08146000D99C4C /* Alamofire */; };
 		52575D932D13F796008EA309 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 52575D922D13F796008EA309 /* KeychainSwift */; };
+		528499E12D7C9B9B0039A85A /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = 528499E02D7C9B9B0039A85A /* SwiftUIRefresh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				528499E12D7C9B9B0039A85A /* SwiftUIRefresh in Frameworks */,
 				520284522D2849A400D4DB2F /* Kingfisher in Frameworks */,
 				52575D932D13F796008EA309 /* KeychainSwift in Frameworks */,
 				524393532D08146000D99C4C /* Alamofire in Frameworks */,
@@ -140,6 +142,7 @@
 				5225455B2D0F35D6007CF713 /* IQKeyboardManagerSwift */,
 				52575D922D13F796008EA309 /* KeychainSwift */,
 				520284512D2849A400D4DB2F /* Kingfisher */,
+				528499E02D7C9B9B0039A85A /* SwiftUIRefresh */,
 			);
 			productName = KhmerCookingGuideApp;
 			productReference = 523CC9B82D06C5D900A4E0FD /* KhmerCookingGuideApp.app */;
@@ -229,6 +232,7 @@
 				5225455A2D0F35D6007CF713 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				52575D912D13F796008EA309 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				520284502D2849A400D4DB2F /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				528499DF2D7C9B9B0039A85A /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 523CC9B92D06C5D900A4E0FD /* Products */;
@@ -656,6 +660,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		528499DF2D7C9B9B0039A85A /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUIRefresh";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -678,6 +690,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 52575D912D13F796008EA309 /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		528499E02D7C9B9B0039A85A /* SwiftUIRefresh */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 528499DF2D7C9B9B0039A85A /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */;
+			productName = SwiftUIRefresh;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -44,9 +44,10 @@ class HeaderToken: ObservableObject {
     func clearToken() {
         // Clear the token
         token = ""
-        
+        role = ""
         // Remove token from UserDefaults
         UserDefaults.standard.removeObject(forKey: "userToken")
+        UserDefaults.standard.removeObject(forKey: "userRole")
         
         print("User Token Cleared")
     }
