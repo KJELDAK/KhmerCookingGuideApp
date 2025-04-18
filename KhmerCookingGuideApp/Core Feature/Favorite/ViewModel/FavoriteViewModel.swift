@@ -52,8 +52,8 @@ class FavoriteViewModel: ObservableObject {
         ]
         print("add to favorite parameters\(parameters)")
         isLoading = true
-        AF.request(url, method: .post, parameters: parameters, encoding:JSONEncoding.default, headers: HeaderToken.shared.headerToken)
-            .validate()
+        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding(destination: .queryString), headers: HeaderToken.shared.headerToken)
+            .validate(statusCode: 200..<500)
             .responseDecodable(of: AddFavoriteResponse.self) { [weak self] response in
                 guard let self = self else { return }
                 self.isLoading = false

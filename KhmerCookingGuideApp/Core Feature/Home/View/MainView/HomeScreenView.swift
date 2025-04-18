@@ -38,7 +38,7 @@ struct HomeScreenView : View {
                         }
                     }
                 }
-                PopularFoodRecipes(homeViewModel: homeViewModel)
+                PopularFoodRecipes(popularRecipes: $homeViewModel.foodRecipes)
 
                     .padding(.top)
             }.padding(.top)

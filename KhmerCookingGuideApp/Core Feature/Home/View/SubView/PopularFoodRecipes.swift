@@ -30,21 +30,24 @@ import SwiftUI
 //    }
 //}
 struct PopularFoodRecipes: View {
-    @ObservedObject var homeViewModel: HomeViewModel
+    @Binding var popularRecipes: [FoodRecipe]
+
     var body: some View {
         HStack {
             ScrollView(.horizontal) {
                 HStack {
-                   
-                    ForEach(homeViewModel.popularRecipes) { foodRecipe in
-                        // Ensure you only use the first photo from the photo array
-                        if let firstPhoto = foodRecipe.photo.first {
-                            NavigationLink(
-                                destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
-                            ) {
-                                FoodCardComponent(id: foodRecipe.id, isFavorite: foodRecipe.isFavorite ?? false, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
-                                    .frame(width: 300)
-                            }
+                    ForEach($popularRecipes) { $foodRecipe in
+                        NavigationLink(
+                            destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
+                        ) {
+                            FoodCardComponent2(
+                                id: foodRecipe.id,
+                                isFavorite: $foodRecipe.isFavorite, // Pass binding here
+                                fileName: foodRecipe.photo.first?.photo ?? "",
+                                name: foodRecipe.name,
+                                description: foodRecipe.description
+                            )
+                            .frame(width: 300)
                         }
                     }
                 }
@@ -53,6 +56,8 @@ struct PopularFoodRecipes: View {
         }
     }
 }
+
+
 
 
 //#Preview {
