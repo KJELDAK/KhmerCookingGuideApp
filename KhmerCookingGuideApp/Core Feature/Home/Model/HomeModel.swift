@@ -117,7 +117,7 @@ struct FoodResponse: Codable {
 
 // MARK: - Payload
 struct CaytegoryPayload: Codable {
-    let foodRecipes: [FoodRecipe]
+    let foodRecipes: [FoodRecipeInCategory]
     let foodSells: [FoodSell] // Assuming foodSells is an array of similar objects (empty in your example)
 }
 
@@ -128,12 +128,14 @@ struct FoodRecipeInCategory: Codable, Identifiable {
     let name: String
     let description: String
     let level: String
-    let averageRating: Double? // Nullable value
-    let totalRaters: Int?      // Nullable value
-    let isFavorite: Bool
+    let averageRating: Double?
+    let totalRaters: Int?
     let itemType: String
     let user: User
+    var isFavorite: Bool? // ✅ MUST BE OPTIONAL
 }
+
+
 
 // MARK: - Food Photo
 struct FoodPhoto: Codable, Identifiable {

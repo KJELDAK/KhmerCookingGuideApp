@@ -10,7 +10,8 @@ import SwiftData
 import IQKeyboardManagerSwift
 @main
 struct KhmerCookingGuideAppApp: App {
-    @State var lang: String = "en"
+//    @State var lang: String = UserDefaults.standard.string(forKey: "lang") ?? "km"
+    @StateObject var languageManager = LanguageManager()
     @StateObject var recipeVM = RecipeViewModel()
 
     // Linking the AppDelegate
@@ -63,8 +64,11 @@ struct KhmerCookingGuideAppApp: App {
     var body: some Scene {
         WindowGroup {
             SplashScreen()
-                .environment(\.locale, .init(identifier: lang))
+//                .environment(\.locale, .init(identifier: lang))
+                .environmentObject(languageManager) // Provide the LanguageManager as an environment object
                 .environmentObject(recipeVM)
+            // 2️⃣ Tell SwiftUI to re‑evaluate every Text(:) on language change:
+                    .environment(\.locale,  .init(identifier: languageManager.lang))
 
 //            OTPView()
         }

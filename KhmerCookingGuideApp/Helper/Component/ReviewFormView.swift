@@ -13,7 +13,9 @@ struct ReviewFormView: View {
     @State private var reviewText: String = ""
     @State private var rating: Int = 5 // Default rating
     @Binding var isPresented: Bool  // Use Binding to control visibility
-
+    @State var isShowSuccesAlert: Bool = false
+    @State var isShowFaildAlert: Bool = false
+    @State var messageFromServer: String = ""
     
 //     var action: () -> Void
     var profile: String
@@ -65,10 +67,12 @@ struct ReviewFormView: View {
                     }, content: "Cancel")
                     ButtonComponent(action: {
                         recipeViewModel.postRateAndFeedback(foodId: foodId!, ratingValue: String(rating), commentText: reviewText) { isSuccess, message in
+                            messageFromServer = message
                             if isSuccess{
-                                print("hahahhahahha")
+                                isShowSuccesAlert = true
                             }
                             else{
+                                isShowFaildAlert = true
                                 print("error")
                             }
                         }
@@ -81,9 +85,13 @@ struct ReviewFormView: View {
             }
             .padding()
             .background(Color.white)
-           
+            SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isShowSuccesAlert)
+            SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isShowFaildAlert)
     
         }
+      
+          
+        
         
     }
     

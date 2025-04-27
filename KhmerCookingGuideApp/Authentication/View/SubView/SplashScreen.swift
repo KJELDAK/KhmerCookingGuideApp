@@ -4,36 +4,83 @@
 //
 //  Created by Sok Reaksa on 9/12/24.
 //
+//import SwiftUI
+//struct SplashScreen: View {
+//    @State private var isActive = false
+//
+//    var body: some View {
+//        ZStack {
+//            // Main Content
+//            if isActive {
+//                withAnimation(.easeInOut){
+//                    AuthenticationView()
+//                }
+//            } else {
+//                // Splash Screen Content
+//                ZStack {
+//                    VStack {
+//                        Image("logo")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 180, height: 180)
+//                     
+//                    }
+//                }
+//            }
+//        }
+//        .onAppear {
+//           
+//            // Timer to simulate launch delay
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+//                withAnimation {
+//                    isActive = true
+//                }
+//            }
+//        }
+//    }
+//}
 import SwiftUI
+
 struct SplashScreen: View {
     @State private var isActive = false
+    @State private var isLoggedIn = false // <-- NEW
+    @StateObject var authenticationViewModel = AuthenticationViewModel()
+    @StateObject var profileViewModel = ProfileViewModel()
 
     var body: some View {
         ZStack {
-            // Main Content
             if isActive {
-                withAnimation(.easeInOut){
+                if isLoggedIn {
+                    ContentView() // Go straight to Home
+                } else {
                     AuthenticationView()
                 }
             } else {
-                // Splash Screen Content
-                ZStack {
-                    VStack {
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 180, height: 180)
-                     
-                    }
+                VStack {
+                    Image("logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 180, height: 180)
                 }
             }
         }
         .onAppear {
-           
-            // Timer to simulate launch delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                withAnimation {
-                    isActive = true
+            authenticationViewModel.autoLogin { success, message in
+                if success {
+                    self.isLoggedIn = true
+                    profileViewModel.getUserInfo { success, message in
+                        print("User info loaded after auto-login")
+                    }
+                } else {
+                    self.isLoggedIn = false
+                    print("Auto-login failed: \(message ?? "")")
+                }
+                
+                // Show the next screen after splash delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    withAnimation {
+                        isActive = true
+                    }
                 }
             }
         }

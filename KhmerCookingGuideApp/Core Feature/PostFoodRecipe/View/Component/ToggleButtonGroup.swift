@@ -14,8 +14,8 @@ struct ToggleButtonGroup: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.headline)
+            Text(LocalizedStringKey(title))
+                .customFontMediumLocalize(size: 16)
             
 
             ScrollView(.horizontal){

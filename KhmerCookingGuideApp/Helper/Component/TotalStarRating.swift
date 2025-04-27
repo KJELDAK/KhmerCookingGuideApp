@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TotalStarRating: View {
-    var rating: Double = 4.5
+    var rating: Double = 0
     var body: some View {
         VStack {
             HStack {

@@ -40,7 +40,7 @@ struct RecipeEditorView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // Ingredients Section
-                        SectionHeader(title: "Ingredients")
+                        SectionHeader(title: "ingredients")
                         
 //                        ForEach(ingredients.indices, id: \.self) { index in
 //                            IngredientInputView(
@@ -290,6 +290,7 @@ struct IngredientInputView: View {
             HStack {
                 TextField("Enter Ingredienth", text: $Ingredienth.name)
                     .padding()
+                    .font(.custom("KantumruyPro-Regular", size: 16))
 
                 
                 Button(action: onDelete) {
@@ -374,11 +375,11 @@ struct CookingStepInputView: View {
 }
 
 struct SectionHeader: View {
-    let title: String
+    let title: LocalizedStringKey
     
     var body: some View {
         Text(title)
-            .font(.headline)
+            .customFontSemiBoldLocalize(size: 16)
             .padding(.vertical, 8)
     }
 }
@@ -423,6 +424,7 @@ struct NumericTextField: View {
     var body: some View {
         TextField(placeholder, text: $value)
 //        .keyboardType(.decimalPad) // Use decimal keyboard
+            .font(.custom("KantumruyPro-Regular", size: 16))
         .frame(height: 50)
         .padding(.horizontal)
         .overlay(

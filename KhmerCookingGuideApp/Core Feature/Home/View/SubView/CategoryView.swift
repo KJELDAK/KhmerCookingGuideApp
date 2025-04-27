@@ -24,7 +24,4 @@ struct CategoryView: View {
         }
     }
 }
-//
-//#Preview {
-//    CategoryView()
-//}
+

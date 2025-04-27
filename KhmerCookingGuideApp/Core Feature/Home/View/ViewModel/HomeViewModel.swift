@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     @Published var error: Error?
     @Published var foodRecipes : [FoodRecipe] = []
     @Published var popularRecipes : [PopularRecipe] = []
-    @Published var RecipeInCategory : [FoodRecipe] = []
+    @Published var RecipeInCategory : [FoodRecipeInCategory] = []
     
     func getAllCategories(completion:@escaping (Bool, String) -> Void) {
         let url = ("\(API.baseURL)/category/all")
@@ -121,6 +121,11 @@ class HomeViewModel: ObservableObject {
                 case .failure(let error):
                     print("error get food by category",error)
                     if let data = response.data{
+                        
+                        if let jsonString = String(data: data, encoding: .utf8) {
+                            print("Raw response JSON: \(jsonString)")
+                        }
+
                         if let severError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data){
                             print(severError.payload)
                         }

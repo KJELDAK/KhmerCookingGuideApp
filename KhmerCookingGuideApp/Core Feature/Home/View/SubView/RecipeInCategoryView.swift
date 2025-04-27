@@ -16,27 +16,46 @@ struct RecipeInCategoryView: View {
         ZStack{
             
             NavigationView {
+      
 
-                VStack{
-                    ScrollView{
-                        ForEach(homeViewModel.RecipeInCategory){ foodRecipe in
-            //                            ForEach(foodRecipe.photo) { photo in
-            //                                FoodCardComponent(fileName: photo.photo, name: foodRecipe.description)
-            //                                    .frame(maxWidth: .infinity)
-            //                            }
-                            // Ensure you only use the first photo from the photo array
-                            if let firstPhoto = foodRecipe.photo.first {
-                                NavigationLink(
-                                    destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
-                                ) {
-                                    FoodCardComponent(isFavorite:  foodRecipe.isFavorite, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
-                                        .frame(maxWidth: .infinity)
-                                }
-                            }
+                VStack {
+                  ScrollView {
+                      ForEach($homeViewModel.RecipeInCategory) { $recipe in
+                      if let photoObj = recipe.photo.first {
+                        Group {
+                          // 1️⃣ extract the String
+                          let fileName = photoObj.photo
+                          
+                          // 2️⃣ map Bool? → Bool
+                          let isFav = Binding<Bool>(
+                            get:  { recipe.isFavorite ?? false },
+                            set: { recipe.isFavorite = $0 }
+                          )
+                          
+                          NavigationLink(
+                            destination:
+                              RecipeDetails(isLike: isFav, id: recipe.id)
+                                .navigationBarHidden(true)
+                          ) {
+                            FoodCardComponent2(
+                              id: recipe.id,
+                              isFavorite: isFav,
+                              fileName: fileName,
+                              name: recipe.name,
+                              description: recipe.description,
+                              rating: recipe.averageRating ?? 0, level: recipe.level
+                            )
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal)
+                          }
                         }
+                      }
                     }
-
+                  }
                 }
+
+
+
                 .padding()
                 .toolbar{
                     ToolbarItem(placement: .navigationBarLeading) {

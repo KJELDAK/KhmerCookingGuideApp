@@ -12,11 +12,13 @@ class RecipeViewModel: ObservableObject {
     @Published var isLoading : Bool = false
     @Published var cuision : [Cuisine] = []
     @Published var viewAllRecipeByCuisineId : [FoodRecipeByCuisine] = []
+    @Published var viewAllRateAndFeedBack : [RatingFeedback] = []
+    @Published var userFoodFeedback : UserFoodFeedbackResponse?
     func fetchRecipeById(id : Int, completion: @escaping (Bool, String) -> Void) {
-        let url = "\(API.baseURL)/guest-user/foods/detail/\(id)?itemType=FOOD_RECIPE"
+        let url = "\(API.baseURL)/foods/detail/\(id)?itemType=FOOD_RECIPE"
         isLoading = true
         print(url)
-        AF.request(url, encoding: JSONEncoding.default/* headers: HeaderToken.shared.headerToken*/)
+        AF.request(url, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
             .validate()
             .responseDecodable(of: FoodRecipeResponse<FoodRecipePayload>.self) { response in
                 switch response.result{
@@ -90,15 +92,78 @@ class RecipeViewModel: ObservableObject {
             }
         
     }
+    func getAllRateAndFeedback(foodId: Int, completion: @escaping (Bool ,String) -> Void) {
+        let url = "\(API.baseURL)/feedback/guest-user/\(foodId)?itemType=FOOD_RECIPE"
+        self.isLoading = true
+        print("get all rate and feedback url: \(url)")
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken).validate()
+            .responseDecodable(of: RatingFeedbackResponse.self) { response in
+                switch response.result {
+                case .success(let value):
+                    print("Successfully fetched feedbacks: \(value.payload)")
+                    self.viewAllRateAndFeedBack = value.payload
+                    completion(true, value.message)
+
+                case .failure(let error):
+                    self.isLoading = false
+                    if let data = response.data {
+                        if let serverError = try? JSONDecoder().decode(RateAndFeedbackErrorResponse.self, from: data) {
+                            print("Server error: \(serverError.detail)")
+                            completion(false, serverError.detail)
+                        } else {
+                            completion(false, error.localizedDescription)
+                        }
+                    } else {
+                        print("Failed to fetch feedbacks")
+                        completion(false, error.localizedDescription)
+                    }
+                }
+            }
+    }
+    func getFeedBackByFoodItemForCurrentUser(foodId: Int, completion: @escaping (Bool ,String) -> Void) {
+        let url = "\(API.baseURL)/feedback/\(foodId)?itemType=FOOD_RECIPE"
+       
+        self.isLoading = true
+        print("get all rate and feedback url: \(url)")
+
+        AF.request(url, method: .get, encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken).validate()
+            .responseDecodable(of: UserFoodFeedbackResponse.self) { response in
+                switch response.result {
+                case .success(let value):
+                    print("Successfully fetched feedbacks: \(value.payload)")
+                    self.userFoodFeedback = value
+                    completion(true, value.message)
+
+                case .failure(let error):
+                    self.isLoading = false
+                    if let data = response.data {
+                        if let serverError = try? JSONDecoder().decode(RateAndFeedbackErrorResponse.self, from: data) {
+                            print("Server error: \(serverError.detail)")
+                            completion(false, serverError.detail)
+                        } else {
+                            completion(false, error.localizedDescription)
+                        }
+                    } else {
+                        print("Failed to fetch feedbacks")
+                        completion(false, error.localizedDescription)
+                    }
+                }
+            }
+    }
+
+
     func postRateAndFeedback(foodId: Int, ratingValue: String, commentText: String, completion: @escaping (Bool, String) -> Void){
         let url = ("\(API.baseURL)/feedback?itemType=FOOD_RECIPE")
         self.isLoading = true
-        
+        print("post rate and feedback url: \(url)")
         let parameter: [String: Any] = [
             "foodId": foodId,
             "ratingValue": ratingValue,
             "commentText": commentText,
         ]
+        print("ajaj", parameter)
+        print("post rate and feedback url: \(url)")
         AF.request(url, method: .post, parameters: parameter, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken).validate()
             .responseDecodable(of: FeedbackResponse.self){ response in
                 switch response.result{
@@ -107,9 +172,9 @@ class RecipeViewModel: ObservableObject {
                 case .failure(let error):
                     self.isLoading = false
                     if let data = response.data{
-                        if let severError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data){
-                            print(severError.payload)
-                            completion(false,severError.payload)
+                        if let severError = try? JSONDecoder().decode(RateAndFeedbackErrorResponse.self, from: data){
+                            print(severError.detail)
+                            completion(false,severError.detail)
                         }
                         else{
                             completion(false,error.localizedDescription)
@@ -128,3 +193,12 @@ class RecipeViewModel: ObservableObject {
 }
 
 
+import Foundation
+
+// MARK: - Feedback Response for Food Item by Current User
+struct UserFoodFeedbackResponse: Codable {
+    let message: String
+    let payload: RatingFeedback
+    let statusCode: String
+    let timestamp: String
+}

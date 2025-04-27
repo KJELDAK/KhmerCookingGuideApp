@@ -11,6 +11,7 @@ import SwiftUI
 struct RatingsAndReviewView: View {
     var averageRating: Double
     var reviewCount: Int
+    var onTappAction: () -> Void
     func calculateStarDistribution(averageRating: Double, totalReviews: Int) -> [Int] {
         guard totalReviews > 0 else { return [0, 0, 0, 0, 0] }
 
@@ -28,7 +29,6 @@ struct RatingsAndReviewView: View {
         default:
             percentageWeights = [0.5, 0.3, 0.1, 0.05, 0.05]   // Mostly 1-star ratings
         }
-        
         return percentageWeights.map { Int(round($0 * Double(totalReviews))) }
     }
 
@@ -36,17 +36,32 @@ struct RatingsAndReviewView: View {
         calculateStarDistribution(averageRating: averageRating, totalReviews: reviewCount)
     }
     
-    private var maxReviewCount: Int {
-        starCounts.max() ?? 1
+    // Calculate the percentage of reviews for each star count
+    private func progressForStar(starCount: Int) -> CGFloat {
+        let totalReviews = CGFloat(reviewCount)
+        let starReviewCount = CGFloat(starCounts[starCount - 1])
+        
+        return totalReviews > 0 ? starReviewCount / totalReviews : 0
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            // Title
-            Text("Ratings & Review")
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(.black)
-            
+            HStack{
+                // Title
+                Text("ratings_and_review")
+                    .customFontSemiBoldLocalize(size: 20)
+                    .foregroundColor(.black)
+                
+                Image("angle-right")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 22, height: 22)
+                    .rotationEffect(.degrees(-90))
+                 
+            }
+            .onTapGesture {
+                onTappAction()
+            }
             // Rating and Review Summary
             HStack(alignment: .top, spacing: 20) {
                 // Left: Average Rating
@@ -65,7 +80,7 @@ struct RatingsAndReviewView: View {
                 VStack(alignment: .trailing, spacing: 8) {
                     ForEach((1...5).reversed(), id: \.self) { starCount in
                         let count = starCounts[starCount - 1]
-                        let progress = maxReviewCount > 0 ? CGFloat(count) / CGFloat(maxReviewCount) : 0
+                        let progress = progressForStar(starCount: starCount)
                         
                         HStack {
                             // Star Icons
@@ -103,11 +118,27 @@ struct RatingsAndReviewView: View {
 }
 
 
-//struct RatingsAndReviewView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RatingsAndReviewView()
-//            .previewLayout(.sizeThatFits)
-//    }
-//}
+import Foundation
 
+// MARK: - Top-level server response
+struct RatingFeedbackResponse: Codable {
+    let message: String
+    let payload: [RatingFeedback]
+    let statusCode: String
+    let timestamp: String
+}
+
+// MARK: - Individual feedback entry
+struct RatingFeedback: Codable, Identifiable {
+    let id: Int
+    let user: FeedbackUser
+    let ratingValue: Int
+    let commentText: String
+    let createdAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case id = "feedbackId"
+        case user, ratingValue, commentText, createdAt
+    }
+}
 

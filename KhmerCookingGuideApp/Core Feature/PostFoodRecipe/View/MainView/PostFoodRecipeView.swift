@@ -165,20 +165,19 @@ struct PostFoodRecipeView: View {
                                 //                    .buttonStyle(.borderedProminent)
                                 //                    .padding()
                                 //MARK: - Food Name
-                                Text("Food Name")
-                                    .customFontRobotoBold(size: 16)
+                                Text("food_name")
+                                    .customFontMediumLocalize(size: 16)
                                 
                                 TextField("Enter food name", text: $foodName)
-                                
+                                    .font(.custom("KantumruyPro-Regular", size: 16))
                                     .frame(height: 56)
                                     .padding(.horizontal)
                                     .overlay {
                                         RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"),lineWidth: 2)
                                     }
                                 //MARK: - Description
-                                Text("Description")
-                                    .customFontRobotoBold(size: 16)
-                                
+                                Text("decription")
+                                    .customFontMediumLocalize(size: 16)
                                 TextEditorWithPlaceholder(text:$foodDescription, placeholder: "Tell me a little about your food", isTextBlack: .constant(true))
                                     .frame(height: 112)
                                     .padding(.horizontal)
@@ -212,7 +211,7 @@ struct PostFoodRecipeView: View {
                             VStack(alignment: .leading, spacing: 16) {
                                 // Level (Single Selection)
                                 ToggleButtonGroup(
-                                    title: "Level",
+                                    title: "_level",
                                     items: ["Hard", "Medium", "Easy"],
                                     selection: $selectedLevel,
                                     isSingleSelection: true

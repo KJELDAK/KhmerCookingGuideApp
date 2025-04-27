@@ -38,14 +38,14 @@ struct PopularFoodRecipes: View {
                 HStack {
                     ForEach($popularRecipes) { $foodRecipe in
                         NavigationLink(
-                            destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
+                            destination: RecipeDetails(isLike: $foodRecipe.isFavorite, id: foodRecipe.id).navigationBarHidden(true)
                         ) {
                             FoodCardComponent2(
                                 id: foodRecipe.id,
                                 isFavorite: $foodRecipe.isFavorite, // Pass binding here
                                 fileName: foodRecipe.photo.first?.photo ?? "",
                                 name: foodRecipe.name,
-                                description: foodRecipe.description
+                                description: foodRecipe.description, rating: foodRecipe.averageRating ?? 0, level: foodRecipe.level
                             )
                             .frame(width: 300)
                         }

@@ -72,6 +72,7 @@ class FavoriteViewModel: ObservableObject {
             "foodId": foodId,
             "itemType": itemType
         ]
+        print("add to favorite parameters\(parameters)")
         isLoading = true
         AF.request(url, method: .delete, parameters: parameters, encoding: URLEncoding(destination: .queryString), headers: HeaderToken.shared.headerToken)
             .validate(statusCode: 200..<500) // Include 400 range so we can parse custom error messages

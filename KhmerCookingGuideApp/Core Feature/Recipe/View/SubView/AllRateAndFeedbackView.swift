@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct AllRateAndFeedbackView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    var rateAndFeebackPayload: [RatingFeedback]
 
-#Preview {
-    AllRateAndFeedbackView()
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(rateAndFeebackPayload) { feedback in
+                        ReviewCardView(
+                            userProfile: feedback.user.profileImage,
+                            userName: feedback.user.fullName,
+                            reviewText: feedback.commentText,
+                            rating: feedback.ratingValue
+                        )
+                        .padding(.horizontal)
+                    }
+                }
+                .padding(.top)
+            }
+            .navigationTitle("All Reviews")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+        }
+    }
 }

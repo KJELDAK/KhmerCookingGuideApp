@@ -127,7 +127,7 @@ struct FoodRecipeByCuisine: Codable, Identifiable {
     let durationInMinutes: Int
     let averageRating: Double?
     let totalRaters: Int?
-    let isFavorite: Bool
+    var isFavorite: Bool
     let itemType: String
     let user: User
 }
@@ -156,4 +156,16 @@ struct FeedbackUser: Codable {
     let profileImage: String
     let role: String
     let deleted: Bool
+}
+
+
+
+
+struct RateAndFeedbackErrorResponse: Codable {
+    let type: String
+    let title: String
+    let status: Int
+    let detail: String
+    let instance: String
+    let timestamp: String
 }

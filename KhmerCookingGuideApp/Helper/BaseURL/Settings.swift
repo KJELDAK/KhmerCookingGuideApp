@@ -1,18 +1,24 @@
-import Foundation
+//
+//  Settings.swift
+//  KhmerCookingGuideApp
+//
+//  Created by Sok Reaksa on 21/4/25.
+//
 
+
+import Foundation
 final class Settings {
-    // MARK: - Shared Instance
     static let shared = Settings()
-    
-    // MARK: - Private Initializer
     private init() {}
 
-    // MARK: - Date Formatting
     func formattedDate(from isoString: String) -> String {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        
-        guard let date = isoFormatter.date(from: isoString) else {
+        // Use DateFormatter for microseconds
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) // Adjust as needed
+
+        guard let date = formatter.date(from: isoString) else {
             return "Invalid date"
         }
 
@@ -20,7 +26,7 @@ final class Settings {
         let day = calendar.component(.day, from: date)
         let month = calendar.monthSymbols[calendar.component(.month, from: date) - 1]
         let year = calendar.component(.year, from: date)
-        
+
         let hour = calendar.component(.hour, from: date)
         let partOfDay: String
         switch hour {
@@ -34,6 +40,7 @@ final class Settings {
             partOfDay = "night"
         }
 
-        return "\(day) \(month) \(year) (\(partOfDay))"
+        return "\(day) \(month) \(year) (\( partOfDay ))"
     }
 }
+

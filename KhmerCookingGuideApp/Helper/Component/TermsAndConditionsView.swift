@@ -1,64 +1,70 @@
+//
+//  TermsAndConditionsView.swift
+//  KhmerCookingGuideApp
+//
+//  Created by Sok Reaksa on 21/4/25.
+//
+
+
+import SwiftUI
+
 import SwiftUI
 
 struct TermsAndConditionsView: View {
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                
-                Text("📄 លក្ខខណ្ឌនិងគោលការណ៍ប្រើប្រាស់")
-                    .font(.title)
-                    .bold()
-                
-                Text("សូមអានយ៉ាងហ្មត់ចត់មុននឹងប្រើប្រាស់កម្មវិធី Khmer Cooking Guide App")
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("terms_title")
+                        .font(.title)
+                        .bold()
+                    
+                    Text("terms_intro")
 
-                Group {
-                    Text("🎯 ១. គោលបំណងនៃកម្មវិធី")
-                        .font(.headline)
-                    Text("កម្មវិធីនេះត្រូវបានបង្កើតឡើងដើម្បីផ្ដល់ជូននូវការណែនាំចំអិនម្ហូបខ្មែរ និងរបៀបធ្វើម្ហូបជាច្រើនសម្រាប់អ្នកប្រើប្រាស់ក្នុងគោលបំណងផ្ទាល់ខ្លួនប៉ុណ្ណោះ។")
+                    Group {
+                        Text("purpose_title")
+                            .font(.headline)
+                        Text("purpose_content")
 
-                    Text("👤 ២. ការទទួលខុសត្រូវរបស់អ្នកប្រើប្រាស់")
-                        .font(.headline)
-                    Text("""
-                    - អ្នកត្រូវប្រើប្រាស់កម្មវិធីនេះដោយសុចរិត កុំចែកចាយមាតិកាដែលផ្ទុយនឹងច្បាប់ឬសិទ្ធិរបស់អ្នកដទៃ។
-                    - កុំប្រើកម្មវិធីក្នុងគោលបំណងពាណិជ្ជកម្មដោយគ្មានការអនុញ្ញាត។
-                    """)
+                        Text("responsibility_title")
+                            .font(.headline)
+                        Text("responsibility_content")
 
-                    Text("📸 ៣. មាតិកា និងសិទ្ធិបញ្ញា")
-                        .font(.headline)
-                    Text("""
-                    - រូបភាព របៀបធ្វើ និងមាតិកាផ្សេងៗក្នុងកម្មវិធីនេះគឺជាកម្មសិទ្ធិរបស់ Khmer Cooking Guide App។
-                    - ការចម្លង បែកចែក ឬប្រើប្រាស់ដោយគ្មានការអនុញ្ញាតត្រូវបានហាមឃាត់។
-                    """)
+                        Text("content_title")
+                            .font(.headline)
+                        Text("content_content")
 
-                    Text("🔄 ៤. ការផ្លាស់ប្តូរលក្ខខណ្ឌ")
-                        .font(.headline)
-                    Text("យើងមានសិទ្ធិកែប្រែ ឬបន្ថែមលក្ខខណ្ឌណាមួយនៅពេលណាមួយ ដោយមិនចាំបាច់ជូនដំណឹងជាមុន។ សូមពិនិត្យឡើងវិញជាប្រចាំ។")
+                        Text("modification_title")
+                            .font(.headline)
+                        Text("modification_content")
+                    }
+
+                    Group {
+                        Text("privacy_title")
+                            .font(.headline)
+                        Text("privacy_content")
+
+                        Text("law_title")
+                            .font(.headline)
+                        Text("law_content")
+                    }
+
+                    Divider()
+
+                    Text("agreement_note")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .padding(.top)
+
+                    Text("thank_you")
+                        .font(.body)
+                        .foregroundColor(.secondary)
                 }
-
-                Group {
-                    Text("🔒 ៥. ការការពារព័ត៌មានផ្ទាល់ខ្លួន")
-                        .font(.headline)
-                    Text("យើងខិតខំរក្សារព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នកឱ្យមានសុវត្ថិភាព និងមិនបង្ហាញអោយភាគីទីបី ដោយគ្មានការយល់ព្រមរបស់អ្នក។")
-
-                    Text("⚖️ ៦. ច្បាប់ដែលអនុវត្ត")
-                        .font(.headline)
-                    Text("លក្ខខណ្ឌទាំងនេះគឺស្ថិតក្រោមច្បាប់នៃព្រះរាជាណាចក្រកម្ពុជា។ ប្រសិនបើមានជម្លោះ យើងនឹងដោះស្រាយដោយផ្អែកលើច្បាប់នេះ។")
-                }
-
-                Divider()
-
-                Text("ដោយបន្តប្រើប្រាស់ Khmer Cooking Guide App នេះ អ្នកយល់ព្រមនឹងលក្ខខណ្ឌទាំងអស់ខាងលើ។")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .padding(.top)
-
-                Text("សូមអរគុណសម្រាប់ការជឿទុកចិត្ត និងការប្រើប្រាស់កម្មវិធីរបស់យើង។ 🍲🇰🇭")
-                    .font(.body)
-                    .foregroundColor(.secondary)
+                .padding()
             }
-            .padding()
+            .navigationTitle(Text("terms_title"))
+            .navigationBarTitleDisplayMode(.inline)
+
         }
-        .navigationTitle("លក្ខខណ្ឌ")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

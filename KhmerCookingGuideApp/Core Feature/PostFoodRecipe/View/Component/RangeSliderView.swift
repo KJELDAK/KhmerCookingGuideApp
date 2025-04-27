@@ -15,8 +15,8 @@ struct RangeSliderView: View {
     @Binding var requestDuration: Int
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Duration")
-                .font(.headline)
+            Text("_duration")
+                .customFontMediumLocalize(size: 16)
                 .foregroundColor(.black)
             
             

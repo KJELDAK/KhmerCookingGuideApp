@@ -90,6 +90,51 @@ struct CustomFontRobotoRegularModifier: ViewModifier {
             .font(.custom("Roboto-Regular", size: size))
     }
 }
+struct CustomFontKhmer: ViewModifier {
+    var size: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .font(.custom("KantumruyPro-Regular", size: size))
+    }
+}
+struct CustomFontKhmerMedium: ViewModifier {
+    var size: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .font(.custom("KantumruyPro-Medium", size: size))
+    }
+}
+struct CustomFontKhmerSemibold: ViewModifier {
+    var size: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .font(.custom("KantumruyPro-SemiBold", size: size))
+    }
+}
+struct CustomFontLocalization: ViewModifier {
+    var size: CGFloat
+    @Environment(\.locale) var local
+    func body(content: Content) -> some View {
+        content
+            .font(.custom(local.identifier == "km" ? "KantumruyPro-Regular" : "Roboto-Regular" , size: size))
+    }
+}
+struct CustomFontMediumLocalization: ViewModifier {
+    var size: CGFloat
+    @Environment(\.locale) var local
+    func body(content: Content) -> some View {
+        content
+            .font(.custom(local.identifier == "km" ? "KantumruyPro-Medium" : local.identifier == "en" ? "Roboto-Medium" : "NotoSansKR-Medium", size: size))
+    }
+}
+struct CustomFontSemiblodLocalization: ViewModifier {
+    var size: CGFloat
+    @Environment(\.locale) var local
+    func body(content: Content) -> some View {
+        content
+            .font(.custom(local.identifier == "km" ? "KantumruyPro-SemiBold" :  "Roboto-Medium" , size: size))
+    }
+}
 
 extension View {
     func customFont(size: CGFloat) -> some View {
@@ -110,15 +155,24 @@ extension View {
     func customFontRobotoMedium(size: CGFloat) -> some View {
         self.modifier(CustomFontRobotoMediumModifier(size: size))
     }
-//    func customFontLocalize(size: CGFloat) -> some View {
-//        self.modifier(CustomFontLocalization(size: size))
-//    }
-//    func customFontMediumLocalize(size: CGFloat) -> some View {
-//        self.modifier(CustomFontMediumLocalization(size: size))
-//    }
-//    func customFontSemiBoldLocalize(size: CGFloat) -> some View {
-//        self.modifier(CustomFontSemiblodLocalization(size: size))
-//    }
+    func customFontLocalize(size: CGFloat) -> some View {
+        self.modifier(CustomFontLocalization(size: size))
+    }
+    func customFontMediumLocalize(size: CGFloat) -> some View {
+        self.modifier(CustomFontMediumLocalization(size: size))
+    }
+    func customFontSemiBoldLocalize(size: CGFloat) -> some View {
+        self.modifier(CustomFontSemiblodLocalization(size: size))
+    }
+    func customFontKhmer(size: CGFloat) -> some View {
+        self.modifier(CustomFontKhmer(size: size))
+    }
+    func customFontKhmerMedium(size: CGFloat) -> some View {
+        self.modifier(CustomFontKhmerMedium(size: size))
+    }
+    func customFontKhmerSemiBold(size: CGFloat) -> some View {
+        self.modifier(CustomFontKhmerSemibold(size: size))
+    }
 //    func customFontBoldLocalize(size: CGFloat) -> some View {
 //        self.modifier(CustomFontBoldLocalization(size: size))
 //    }

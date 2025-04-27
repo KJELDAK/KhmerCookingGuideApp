@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 
 struct RecipeDetails: View {
-    @State var isLike: Bool = false
+    @Binding var isLike: Bool
     @State private var imageHeight: CGFloat = 270 // Default image height
     var id : Int
     private let screenHeight = UIScreen.main.bounds.height // Screen height
@@ -20,6 +20,7 @@ struct RecipeDetails: View {
     @State var fileName : String = ""
     @State var isRatingFormPresent: Bool = false
     @State var isSheetPresent: Bool = true
+    @State var isNavigateToAllRateAndFeedbackView : Bool = false
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         NavigationView {
@@ -52,18 +53,13 @@ struct RecipeDetails: View {
                                             
                                         }
                                     }.padding(8)
-                                    
                                 }
                                 .background(.white.opacity(0.3))
                                 .cornerRadius(14)
-                                
                                 .onAppear {
                                     print(image)
                                 } .padding(.bottom, -40)
-                                
                             }
-                            
-                            
                         }
                         .frame(height: imageHeight)
                     Spacer()
@@ -71,19 +67,29 @@ struct RecipeDetails: View {
                 .sheet(isPresented: $isSheetPresent) {
                     let sheetHeight = screenHeight - imageHeight - 79 // Calculate dynamic sheet height
                     NavigationStack {
-                           FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent)
-                               .navigationDestination(isPresented: $isRatingFormPresent) {
-                                   ReviewFormView(isPresented: $isRatingFormPresent, profile: "mhob1", userName: "reaksa",foodId: recipeViewModel.viewRecipeById?.id)
-                               }
-                       }
-                        .presentationDetents([.height(sheetHeight), .height(sheetHeight + 10)])
-                        .presentationBackground(.white)
-                        .presentationCornerRadius(20)
-                        .interactiveDismissDisabled()
-                        .presentationBackgroundInteraction(.enabled)
-                        .padding(.top)
+                        FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent,isNavigateToAllRateAndFeedbackView: $isNavigateToAllRateAndFeedbackView)
+                            .navigationDestination(isPresented: $isRatingFormPresent) {
+                                ReviewFormView(isPresented: $isRatingFormPresent, profile: "mhob1", userName: "reaksa",foodId: recipeViewModel.viewRecipeById?.id)
+                            }
+                            .padding(.top)
+                            .navigationDestination(isPresented: $isNavigateToAllRateAndFeedbackView) {
+                                AllRateAndFeedbackView(rateAndFeebackPayload: recipeViewModel.viewAllRateAndFeedBack)
+                                
+                                    .navigationBarBackButtonHidden()
+                                
+                            }
+                        
+                    }
+                    .presentationDetents([.height(sheetHeight), /*.height(sheetHeight + 10)]*/ /*.fraction(0.9),*/             // almost full screen
+                        .large])
+                    .presentationBackground(.white)
+                    .presentationCornerRadius(20)
+                    .interactiveDismissDisabled()
+                    .presentationBackgroundInteraction(.enabled)
+                    //                        .padding(.top)
                 }
-               
+                
+                
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -93,28 +99,18 @@ struct RecipeDetails: View {
                     }label: {
                         Image("backButton2")
                     }
-                    Image("backButton2")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    HeartButton(isLiked: $isLike)
+                    HeartButton2(
+                        isLiked: $isLike, // ideally you’d track this at view level
+                        foodId: id,
+                        itemType: "FOOD_RECIPE"
+                        
+                    )
                 }
             }
             .edgesIgnoringSafeArea(.all)
         }
-//        .fullScreenCover(isPresented: $isRatingFormPresent, content: {
-//            ReviewFormView(isPresented: $isRatingFormPresent, action: {
-//                print("heloo")
-//            }, profile: "mhobq", userName: "reaksa")
-//        })
-//        .navigationDestination(isPresented: $isRatingFormPresent, destination: {
-//            ReviewFormView(isPresented: $isRatingFormPresent, action: {
-//                print("heloo")
-//            }, profile: "mhobq", userName: "reaksa")
-//            .onChange(of: isRatingFormPresent) {
-//                isSheetPresent = false
-//                
-//            }
-//        })
         .onAppear{
             recipeViewModel.fetchRecipeById(id: id) { success, message in
                 print(message)
@@ -124,34 +120,52 @@ struct RecipeDetails: View {
                     fileName = recipeViewModel.viewRecipeById?.photo.first?.photo ?? ""
                 }
             }
+            recipeViewModel.getAllRateAndFeedback(foodId: id) { success, message in
+                print(message)
+            }
         }
     }
 }
-//
 struct FoodDetails : View{
     @State var isClicked: Bool = false
     @ObservedObject var recipeViewModel: RecipeViewModel
-    @State private var clickedIngredients: Set<Int> = [] // Track clicked ingredients by their ID
+    @State private var clickedIngredients: Set<Int> = []
     @Binding var isRatingFormPresent: Bool
+    @Binding var isNavigateToAllRateAndFeedbackView: Bool
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(recipeViewModel.viewRecipeById?.user.profileImage ?? "")"
         ScrollView{
             VStack(alignment: .leading, spacing: 10){
                 VStack(alignment: .leading){
+                    
                     Text(recipeViewModel.viewRecipeById?.name ?? "")
-                        .customFontRobotoBold(size: 17)
-                    Text(recipeViewModel.viewRecipeById?.createdAt ?? "")
-                        .customFontRobotoRegular(size: 10)
-                        .foregroundColor(.black.opacity(0.4))
+                        .customFontKhmerSemiBold(size: 17)
+                        .foregroundColor(Color(hex: "primary"))
+                    
+                    
+                    
+                    
                     HStack{
-                        Group{
-                            Text(recipeViewModel.viewRecipeById?.cuisineName ?? "")
-                            Image("dot")
-                            Text(String(recipeViewModel.viewRecipeById?.durationInMinutes ?? 0))
-                            Text("minutes")
+                        HStack{
+                            Group{
+                                Text(recipeViewModel.viewRecipeById?.cuisineName ?? "")
+                                Image("dot")
+                                Text(String(recipeViewModel.viewRecipeById?.durationInMinutes ?? 0))
+                                Text("minutes")
+                            }
+                            .customFontKhmerMedium(size: 16)
+                            .foregroundColor(Color(hex: "9FA5C0"))
+                            Spacer()
+                            
+                            Text(Settings.shared.formattedDate(from: recipeViewModel.viewRecipeById?.createdAt ?? "") )
+                            //                                    .customFontRobotoRegular(size: 10)
+                                .customFontKhmer(size: 10)
+                                .padding(.top, 2)
+                                .foregroundColor(.black.opacity(0.4))
                         }
-                        .customFontRobotoMedium(size: 17)
-                        .foregroundColor(Color(hex: "9FA5C0"))
+                        
+                        
+                        
                     }
                     HStack{
                         if recipeViewModel.viewRecipeById?.user.profileImage == "default.jpg"{
@@ -159,7 +173,7 @@ struct FoodDetails : View{
                                 .resizable()
                                 .frame(width: 32, height: 32)
                                 .cornerRadius(16)
-                               
+                            
                         }else{
                             KFImage(URL(string: imageUrl))
                                 .resizable()
@@ -170,18 +184,29 @@ struct FoodDetails : View{
                             .customFontRobotoBold(size: 17)
                     }
                     VStack(alignment: .leading, spacing: 10){
-                        Text("Decription")
-                            .customFontRobotoBold(size: 16)
-                        Text(recipeViewModel.viewRecipeById?.description ?? "")
-                            .customFont(size: 16)
-                            .opacity(0.6)
-                            .lineSpacing(10)
+                        Text("decription")
+                            .customFontSemiBoldLocalize(size: 16)
+                        if LanguageDetector.shared.isKhmerText(recipeViewModel.viewRecipeById?.description ?? "") {
+                            Text(recipeViewModel.viewRecipeById?.description ?? "")
+                                .customFontKhmer(size: 16)
+                                .opacity(0.6)
+                                .lineSpacing(6)
+                            
+                        }else{
+                            Text(recipeViewModel.viewRecipeById?.description ?? "")
+                                .customFontRobotoRegular(size: 16)
+                                .opacity(0.6)
+                                .lineSpacing(6)
+                            
+                        }
+                        
                     }
                 }.padding(.horizontal)
                 Divider()
                 VStack(alignment: .leading){
-                    Text("Ingredients")
-                        .customFontRobotoBold(size: 17)
+                    Text("ingredients")
+                    //                        .customFontRobotoBold(size: 17)
+                        .customFontSemiBoldLocalize(size: 16)
                     ForEach(recipeViewModel.viewRecipeById?.ingredients ?? []){ ingredient in
                         HStack {
                             Button {
@@ -195,12 +220,16 @@ struct FoodDetails : View{
                                 Image(clickedIngredients.contains(ingredient.id) ? "doneCircle" : "checkCircle")
                                     .resizable()
                                     .frame(width: 24, height: 24)
+                            }.opacity(0.6)
+                            //                            Text(ingredient.quantity.truncatingRemainder(dividingBy: 1) == 0 ? String(format : "%.0f", ingredient.quantity) : String(format : "%.1f", ingredient.quantity))
+                            
+                            Group{
+                                Text(ingredient.quantity)
+                                Text(ingredient.name)
                             }
-//                            Text(ingredient.quantity.truncatingRemainder(dividingBy: 1) == 0 ? String(format : "%.0f", ingredient.quantity) : String(format : "%.1f", ingredient.quantity))
-                            Text(ingredient.quantity)
-                                .customFontMedium(size: 15)
-                            Text(ingredient.name)
-                                .customFontMedium(size: 15)
+                            .opacity(0.6)
+                            .customFontKhmer(size: 17)
+                            
                         }
                         
                     }
@@ -210,9 +239,8 @@ struct FoodDetails : View{
                 Divider()
                 ForEach(recipeViewModel.viewRecipeById?.cookingSteps ?? []){ cookingStep in
                     VStack(alignment: .leading){
-                        Text("Steps")
-                            .customFontRobotoBold(size: 17)
-                            
+                        Text("step")
+                            .customFontSemiBoldLocalize(size: 16)
                         HStack(alignment:.top){
                             Circle()
                                 .frame(width: 24, height: 24) // Adjust the size of the circle
@@ -222,29 +250,24 @@ struct FoodDetails : View{
                                         .foregroundColor(.white)
                                         .customFontRobotoBold(size: 12)
                                 }
-//                                .padding(.top,-35)
                             Text(cookingStep.description)
-                            
+                                .customFontKhmer(size: 17)
+                                .lineSpacing(6)
+                                .opacity(0.6)
                         }
-                        
-                        
                     }
                     .padding(.horizontal)
-                    
                     Divider()
-                    
                 }
-                RatingsAndReviewView(averageRating: recipeViewModel.viewRecipeById?.averageRating ?? 0, reviewCount: recipeViewModel.viewRecipeById?.totalRaters ?? 0)
+                RatingsAndReviewView(averageRating: recipeViewModel.viewRecipeById?.averageRating ?? 0, reviewCount: recipeViewModel.viewRecipeById?.totalRaters ?? 0, onTappAction: {
+                    isNavigateToAllRateAndFeedbackView = true
+                })
                 Spacer()
                 ReviewSectionView {
                     isRatingFormPresent = true
                     print("hello")
                 }
-//                ButtonComponent(action: {
-//                    isRatingFormPresent = true
-//                }, content: "bsdjvjk")
             }.frame(maxWidth: .infinity, alignment: .leading)
         }
-        //            .padding()
     }
 }

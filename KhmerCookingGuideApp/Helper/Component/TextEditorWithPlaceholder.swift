@@ -17,8 +17,8 @@ struct TextEditorWithPlaceholder: View {
                    VStack {
                        Text(placeholder)
 //                           .customFont(size: 16)
-                            .padding(.top, 10)
-//                            .padding(.leading, 6)
+                           .padding( [.top],10)
+
 //                            .opacity(0.9)
                             
                         Spacer()
@@ -27,11 +27,17 @@ struct TextEditorWithPlaceholder: View {
                 
                 VStack {
                     TextEditor(text: $text)
-                        .padding(.vertical,10)
-                        .customFont(size: 16)
+                        .padding([.top,.trailing,.bottom],8)
+                        .padding(.leading, -4)
+                        .padding(.trailing, 4 )
+                        .font(.custom("KantumruyPro-Regular", size: 16))
+
                         .foregroundColor(Color(hex: isTextBlack ? "000000": "737373"))
                         .frame(minHeight: 100, maxHeight: .infinity)
                         .opacity(text.isEmpty ? 0.85 : 1)
+                        .lineSpacing(8) // Add space between lines
+                          .kerning(1.5)   // Add space between characters
+                        
                         
                     Spacer()
                 }

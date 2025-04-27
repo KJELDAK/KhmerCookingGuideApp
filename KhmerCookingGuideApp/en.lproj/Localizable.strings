@@ -6,3 +6,61 @@
   
 */
 "Hello" = "Hello";
+//MARK: - HOME Screeen
+"what_would_you_like" = "What would you like";
+"to_eat_today?" = "to eat today ?";
+"category" = "Category";
+"popular_dishes" = "Popular Dishes";
+"view_all" = "View all";
+
+//MARK: - recipe details
+
+"ingredients" = "Ingredients";
+"decription" = "Decription";
+"step" = "steps";
+
+//MARK: - Profile
+"my_profile" = "My Profile";
+"favorites" = "Favorites";
+"terms_and_conditions" = "Terms & Conditions";
+"application_language" = "Application Language";
+"logout" = "Logout";
+"edit_profile" = "Edit Profile";
+"_role" = "Role:";
+"_language" = "Language";
+"please_select_a_display_language" = "Please select a display language";
+"_english" = "English";
+"_khmer" = "Khmer";
+"_select" = "Select";
+"ratings_and_review" = "Ratings & Review";
+"tap_to_rate" = "Tap to rate";
+
+//MARK: - Term And Condiction
+
+"terms_title" = "📄 Terms & Conditions";
+"terms_intro" = "Please read carefully before using the Khmer Cooking Guide App";
+
+"purpose_title" = "🎯 1. Purpose of the App";
+"purpose_content" = "This app is designed to provide Khmer cooking instructions and recipes for personal use only.";
+
+"responsibility_title" = "👤 2. User Responsibilities";
+"responsibility_content" = "- Use the app respectfully. Do not share content that violates laws or others' rights.\n- Do not use the app for commercial purposes without permission.";
+
+"content_title" = "📸 3. Content & Intellectual Property";
+"content_content" = "- All images, methods, and other materials belong to Khmer Cooking Guide App.\n- Copying, distributing, or reusing content without permission is prohibited.";
+
+"modification_title" = "🔄 4. Changes to Terms";
+"modification_content" = "We may change or add terms at any time without notice. Please review periodically.";
+
+"privacy_title" = "🔒 5. Privacy Protection";
+"privacy_content" = "We strive to keep your personal information secure and will not share it without consent.";
+
+"law_title" = "⚖️ 6. Governing Law";
+"law_content" = "These terms are governed by the laws of the Kingdom of Cambodia.";
+
+"agreement_note" = "By continuing to use the Khmer Cooking Guide App, you agree to all the above terms.";
+"thank_you" = "Thank you for your trust and for using our app. 🍲🇰🇭";
+"food_name" = "Food Name";
+"_duration" = "Duration";
+"_level" = "level";
+

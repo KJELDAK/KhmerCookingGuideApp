@@ -14,7 +14,7 @@ struct RecipeView: View {
     @StateObject var homeViewModel = HomeViewModel()
     @StateObject var recipeViewModel = RecipeViewModel()
     @State var cuisineId : Int = 999
-    @State var isSortByRating: Bool = true
+    @State var isSortByRating: Bool = false
     var body: some View {
         
         ZStack{
@@ -37,6 +37,14 @@ struct RecipeView: View {
                             .presentationDetents([.height(400), .height(405)])
                             .presentationBackground(.white)
                             .presentationCornerRadius(20)
+                    }
+                    .onChange(of: selectedType) {
+                        if selectedType == "All"{
+                            isSortByRating = false
+                        }
+                        else {
+                            isSortByRating = true
+                        }
                     }
                     .accentColor(.black)
                     SearchBarComponent(searchText: $searchText)
@@ -72,20 +80,25 @@ struct RecipeView: View {
                         else{
                             ScrollView{
                                 let sortedRecipes = isSortByRating
-                                ? searchAllFoodRecipes.sorted { ($0.totalRaters ?? 0) > ($1.totalRaters ?? 0) }
+                                ? searchAllFoodRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
                                 : searchAllFoodRecipes
-                                ForEach(/*homeViewModel.foodRecipes*/ sortedRecipes){ foodRecipe in
-                                    // Ensure you only use the first photo from the photo array
-                                    if let firstPhoto = foodRecipe.photo.first {
+                                ForEach(sortedRecipes) { recipe in
+                                    if let index = homeViewModel.foodRecipes.firstIndex(where: { $0.id == recipe.id }),
+                                       let firstPhoto = recipe.photo.first {
+
                                         NavigationLink(
-                                            destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)
+                                            destination: RecipeDetails(isLike:  $homeViewModel.foodRecipes[index].isFavorite, id: recipe.id).navigationBarHidden(true)
                                         ) {
-                                            FoodCardComponent(isFavorite: foodRecipe.isFavorite, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
-                                                .frame(maxWidth: .infinity)
+                                            FoodCardComponent2(id: recipe.id,
+                                                isFavorite: $homeViewModel.foodRecipes[index].isFavorite, // ✅ Bind it!
+                                                fileName: firstPhoto.photo,
+                                                name: recipe.name,
+                                                               description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level
+                                            )
+                                            .frame(maxWidth: .infinity)
                                         }
                                     }
-
-                            }
+                                }
                             }
                             .refreshable {
                                 print("refresh")
@@ -112,20 +125,45 @@ struct RecipeView: View {
                                 }.listStyle(PlainListStyle())
                         }
                         else{
-                            ScrollView {
-                                let sortedRecipes = isSortByRating
-                                    ? searchFoodRecipesByCuisineId.sorted { ($0.totalRaters ?? 0) > ($1.totalRaters ?? 0) }
-                                    : searchFoodRecipesByCuisineId
 
-                                ForEach(sortedRecipes) { foodRecipe in
-                                    if let firstPhoto = foodRecipe.photo.first {
-                                        NavigationLink(destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)) {
-                                            FoodCardComponent(isFavorite: foodRecipe.isFavorite, fileName: firstPhoto.photo, name: foodRecipe.name, description: foodRecipe.description)
-                                                .frame(maxWidth: .infinity)
+                            ScrollView {
+//                                let sortedRecipes = isSortByRating
+//                                ? recipeViewModel.viewAllRecipeByCuisineId.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
+//                                    : recipeViewModel.viewAllRecipeByCuisineId
+                                let filteredRecipes = searchFoodRecipesByCuisineId
+                                let sortedRecipes = isSortByRating
+                                    ? filteredRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
+                                    : filteredRecipes
+
+
+                                ForEach(sortedRecipes) { recipe in
+                                    if let index = recipeViewModel.viewAllRecipeByCuisineId.firstIndex(where: { $0.id == recipe.id }),
+                                       let firstPhoto = recipe.photo.first {
+
+                                        let binding = Binding<Bool>(
+                                            get: { recipeViewModel.viewAllRecipeByCuisineId[index].isFavorite },
+                                            set: { newValue in
+                                                recipeViewModel.viewAllRecipeByCuisineId[index].isFavorite = newValue
+                                            }
+                                        )
+
+                                        NavigationLink(
+                                            destination: RecipeDetails(isLike: binding, id: recipe.id).navigationBarHidden(true)
+                                        ) {
+                                            FoodCardComponent2(
+                                                id: recipe.id,
+                                                isFavorite: binding,
+                                                fileName: firstPhoto.photo,
+                                                name: recipe.name,
+                                                description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level
+                                            )
+                                            .frame(maxWidth: .infinity)
                                         }
                                     }
                                 }
                             }
+
+
 
 
                             .refreshable {
@@ -147,6 +185,7 @@ struct RecipeView: View {
                     print("get data ban hx")
                 }
             }
+           
             
         }
     }
@@ -154,7 +193,8 @@ struct RecipeView: View {
         guard !searchText.isEmpty else { return recipeViewModel.viewAllRecipeByCuisineId }
         
         return recipeViewModel.viewAllRecipeByCuisineId.filter { recipe in
-            recipe.description.lowercased().contains(searchText.lowercased())
+            recipe.description.lowercased().contains(searchText.lowercased()) ||
+            recipe.name.lowercased().contains(searchText.lowercased())
         }
     }
     var searchAllFoodRecipes: [FoodRecipe] {

@@ -14,6 +14,7 @@ struct FoodCardComponent: View {
     var fileName: String
     var name: String
     var description : String
+    var level : String
     
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
@@ -40,7 +41,7 @@ struct FoodCardComponent: View {
                     .lineLimit(1)
                 HStack {
                     Text("Level").foregroundColor(Color(hex: "Primary"))
-                    Text("Easy").foregroundColor(.black.opacity(0.4))
+                    Text(level).foregroundColor(.black.opacity(0.4))
                 }
                 .customFont(size: 10)
             }
@@ -82,6 +83,8 @@ struct FoodCardComponent2: View {
     var fileName: String
     var name: String
     var description : String
+    var rating: Double
+    var level : String
     
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
@@ -98,17 +101,28 @@ struct FoodCardComponent2: View {
             
             // Text Section
             VStack(alignment: .leading, spacing: 6) {
-                Text(name)
-                    .customFontMedium(size: 14)
-                    .foregroundColor(Color.black)
-                    .lineLimit(1)
-                Text(description)
-                    .customFont(size: 12)
-                    .foregroundColor(.black.opacity(0.4))
-                    .lineLimit(1)
+                if LanguageDetector.shared.isKhmerText(name){
+                    Text(name)
+                        .customFontKhmer(size: 14)
+                        .foregroundColor(Color.black)
+                        .lineLimit(1)
+                    Text(description)
+                        .customFontKhmer(size: 12)
+                        .foregroundColor(.black.opacity(0.4))
+                        .lineLimit(1)
+                }else{
+                    Text(name)
+                        .customFontRobotoRegular(size: 14)
+                        .foregroundColor(Color.black)
+                        .lineLimit(1)
+                    Text(description)
+                        .customFontRobotoRegular(size: 12)
+                        .foregroundColor(.black.opacity(0.4))
+                        .lineLimit(1)
+                }
                 HStack {
                     Text("Level").foregroundColor(Color(hex: "Primary"))
-                    Text("Easy").foregroundColor(.black.opacity(0.4))
+                    Text(level).foregroundColor(.black.opacity(0.4))
                 }
                 .customFont(size: 10)
             }
@@ -132,7 +146,7 @@ struct FoodCardComponent2: View {
         }
         
         .overlay(alignment: .topLeading) {
-            TotalStarRating()
+            TotalStarRating(rating: rating)
                 .padding()
         }
         .onAppear{

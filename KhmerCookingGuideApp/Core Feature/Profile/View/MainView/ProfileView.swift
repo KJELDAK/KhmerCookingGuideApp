@@ -8,10 +8,14 @@
 import SwiftUI
 import Kingfisher
 struct ProfileView: View {
+    @StateObject var authenticationViewModel = AuthenticationViewModel() // <-- Add this
     @Binding var selectedTab: Int
     @StateObject var profileViewModel = ProfileViewModel()
     @State var isNavigateToMyProfileView: Bool = false
     @State var isLogout: Bool = false
+    @State var isShowLanguagePicker: Bool = false
+    @State var isNavigateToTermAndConditionView: Bool = false
+    @EnvironmentObject var languageManager: LanguageManager
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         NavigationView {
@@ -59,7 +63,7 @@ struct ProfileView: View {
                         .fontWeight(.semibold)
                     
                     HStack{
-                        Text("Role:")
+                        Text("_role")
                         Text(profileViewModel.userInfo?.payload.role == "ROLE_ADMIN" ? "Admin" : "User")
                     }
                         .font(.subheadline)
@@ -69,7 +73,7 @@ struct ProfileView: View {
 
                 ButtonComponent(action: {
                     
-                }, content: "Edit Profile")
+                }, content: "edit_profile")
                 .padding(.horizontal)
 
                 // Settings List
@@ -77,33 +81,44 @@ struct ProfileView: View {
                     Button{
                         isNavigateToMyProfileView = true
                     }label: {
-                        ProfileOptionRow(icon: "person", title: "My Profile")
+                        ProfileOptionRow(icon: "person", title: "my_profile")
                     }
                    
                     Button{
                         selectedTab = 3
                     }label: {
-                        ProfileOptionRow(icon: "bookmark", title: "Favorites")
+                        ProfileOptionRow(icon: "bookmark", title: "favorites")
                     }
                    
-                    ProfileOptionRow(icon: "doc.text", title: "Terms & Conditions")
                     Button{
-                        
+                        isNavigateToTermAndConditionView = true
                     }label: {
-                        ProfileOptionRow(icon: "translate", title: "Application Language")
+                        ProfileOptionRow(icon: "doc.text", title: "terms_and_conditions")
+                    }
+                   
+                    Button{
+                        isShowLanguagePicker = true
+                    }label: {
+                        ProfileOptionRow(icon: "translate", title: "application_language")
                     }
 
                     Button{
+                        authenticationViewModel.logout()
                         isLogout = true
                         
                     }label: {
-                        ProfileOptionRow(icon: "arrow.left.circle.fill", title: "Logout")
+                        ProfileOptionRow(icon: "arrow.left.circle.fill", title: "logout")
                     }
                     
                 }
                 .fullScreenCover(isPresented: $isLogout, content: {
                     AuthenticationView()
                 })
+                .sheet(isPresented: $isShowLanguagePicker) {
+                    LanguageSelectionView(showLanguageSheet: $isShowLanguagePicker)
+                        .environmentObject(languageManager) // passed from App level
+                }
+
                 .foregroundColor(.black)
                 .background(Color.white)
                 .cornerRadius(10)
@@ -112,7 +127,10 @@ struct ProfileView: View {
                 
                 Spacer()
                 
-            }            
+            }
+            .navigationDestination(isPresented: $isNavigateToTermAndConditionView, destination: {
+                TermsAndConditionsView().navigationBarBackButtonHidden(true)
+            })
             .padding(.top)
 //            .background(Color(UIColor.systemGroupedBackground))
             .onAppear {
@@ -130,7 +148,7 @@ struct ProfileView: View {
 // A reusable row for the options
 struct ProfileOptionRow: View {
     var icon: String
-    var title: String
+    var title: LocalizedStringKey
     
     var body: some View {
         HStack(spacing: 15) {
@@ -138,7 +156,7 @@ struct ProfileOptionRow: View {
                 .foregroundColor(Color(hex: "primary"))
                 .frame(width: 25, height: 25)
             Text(title)
-                .font(.body)
+                .customFontLocalize(size: 16)
             Spacer()
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray)
@@ -147,10 +165,33 @@ struct ProfileOptionRow: View {
         .background(Color.white)
     }
 }
+class LanguageManager: ObservableObject {
+    @Published var lang: String {
+        didSet {
+            UserDefaults.standard.set(lang, forKey: "lang")
+            // Trigger a refresh on language change
+                      
+        }
+    }
 
-// Preview
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView(selectedTab: .constant(0))
+    var displayName: String {
+        switch lang {
+        case "km": return "_khmer"
+        case "en": return "_english"
+        default: return "_english" // Default language
+        }
+    }
+
+    init() {
+        self.lang = UserDefaults.standard.string(forKey: "lang") ?? "en"
+    }
+
+    func setLanguage(displayName: String) {
+        // Set language based on full name (case insensitive)
+        switch displayName.lowercased() {
+        case "_khmer": lang = "km"
+        default: lang = "en" // Default language
+        }
     }
 }
+

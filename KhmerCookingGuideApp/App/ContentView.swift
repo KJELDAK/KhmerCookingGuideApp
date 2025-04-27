@@ -173,7 +173,7 @@ struct ContentView: View {
                                 .tag(2)
                             //MARK: - fourth Tab
                             VStack{
-                                FavoritesView()
+                                FavoritesView(selectedTab: $selectedTab)
                             }
                                 .tag(3)
                                 .tabItem {
@@ -232,7 +232,7 @@ struct ContentView: View {
 //                                .tag(2)
                             //MARK: - fourth Tab
                             VStack{
-                                FavoritesView()
+                                FavoritesView(selectedTab: $selectedTab)
                             }
                                 .tag(3)
                                 .tabItem {

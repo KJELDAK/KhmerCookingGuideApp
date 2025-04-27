@@ -1,3 +1,11 @@
+//
+//  LanguageDetector.swift
+//  KhmerCookingGuideApp
+//
+//  Created by Sok Reaksa on 21/4/25.
+//
+
+
 final class LanguageDetector {
     static let shared = LanguageDetector()
 

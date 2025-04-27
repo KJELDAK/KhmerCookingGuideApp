@@ -9,14 +9,15 @@ import SwiftUI
 
 struct ButtonComponent: View {
     var action: () -> ()
-    var content: String
+    var content: LocalizedStringKey
     
     var body: some View {
         Button(action: {
             action()
         }) {
             Text(content)
-                .customFontBold(size: 16)
+//                .customFontBold(size: 16)
+                .customFontSemiBoldLocalize(size: 16)
                
                 .frame(maxWidth: .infinity)
         }

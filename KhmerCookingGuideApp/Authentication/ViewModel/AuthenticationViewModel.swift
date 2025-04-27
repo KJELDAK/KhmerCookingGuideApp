@@ -273,6 +273,26 @@ class AuthenticationViewModel: ObservableObject {
                 
             }
     }
+    func autoLogin(completion: @escaping (Bool, String?) -> Void) {
+        if let savedEmail = UserDefaults.standard.string(forKey: "userId"),
+           let savedPassword = UserDefaults.standard.string(forKey: "password") {
+            
+            loginUser(email: savedEmail, password: savedPassword) { success, message in
+                completion(success, message)
+            }
+        } else {
+            completion(false, "No saved credentials")
+        }
+    }
+    func logout() {
+        UserDefaults.standard.removeObject(forKey: "userId")
+        UserDefaults.standard.removeObject(forKey: "password")
+        HeaderToken.shared.token = ""
+        HeaderToken.shared.role = ""
+        isAuthenticated = false
+    }
+
+
     
         
 

@@ -16,8 +16,8 @@ struct ReviewSectionView: View {
             
             // Tap to Rate Section
             VStack(alignment: .leading, spacing: 8) {
-                Text("Tap to Rate")
-                    .font(.system(size: 16, weight: .medium))
+                Text("tap_to_rate")
+                    .customFontSemiBoldLocalize(size: 16)
                     .foregroundColor(.gray)
                 
                 HStack(spacing: 4) {

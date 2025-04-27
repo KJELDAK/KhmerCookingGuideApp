@@ -8,32 +8,45 @@
 import SwiftUI
 struct HomeScreenView : View {
     @StateObject var homeViewModel = HomeViewModel()
+    @EnvironmentObject var languageManager: LanguageManager
     @Binding var selectedTab: Int
     var body: some View {
         VStack(alignment: .leading,spacing: 16){
-            Group{
-                Text("What would you like ")
-                Text("to eat today ?")
-                    .padding(.top,-10)
+            HStack{
+                VStack(alignment: .leading){
+                    Group{
+                        Text("what_would_you_like")
+                        Text("to_eat_today?")
+                            .padding(.top,-10)
+                    } .customFontSemiBoldLocalize(size: 24)
+                }
+                Spacer()
+                Image("logo")
+                    .resizable()
+                    .frame(width: 86, height: 48)
+                    .scaledToFit()
             }
-            .customFontRobotoMedium(size: 24)
+//            .customFontRobotoMedium(size: 24)
+           
             SlideShowComponent()
-//                .padding(.horizontal, -16)
-            Text("Category")
-                .customFontRobotoMedium(size: 16)
+            Text("category")
+                .customFontSemiBoldLocalize(size: 16)
+//                .customFontRobotoMedium(size: 16)
             CategoryView(homeViewModel: homeViewModel)
             VStack{
                 HStack{
-                    Text("Popular Dishes")
-                        .customFontRobotoMedium(size: 16)
+                    Text("popular_dishes")
+//                        .customFontRobotoMedium(size: 16)
+                        .customFontSemiBoldLocalize(size: 16)
                     Spacer()
                     Button{
                         selectedTab = 1
                     }label: {
                         HStack{
-                            Text("View all")
+                            Text("view_all")
                                 .foregroundColor(Color(hex: "FF0000"))
-                                .customFontRobotoMedium(size: 16)
+                                .customFontSemiBoldLocalize(size: 16)
+//                                .customFontRobotoMedium(size: 16)
                             Image("arrow")
                         }
                     }
@@ -60,6 +73,3 @@ struct HomeScreenView : View {
             }
     }
 }
-//#Preview {
-//    HomeScreenView()
-//}
