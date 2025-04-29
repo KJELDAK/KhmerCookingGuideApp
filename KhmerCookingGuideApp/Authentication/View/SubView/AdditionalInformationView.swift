@@ -40,15 +40,21 @@ struct AdditionalInformationView: View {
                         GenderPickerComponent(placeHolder: .constant("Gender"),  image: .constant("gender"), requestGender: $gender)
                         ButtonComponent(action: {
                             print(gender, dateOfBirth, username)
-                            authenticationViewModel.saveUserInfo(userName: username, dateOfBirth: dateOfBirth, gender: gender) { sussess, message in
-                                messageFromAPI = message
-                                if sussess{
-                                    isSaveUserInfoSuccess = true
+                       
+                            if gender.isEmpty || dateOfBirth.isEmpty || username.isEmpty{
+                                isSaveUserInfoFailed = true
+                                messageFromAPI = "Please fill all information"
+                            }else{
+                                authenticationViewModel.saveUserInfo(userName: username, dateOfBirth: dateOfBirth, gender: gender) { sussess, message in
+                                    messageFromAPI = message
+                                    if sussess{
+                                        isSaveUserInfoSuccess = true
+                                    }
+                                    else {
+                                        isSaveUserInfoFailed = true
+                                    }
+                                
                                 }
-                                else {
-                                    isSaveUserInfoFailed = true
-                                }
-                            
                             }
                         }, content: "Save").padding(.top)
                         

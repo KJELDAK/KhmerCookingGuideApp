@@ -16,6 +16,7 @@ struct ProfileView: View {
     @State var isShowLanguagePicker: Bool = false
     @State var isNavigateToTermAndConditionView: Bool = false
     @EnvironmentObject var languageManager: LanguageManager
+    @State var isNavigateToEditProfileView : Bool = false
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         NavigationView {
@@ -24,14 +25,9 @@ struct ProfileView: View {
                 VStack(spacing: 10) {
                     // Profile Image
                     ZStack {
-//                        Circle()
-//                            .fill(Color.gray.opacity(0.3))
-//                            .frame(width: 100, height: 100)
                         if profileViewModel.userInfo?.payload.profileImage != "default.jpg"{
                          
-                            
                             KFImage(URL(string: imageUrl + "\(profileViewModel.userInfo?.payload.profileImage ?? "")"))
-                          /*  Image(systemName: "person.circle.fill")*/ // Replace with actual image
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 100, height: 100)
@@ -72,7 +68,7 @@ struct ProfileView: View {
                 
 
                 ButtonComponent(action: {
-                    
+                    isNavigateToEditProfileView = true
                 }, content: "edit_profile")
                 .padding(.horizontal)
 
@@ -142,6 +138,10 @@ struct ProfileView: View {
         .navigationDestination(isPresented: $isNavigateToMyProfileView, destination: {
             MyProfileView(profileViewModel: profileViewModel).navigationBarBackButtonHidden(true)
         })
+        .navigationDestination(isPresented: $isNavigateToEditProfileView) {
+            EditProfileView(profileViewModel: profileViewModel)
+                .navigationBarBackButtonHidden(true)
+        }
     }
 }
 

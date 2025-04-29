@@ -4,7 +4,7 @@
 //
 //  Created by Sok Reaksa on 9/12/24.
 //
-//import SwiftUI
+import SwiftUI
 //struct SplashScreen: View {
 //    @State private var isActive = false
 //
@@ -39,47 +39,48 @@
 //        }
 //    }
 //}
-import SwiftUI
-
 struct SplashScreen: View {
     @State private var isActive = false
-    @State private var isLoggedIn = false // <-- NEW
+    @State private var isLoggedIn = false
     @StateObject var authenticationViewModel = AuthenticationViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
 
     var body: some View {
-        ZStack {
-            if isActive {
-                if isLoggedIn {
-                    ContentView() // Go straight to Home
-                } else {
-                    AuthenticationView()
-                }
-            } else {
-                VStack {
-                    Image("logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 180, height: 180)
-                }
-            }
-        }
-        .onAppear {
-            authenticationViewModel.autoLogin { success, message in
-                if success {
-                    self.isLoggedIn = true
-                    profileViewModel.getUserInfo { success, message in
-                        print("User info loaded after auto-login")
+        NavigationStack {
+            ZStack {
+                if isActive {
+                    if isLoggedIn {
+                        ContentView()
+                    } else {
+                        AuthenticationView()
                     }
                 } else {
-                    self.isLoggedIn = false
-                    print("Auto-login failed: \(message ?? "")")
+                    VStack {
+                        Image("logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 180, height: 180)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white)
+                    .ignoresSafeArea()
                 }
-                
-                // Show the next screen after splash delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                    withAnimation {
-                        isActive = true
+            }
+            .onAppear {
+                authenticationViewModel.autoLogin { success, message in
+                    if success {
+                        self.isLoggedIn = true
+                        profileViewModel.getUserInfo { success, message in
+                            print("User info loaded after auto-login")
+                        }
+                    } else {
+                        self.isLoggedIn = false
+                        print("Auto-login failed: \(message ?? "")")
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                        withAnimation {
+                            isActive = true
+                        }
                     }
                 }
             }
@@ -87,6 +88,3 @@ struct SplashScreen: View {
     }
 }
 
-#Preview {
-    SplashScreen()
-}

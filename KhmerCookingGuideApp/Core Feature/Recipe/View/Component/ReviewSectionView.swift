@@ -10,7 +10,10 @@ import SwiftUI
 struct ReviewSectionView: View {
     @State private var selectedRating: Int = 0 // Default rating
     var writingReviewButton: () -> Void
-    var totalStarRating: Int = 0
+    var totalStarRating: Int 
+    var userProfile : String
+    var userName : String
+    var reviewText : String
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             
@@ -35,9 +38,9 @@ struct ReviewSectionView: View {
             
             // Review Card Section
             ReviewCardView(
-                userProfile: "mhob1",
-                userName: "Sok Reaksa",
-                reviewText: "Your recipe has been uploaded, you can see it on your profile. Your recipe has been uploaded, you can see it on your profile. Your recipe has been uploaded, you can see it on your profile.",
+                userProfile: userProfile,
+                userName: userName,
+                reviewText: reviewText,
                 rating: totalStarRating
             )
             
@@ -64,9 +67,3 @@ struct ReviewSectionView: View {
 }
 
 
-struct ReviewSectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReviewSectionView(writingReviewButton: {})
-            .previewLayout(.sizeThatFits)
-    }
-}

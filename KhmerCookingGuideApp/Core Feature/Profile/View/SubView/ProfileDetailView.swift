@@ -46,25 +46,6 @@ struct MyProfileView: View {
                         )
                         .offset(x: 35, y: 35)
                 }
-    //            HStack {
-    //                Button(action: {
-    //                    // Action for back button
-    //                }) {
-    //                    Image(systemName: "chevron.left")
-    //                        .font(.title2)
-    //                        .foregroundColor(.black)
-    //                }
-    //                Spacer()
-    //                Text("My Profile")
-    //                    .font(.headline)
-    //                    .foregroundColor(.black)
-    //                Spacer()
-    //                // Placeholder for symmetry, or can add another button if needed
-    //                Image(systemName: "chevron.left")
-    //                    .font(.title2)
-    //                    .opacity(0) // Hidden for alignment
-    //            }
-    //            .padding(.horizontal)
                     VStack(alignment: .leading, spacing: 16) {
                         ProfileField(title: "Full Name", value: profileViewModel.userInfo?.payload.fullName ?? "")
                         ProfileField(title: "Email Address", value: profileViewModel.userInfo?.payload.email ?? "")

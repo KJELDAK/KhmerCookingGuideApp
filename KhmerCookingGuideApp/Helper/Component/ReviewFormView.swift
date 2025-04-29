@@ -16,81 +16,101 @@ struct ReviewFormView: View {
     @State var isShowSuccesAlert: Bool = false
     @State var isShowFaildAlert: Bool = false
     @State var messageFromServer: String = ""
-    
-//     var action: () -> Void
+    @Environment(\.dismiss) var dismiss
+    //     var action: () -> Void
     var profile: String
     var userName: String
     var foodId : Int?
     @State private var showPopup: Bool = false // For animation
-
+    
     var body: some View {
-        ZStack {
-            // Dimmed Background - Tap outside to dismiss
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    dismissPopup()
-                }
-                .opacity(showPopup ? 1 : 0) // Fade-in animation
-            
-            // Review Form with Scale and Opacity Animation
-            VStack(spacing: 16) {
-                // Profile Section
-                HStack {
-                    Image(profile) // Replace with actual image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                    
-                    VStack(alignment: .leading) {
-                        Text(userName)
-                            .font(.headline)
-                            .foregroundColor(.black)
+        NavigationView{
+            ZStack {
+                // Dimmed Background - Tap outside to dismiss
+                Color.black.opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        dismissPopup()
+                    }
+                    .opacity(showPopup ? 1 : 0) // Fade-in animation
+                
+                // Review Form with Scale and Opacity Animation
+                VStack(spacing: 16) {
+                    // Profile Section
+                    HStack {
+                        Image(profile) // Replace with actual image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
                         
-                        StarRatingView(rating: $rating) // Interactive stars
+                        VStack(alignment: .leading) {
+                            Text(userName)
+                                .font(.headline)
+                                .foregroundColor(.black)
+                            
+                            StarRatingView(rating: $rating) // Interactive stars
+                        }
+                        
+                        Spacer()
                     }
                     
+                    // Review Input
+                    TextEditor(text: $reviewText)
+                        .frame(height: 100)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
+                    // Buttons
+                    HStack {
+                        BackButtonComponent(action: {
+                            dismissPopup()
+                        }, content: "Cancel")
+                        ButtonComponent(action: {
+                            recipeViewModel.postRateAndFeedback(foodId: foodId!, ratingValue: String(rating), commentText: reviewText) { isSuccess, message in
+                                messageFromServer = message
+                                if isSuccess{
+                                    isShowSuccesAlert = true
+                                }
+                                else{
+                                    isShowFaildAlert = true
+                                    print("error")
+                                }
+                            }
+                        }, content: "Post")
+                        .disabled(reviewText.isEmpty)
+                        .opacity(reviewText.isEmpty ? 0.5 : 1)
+                    }
                     Spacer()
+                    
                 }
-                
-                // Review Input
-                TextEditor(text: $reviewText)
-                    .frame(height: 100)
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                
-                // Buttons
-                HStack {
-                    BackButtonComponent(action: {
-                        dismissPopup()
-                    }, content: "Cancel")
-                    ButtonComponent(action: {
-                        recipeViewModel.postRateAndFeedback(foodId: foodId!, ratingValue: String(rating), commentText: reviewText) { isSuccess, message in
-                            messageFromServer = message
-                            if isSuccess{
-                                isShowSuccesAlert = true
-                            }
-                            else{
-                                isShowFaildAlert = true
-                                print("error")
-                            }
-                        }
-                    }, content: "Post")
-                    .disabled(reviewText.isEmpty)
-                    .opacity(reviewText.isEmpty ? 0.5 : 1)
-                }
-                Spacer()
+                .padding()
+                .background(Color.white)
+                SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isShowSuccesAlert)
+                SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isShowFaildAlert)
+                    .onDisappear{
+                        dismiss()
+                    }
                 
             }
-            .padding()
-            .background(Color.white)
-            SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isShowSuccesAlert)
-            SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isShowFaildAlert)
-    
+            .toolbar {
+                ToolbarItem( placement: .navigationBarLeading) {
+                    Button{
+                        dismiss()
+                    }label: {
+                        Image("backButton")
+                    }
+                }
+                ToolbarItem( placement: .principal) {
+                    Text("write_a_review")
+                        .customFontSemiBoldLocalize(size: 20)
+                }
+                
+                
+            } .navigationBarTitleDisplayMode(.inline)
         }
-      
-          
+        
+        
         
         
     }
@@ -130,7 +150,7 @@ struct StarRatingView: View {
 // 🌟 Example Usage
 struct you: View {
     @State private var isReviewPresented = true
-
+    
     var body: some View {
         ZStack {
             Button("Write a Review") {
@@ -141,7 +161,7 @@ struct you: View {
             
             if isReviewPresented {
                 ReviewFormView(isPresented: $isReviewPresented,profile: "mhob1",userName:"Sok Reaksa")
-//                    .transition(.opacity) // Smooth transition
+                //                    .transition(.opacity) // Smooth transition
                     .zIndex(1)
             }
         }

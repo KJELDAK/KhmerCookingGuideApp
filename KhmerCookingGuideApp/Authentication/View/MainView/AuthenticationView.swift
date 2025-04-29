@@ -4,7 +4,6 @@
 //
 //  Created by Sok Reaksa on 9/12/24.
 //
-
 import SwiftUI
 struct AuthenticationView: View {
     @State private var email: String = ""
@@ -36,22 +35,6 @@ struct AuthenticationView: View {
                     }
                     .scrollDisabled(true)
                     FooterView()
-                }
-                .onAppear{
-//                    authenticationViewModel.loginUser(email: email, password: password ){ success, message in
-//                        if success {
-//                            islogInSuccess = true
-//                            messageFromApi = message ?? ""
-//                            print(message!)
-//                            profileViewModel.getUserInfo { success, message in
-//                                print("get user role", HeaderToken.shared.role)
-//                            }
-//                        }
-//                        else{
-//                            isLogInFaild = true
-//                            messageFromApi = message ?? ""
-//                        }
-//                    }
                 }
                 .navigationDestination(isPresented: $isNavigateToHome) {
                         ContentView().navigationBarBackButtonHidden()
@@ -171,7 +154,6 @@ struct AuthenticationView: View {
             }
         }
     }
-    
     // MARK: - Footer View
     private func FooterView() -> some View {
         VStack(spacing: 10) {
@@ -203,7 +185,6 @@ struct AuthenticationView: View {
         }
     }
 }
-
 #Preview {
     AuthenticationView()
 }

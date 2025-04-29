@@ -18,6 +18,8 @@
 "ingredients" = "Ingredients";
 "decription" = "Decription";
 "step" = "steps";
+"no_rating_and_feedback_yet" = "No rating and feedback yet";
+"write_a_review" = "Write a review";
 
 //MARK: - Profile
 "my_profile" = "My Profile";
@@ -34,6 +36,9 @@
 "_select" = "Select";
 "ratings_and_review" = "Ratings & Review";
 "tap_to_rate" = "Tap to rate";
+"full_name" = "Full Name";
+"_gender" = "Gender";
+"save_changes" = "Save Changes";
 
 //MARK: - Term And Condiction
 
@@ -63,4 +68,6 @@
 "food_name" = "Food Name";
 "_duration" = "Duration";
 "_level" = "level";
+
+
 

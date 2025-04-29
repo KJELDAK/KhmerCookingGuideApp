@@ -67,16 +67,15 @@ struct RecipeDetails: View {
                 .sheet(isPresented: $isSheetPresent) {
                     let sheetHeight = screenHeight - imageHeight - 79 // Calculate dynamic sheet height
                     NavigationStack {
-                        FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent,isNavigateToAllRateAndFeedbackView: $isNavigateToAllRateAndFeedbackView)
+                        FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent,isNavigateToAllRateAndFeedbackView: $isNavigateToAllRateAndFeedbackView, foodId: id)
                             .navigationDestination(isPresented: $isRatingFormPresent) {
                                 ReviewFormView(isPresented: $isRatingFormPresent, profile: "mhob1", userName: "reaksa",foodId: recipeViewModel.viewRecipeById?.id)
+                                    .navigationBarBackButtonHidden()
                             }
                             .padding(.top)
                             .navigationDestination(isPresented: $isNavigateToAllRateAndFeedbackView) {
                                 AllRateAndFeedbackView(rateAndFeebackPayload: recipeViewModel.viewAllRateAndFeedBack)
-                                
                                     .navigationBarBackButtonHidden()
-                                
                             }
                         
                     }
@@ -86,10 +85,7 @@ struct RecipeDetails: View {
                     .presentationCornerRadius(20)
                     .interactiveDismissDisabled()
                     .presentationBackgroundInteraction(.enabled)
-                    //                        .padding(.top)
                 }
-                
-                
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -123,6 +119,10 @@ struct RecipeDetails: View {
             recipeViewModel.getAllRateAndFeedback(foodId: id) { success, message in
                 print(message)
             }
+            recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: id) { success, message in
+                print(message)
+            }
+            
         }
     }
 }
@@ -132,6 +132,7 @@ struct FoodDetails : View{
     @State private var clickedIngredients: Set<Int> = []
     @Binding var isRatingFormPresent: Bool
     @Binding var isNavigateToAllRateAndFeedbackView: Bool
+    var foodId: Int
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(recipeViewModel.viewRecipeById?.user.profileImage ?? "")"
         ScrollView{
@@ -141,10 +142,6 @@ struct FoodDetails : View{
                     Text(recipeViewModel.viewRecipeById?.name ?? "")
                         .customFontKhmerSemiBold(size: 17)
                         .foregroundColor(Color(hex: "primary"))
-                    
-                    
-                    
-                    
                     HStack{
                         HStack{
                             Group{
@@ -163,9 +160,6 @@ struct FoodDetails : View{
                                 .padding(.top, 2)
                                 .foregroundColor(.black.opacity(0.4))
                         }
-                        
-                        
-                        
                     }
                     HStack{
                         if recipeViewModel.viewRecipeById?.user.profileImage == "default.jpg"{
@@ -229,7 +223,6 @@ struct FoodDetails : View{
                             }
                             .opacity(0.6)
                             .customFontKhmer(size: 17)
-                            
                         }
                         
                     }
@@ -263,11 +256,48 @@ struct FoodDetails : View{
                     isNavigateToAllRateAndFeedbackView = true
                 })
                 Spacer()
-                ReviewSectionView {
-                    isRatingFormPresent = true
-                    print("hello")
-                }
+                let isMyFeedbackValid = (recipeViewModel.userFoodFeedback?.payload.commentText.isEmpty == false)
+                && (recipeViewModel.userFoodFeedback?.payload.user.fullName.isEmpty == false)
+                
+                let userProfile = isMyFeedbackValid
+                ? (recipeViewModel.userFoodFeedback?.payload.user.profileImage ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.user.profileImage ?? "")
+                
+                let userName = isMyFeedbackValid
+                ? (recipeViewModel.userFoodFeedback?.payload.user.fullName ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.user.fullName ?? "")
+                
+                let reviewText = isMyFeedbackValid
+                ? (recipeViewModel.userFoodFeedback?.payload.commentText ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.commentText ?? "")
+                
+                let totalRating = isMyFeedbackValid
+                ? (recipeViewModel.userFoodFeedback?.payload.ratingValue ?? 0)
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.ratingValue ?? 0)
+                
+                ReviewSectionView(
+                    writingReviewButton: {
+                        isRatingFormPresent = true
+                    },
+                    totalStarRating: totalRating,
+                    userProfile: userProfile,
+                    userName: userName,
+                    reviewText: reviewText
+                )
+                
+                
+                
             }.frame(maxWidth: .infinity, alignment: .leading)
+            
+        }
+        .onAppear{
+            recipeViewModel.getAllRateAndFeedback(foodId: foodId) { success, message in
+                print(message)
+            }
+            recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: foodId) { success, message in
+                print(message)
+            }
+
         }
     }
 }

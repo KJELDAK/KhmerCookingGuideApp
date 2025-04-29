@@ -1,118 +1,211 @@
+//
+//  EditProfileView.swift
+//  KhmerCookingGuideApp
+//
+//  Created by Sok Reaksa on 28/4/25.
+//
+
+import SwiftUI
+import Kingfisher
+import PhotosUI
+
 struct EditProfileView: View {
     @ObservedObject var profileViewModel: ProfileViewModel
     @Environment(\.dismiss) var dismiss
-
     @State private var fullName: String = ""
     @State private var email: String = ""
-    @State private var phoneNumber: String = ""
+    @State private var gender: String = ""
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
+    @State private var firstName: String = ""
+    @State private var lastName: String = ""
+    @State private var isShowSuccessAlert: Bool = false
+    @State private var isShowErrorAlert: Bool = false
+    @State private var isLoadingWhenUploadImage = false
+    
     
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         
-        NavigationView {
-            VStack(spacing: 16) {
-                ZStack {
-                    if profileViewModel.userInfo?.payload.profileImage != "default.jpg" {
-                        KFImage(URL(string: imageUrl + (profileViewModel.userInfo?.payload.profileImage ?? "")))
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
+        ZStack {
+            NavigationView {
+                VStack {
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            
+                            // Your photo picker
+                            PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                                ZStack {
+                                    if let imageData = selectedImageData, let uiImage = UIImage(data: imageData) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(Circle())
+                                    } else {
+                                        if profileViewModel.userInfo?.payload.profileImage != "default.jpg" {
+                                            KFImage(URL(string: imageUrl + (profileViewModel.userInfo?.payload.profileImage ?? "")))
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 100, height: 100)
+                                                .clipShape(Circle())
+                                        } else {
+                                            Image("defaultPFMale")
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 100, height: 100)
+                                                .clipShape(Circle())
+                                        }
+                                    }
+                                    
+                                    // Edit Icon
+                                    Circle()
+                                        .fill(Color.red)
+                                        .frame(width: 30, height: 30)
+                                        .overlay(
+                                            Image(systemName: "pencil")
+                                                .foregroundColor(.white)
+                                        )
+                                        .offset(x: 35, y: 35)
+                                }
+                            }
+                            .frame(height: 100)
+                            
+                            // Editable Fields
+                            VStack(alignment: .leading, spacing: 16) {
+                                Text("full_name")
+                                    .customFontMediumLocalize(size: 12)
+                                    .foregroundColor(Color(hex: "00000"))
+                                
+                                InputTextComponent(textInput: $fullName, placeHolder: "please enter your full name")
+                                
+                                Text("_gender")
+                                    .customFontMediumLocalize(size: 12)
+                                    .foregroundColor(Color(hex: "00000"))
+                                
+                                GenderPickerComponent(placeHolder: .constant("Gender"), image: .constant("gender"), requestGender: $gender)
+                            }
+                            .padding()
+                            
+                            Spacer(minLength: 100) // Add a little space at the bottom if you want
+                        }
+                    }
+                    
+                    // Button at bottom
+                    ButtonComponent(action: {
+                        saveProfile( fullName: fullName, gender: "0975195858")
+                    }, content: LocalizedStringKey("save_changes"))
+                    .padding()
+                    .background(Color.white) // Optional: background to avoid transparency
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.title2)
+                                .foregroundColor(.black)
+                        }
+                    }
+                    ToolbarItem(placement: .principal) {
+                        Text("Edit Profile")
+                            .customFontRobotoBold(size: 16)
+                    }
+                }
+                .onAppear {
+                    if let payload = profileViewModel.userInfo?.payload {
+                        fullName = payload.fullName
+                        gender = payload.phoneNumber
+                    }
+                }
+                .onChange(of: selectedItem) {
+                    Task {
+                        if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                            // Optionally, uploadProfileImage(data) here
+                        }
+                    }
+                }
+            }
+            if profileViewModel.isLoadingWhenUpdate{
+                LoadingComponent()
+            }
+            SuccessAndFailedAlert(status: true, message: "Update profile successfully", duration: 3, isPresented: $isShowSuccessAlert)
+                .onDisappear{
+                    dismiss()
+                }
+            SuccessAndFailedAlert(status: false, message: "Could not update profile \nplease try again later", duration: 3, isPresented: $isShowErrorAlert)
+        }
+    }
+    private func saveProfile(fullName: String, gender: String) {
+        if let imageData = selectedImageData {
+            // User selected a new image
+            FileUploader.shared.uploadFiles(imageDataArray: [imageData]) { success, message in
+                if success {
+                    if let uploadedFileName = FileUploader.shared.image.first {
+                        let fileName = (uploadedFileName as NSString).lastPathComponent
+                        
+                        profileViewModel.updateUserProfile(
+                            profileImage: fileName,
+                            fullName: fullName,
+                            phoneNumber: gender
+                        ) { success, message in
+                            if success {
+                                isShowSuccessAlert = true
+                            } else {
+                                isShowErrorAlert = true
+                            }
+                        }
                     } else {
-                        Image("defaultPFMale")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .clipShape(Circle())
+                        print("❌ No uploaded filename found.")
+                        isShowErrorAlert = true
                     }
-
-                    // Lock Icon Overlay
-                    Circle()
-                        .fill(Color.blue)
-                        .frame(width: 30, height: 30)
-                        .overlay(
-                            Image(systemName: "pencil")
-                                .foregroundColor(.white)
-                        )
-                        .offset(x: 35, y: 35)
-                }
-                .padding(.top)
-
-                VStack(alignment: .leading, spacing: 16) {
-                    VStack(alignment: .leading) {
-                        Text("Full Name")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        TextField("Full Name", text: $fullName)
-                            .textFieldStyle(.roundedBorder)
-                    }
-
-                    VStack(alignment: .leading) {
-                        Text("Email Address")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        TextField("Email Address", text: $email)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.emailAddress)
-                    }
-
-                    VStack(alignment: .leading) {
-                        Text("Phone Number")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        TextField("Phone Number", text: $phoneNumber)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.phonePad)
-                    }
-                }
-                .padding()
-
-                Spacer()
-
-                Button(action: {
-                    saveProfile()
-                }) {
-                    Text("Save Changes")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding(.horizontal)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .foregroundColor(.black)
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("Edit Profile")
-                        .customFontRobotoBold(size: 16)
+                } else {
+                    print("❌ Upload failed: \(message)")
+                    isShowErrorAlert = true
                 }
             }
-            .onAppear {
-                if let payload = profileViewModel.userInfo?.payload {
-                    fullName = payload.fullName
-                    email = payload.email
-                    phoneNumber = payload.phoneNumber
+        } else {
+            // User did NOT select a new image — use existing
+            if let existingFileName = profileViewModel.userInfo?.payload.profileImage {
+                let fileName = (existingFileName as NSString).lastPathComponent
+                
+                profileViewModel.updateUserProfile(
+                    profileImage: fileName,
+                    fullName: fullName,
+                    phoneNumber: gender
+                ) { success, message in
+                    if success {
+                        isShowSuccessAlert = true
+                    } else {
+                        isShowErrorAlert = true
+                    }
                 }
-            }
-        }
-    }
-
-    private func saveProfile() {
-        profileViewModel.updateProfile(fullName: fullName, email: email, phoneNumber: phoneNumber) { success in
-            if success {
-                dismiss()
             } else {
-                // Handle error (show alert, etc.)
+                print("❌ No existing profile image found.")
+                isShowErrorAlert = true
             }
         }
     }
-}
+
+    // MARK: - Edit Field View (Same style as ProfileField but editable)
+    struct EditProfileField: View {
+        var title: String
+        @Binding var text: String
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                TextField(title, text: $text)
+                    .font(.body)
+                    .foregroundColor(.black)
+                Divider()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 4)
+        }
+    }}

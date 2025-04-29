@@ -14,6 +14,7 @@ struct RecipeView: View {
     @StateObject var homeViewModel = HomeViewModel()
     @StateObject var recipeViewModel = RecipeViewModel()
     @State var cuisineId : Int = 999
+    
     @State var isSortByRating: Bool = false
     var body: some View {
         

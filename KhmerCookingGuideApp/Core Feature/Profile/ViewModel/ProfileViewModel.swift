@@ -10,8 +10,10 @@ import Alamofire
 class ProfileViewModel: ObservableObject {
     @Published var userInfo: NewUserInfoResponse?
     @Published var isLoading: Bool = false
+    @Published var isLoadingWhenUpdate: Bool = false
     func getUserInfo(completion: @escaping(Bool, String) -> Void) {
         let url = "\(API.baseURL)/user/profile"
+        self.isLoading = true
         AF.request(url,method: .get, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
             .validate()
             .responseDecodable(of: NewUserInfoResponse.self) { response in
@@ -34,39 +36,52 @@ class ProfileViewModel: ObservableObject {
                         completion(false, error.localizedDescription)
                         self.isLoading = false
                     }
-                    
-                    
                 }
             }
     }
+    func updateUserProfile (profileImage : String, fullName : String,phoneNumber : String, completion: @escaping(Bool,String)-> Void){
+        let url = "\(API.baseURL)/user/edit-profile"
+        let parameters: [String : Any] = [
+            "profileImage" : profileImage,
+            "fullName" : fullName,
+            "phoneNumber" : phoneNumber
+        ]
+        self.isLoadingWhenUpdate = true
+        AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
+            .validate()
+            .responseDecodable(of: UpdateProfileResponse.self) { response in
+                switch response.result {
+                case .success(let value):
+                    completion(true, value.message)
+                    self.isLoadingWhenUpdate = false
+                case .failure(let error):
+                    completion(false, "Could not update profile,please try again later")
+                    self.isLoadingWhenUpdate = false
+                }
+                
+            }
+    }
 }
-//func saveUserInfo(userName: String, dateOfBirth: String, gender: String, completion: @escaping(Bool, String) -> Void){
-//    let parameters: [String: Any] = ["userName": userName,"phoneNumber": gender, "address": dateOfBirth]
-//    let url = "\(API.baseURL)/auth/save-user-info"
-//    print(HeaderToken.shared.headerToken)
-//    AF.request(url, method: .post,parameters: parameters, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
-//        .validate()
-//        .responseDecodable(of: UserInfoResponse.self) { response in
-//            switch response.result {
-//            case .success(let value):
-//                print("fghj",value.message)
-//                self.isLoading = false
-//                completion(true, value.message)
-//            case .failure(let error):
-//                print("",error)
-//                if let data = response.data{
-//                   if  let severError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data){
-//                       print(severError.message)
-//                       completion(false,severError.message)
-//                    }
-//                }
-//                else{
-//                    print("yoo",  error.localizedDescription)
-//                    completion(false, error.localizedDescription)
-//                    self.isLoading = false
-//                }
-//                
-//            }
-//            
-//        }
-//}
+
+import Foundation
+
+struct UpdateProfileResponse: Codable {
+    let message: String
+    let payload: UserProfile
+    let statusCode: String
+    let timestamp: String
+}
+
+struct UserProfile: Codable {
+    let id: Int
+    let fullName: String
+    let email: String
+    let profileImage: String
+    let phoneNumber: String
+    let password: String
+    let role: String
+    let createdAt: String
+    let emailVerifiedAt: String
+    let emailVerified: Bool
+    let deleted: Bool
+}

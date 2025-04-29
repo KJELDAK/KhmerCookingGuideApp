@@ -21,6 +21,8 @@
 "step" = "ជំហាន";
 "ratings_and_review" = "ការវាយតម្លៃ និងមតិយោបល់";
 "tap_to_rate" = "ចុចដើម្បីវាយតម្លៃ";
+"no_rating_and_feedback_yet" = "មិនទាន់មានការវាយតម្លៃ និងមតិយោបល់នៅឡើយ";
+"write_a_review" = "សរសេរការបញ្ចេញមតិ";
 
 //MARK: - Profile
 
@@ -36,6 +38,10 @@
 "_english" = "ភាសាអង់គ្លេស";
 "_khmer" = "ភាសាខ្មែរ";
 "_select" = "ជ្រើសរើស";
+"full_name" = "ឈ្មោះពេញ";
+"_gender" = "ភេទ";
+"save_changes" = "រក្សាការផ្លាស់ប្តូរ";
+
 
 //MARK: - Term And Condiction
 "terms_title" = "📄 លក្ខខណ្ឌនិងគោលការណ៍ប្រើប្រាស់";
@@ -66,5 +72,6 @@
 "food_name" = "ឈ្មោះម្ហូប";
 "_duration" = "រយៈពេល";
 "_level" = "កម្រិត";
+
 
 

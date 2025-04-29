@@ -68,9 +68,6 @@ struct FoodCardComponent: View {
             TotalStarRating()
                 .padding()
         }
-        .onAppear{
-            print("this is food :", id, isFavorite)
-        }
     }
 }
 

@@ -31,11 +31,9 @@ struct RatingsAndReviewView: View {
         }
         return percentageWeights.map { Int(round($0 * Double(totalReviews))) }
     }
-
     private var starCounts: [Int] {
         calculateStarDistribution(averageRating: averageRating, totalReviews: reviewCount)
     }
-    
     // Calculate the percentage of reviews for each star count
     private func progressForStar(starCount: Int) -> CGFloat {
         let totalReviews = CGFloat(reviewCount)
@@ -51,13 +49,11 @@ struct RatingsAndReviewView: View {
                 Text("ratings_and_review")
                     .customFontSemiBoldLocalize(size: 20)
                     .foregroundColor(.black)
-                
                 Image("angle-right")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 22, height: 22)
                     .rotationEffect(.degrees(-90))
-                 
             }
             .onTapGesture {
                 onTappAction()
@@ -116,10 +112,6 @@ struct RatingsAndReviewView: View {
         .padding()
     }
 }
-
-
-import Foundation
-
 // MARK: - Top-level server response
 struct RatingFeedbackResponse: Codable {
     let message: String

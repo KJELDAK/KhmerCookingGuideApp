@@ -21,15 +21,14 @@ struct GenderPickerComponent: View {
                     .frame(width: 24, height: 24)
                     .foregroundColor(Color(hex: "#374957"))
                     .opacity(0.4)
-                
                 ZStack(alignment: .leading) {
                     if genders.isEmpty {
                         Text(placeHolder)
-                            .customFont(size: 16)
+                            .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     } else {
                         Text(genders)
-                            .customFont(size: 16)
+                            .customFontKhmer(size: 16)
                             .foregroundColor(Color(hex: "#090920"))
                     }
                 }
@@ -47,7 +46,6 @@ struct GenderPickerComponent: View {
                             .labelsHidden()
                             .colorMultiply(.clear)
                             .clipped()
-                           
                     )
                     .onChange(of: genders) {
                         requestGender = genders
@@ -68,10 +66,3 @@ struct GenderPickerComponent: View {
     }
 }
 
-//#Preview {
-//    GenderPickerComponent(
-//        placeHolder: .constant("Select Gender"),
-//        selectedGender: .constant(""),
-//        image: .constant("gender")
-//    )
-//}

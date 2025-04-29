@@ -29,15 +29,7 @@ class PostFoodRecipeViewModel: ObservableObject {
             method: .post
 //            headers: HeaderToken.shared.headerToken
         )
-//        .response { response in
-//            self.isLoading = false
-//            switch response.result {
-//            case .success(_):
-//                completion(true, "Upload successful")
-//            case .failure(let error):
-//                completion(false, "Upload failed: \(error.localizedDescription)")
-//            }
-//        }
+
         .responseDecodable(of: UploadFileResponse.self){ response in
             switch response.result {
             case .success(let value):

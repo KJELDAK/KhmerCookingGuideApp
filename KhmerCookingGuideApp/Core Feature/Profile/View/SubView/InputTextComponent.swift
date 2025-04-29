@@ -6,7 +6,8 @@
 //
 
 import UIKit
-struct InputComponent: View {
+import SwiftUI
+struct InputTextComponent: View {
     @Binding var textInput: String
     @State var placeHolder: String
     
@@ -21,11 +22,12 @@ struct InputComponent: View {
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
                         Text(placeHolder)
-                            .customFont(size: 16)
+//
+                            .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }
                     TextField("", text: $textInput)
-                        .customFont(size: 20)
+                        .customFontKhmer(size: 16)
                         .multilineTextAlignment(.leading)
                 }
             }
@@ -35,5 +37,9 @@ struct InputComponent: View {
             .background(Color(hex: "#F9FAFB"))
             .cornerRadius(10)
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color(hex: "#E5E7EB"), lineWidth: 1)
+        )
     }
 }

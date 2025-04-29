@@ -15,48 +15,61 @@ struct ReviewCardView: View {
 
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
-        VStack(alignment: .leading, spacing: 8) {
-            // Review Title
-            HStack {
-                if userProfile == "default.jpg"{
-                    Image("defaultPFMale")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 24, height: 24)
-                        .clipShape(Circle())
-                }
-                else{
-                    KFImage(URL(string: imageUrl + "\(userProfile)"))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 24, height: 24)
-                        .clipShape(Circle())
-                }
-                
-                Text(userName)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(.black)
-                Spacer()
+        if reviewText.isEmpty || rating == 0 || userName.isEmpty {
+            VStack(alignment: .center, spacing: 8) {
+                Text("no_rating_and_feedback_yet")
+                    .customFontKhmer(size: 16)
+                    .opacity(0.4)
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .padding()
             
-            // Star Rating Display
-            HStack(spacing: 2) {
-                ForEach(0..<5, id: \.self) { index in
-                    Image(systemName: index < rating ? "star.fill" : "star")
-                        .resizable()
-                        .frame(width: 14, height: 14)
-                        .foregroundColor(.yellow)
-                }
-            }
-
-            // Review Text
-            Text(reviewText)
-                .font(.system(size: 14))
-                .foregroundColor(Color(.darkGray))
-                
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(12)
         }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(12)
+        else{
+            VStack(alignment: .leading, spacing: 8) {
+                // Review Title
+                HStack {
+                    if userProfile == "default.jpg"{
+                        Image("defaultPFMale")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 24, height: 24)
+                            .clipShape(Circle())
+                    }
+                    else{
+                        KFImage(URL(string: imageUrl + "\(userProfile)"))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 24, height: 24)
+                            .clipShape(Circle())
+                    }
+                    Text(userName)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(.black)
+                    Spacer()
+                }
+                // Star Rating Display
+                HStack(spacing: 2) {
+                    ForEach(0..<5, id: \.self) { index in
+                        Image(systemName: index < rating ? "star.fill" : "star")
+                            .resizable()
+                            .frame(width: 14, height: 14)
+                            .foregroundColor(.yellow)
+                    }
+                }
+                // Review Text
+                Text(reviewText)
+                    .font(.system(size: 14))
+                    .foregroundColor(Color(.darkGray))
+            }
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(12)
+
+        }
     }
 }
+
