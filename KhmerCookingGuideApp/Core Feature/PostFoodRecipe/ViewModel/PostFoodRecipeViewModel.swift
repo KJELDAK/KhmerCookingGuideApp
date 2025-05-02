@@ -74,8 +74,36 @@ class PostFoodRecipeViewModel: ObservableObject {
                     completion(false, error.localizedDescription)
                 }
             }
+    }
+    func updateFoodRecipeById(id : Int,_ foodRecipe: PostFoodRequest, completion: @escaping (Bool, String) -> Void) {
+        isLoading = true
+        let url = "\(API.baseURL)/food-recipe/edit-food-recipe/\(id)" // Replace with your actual API endpoint
 
-        
+        AF.request(url,
+                   method: .put,
+                   parameters: foodRecipe,
+                   encoder: JSONParameterEncoder.default,
+                   headers: HeaderToken.shared.headerToken)
+            .validate()
+            .responseDecodable(of: PostFoodResponse.self) { response in
+                self.isLoading = false
+                switch response.result {
+                   
+                case .success(let value):
+                    print("✅ Food recipe updated successfully: \(value)")
+                    completion(true, value.message)
+                    
+                case .failure(let error):
+                    print("❌ Error editing food recipe:", error)
+
+                    if let data = response.data {
+                        if let serverError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data) {
+                            print("Server Error:", serverError.payload)
+                        }
+                    }
+                    completion(false, error.localizedDescription)
+                }
+            }
     }
 
 }

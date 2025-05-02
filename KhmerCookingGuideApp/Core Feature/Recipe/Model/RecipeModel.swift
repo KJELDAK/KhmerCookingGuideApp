@@ -63,13 +63,12 @@ struct CookingStep: Codable, Identifiable {
     var description: String
 }
 
-// MARK: - RatingPercentages
 struct RatingPercentages: Codable {
-    let one: Int
-    let two: Int
-    let three: Int
-    let four: Int
-    let five: Int
+    let one: Double
+    let two: Double
+    let three: Double
+    let four: Double
+    let five: Double
 
     enum CodingKeys: String, CodingKey {
         case one = "1"
@@ -80,18 +79,6 @@ struct RatingPercentages: Codable {
     }
 }
 
-//// MARK: - Cuisine Model
-//struct CuisineResponse: Codable {
-//    let message: String
-//    let payload: [Cuisine]
-//    let statusCode: String
-//    let timestamp: String
-//}
-//
-//struct Cuisine: Codable, Identifiable , Hashable{
-//    let id: Int
-//    let cuisineName: String
-//}
 
 // MARK: - CuisineResponse
 struct CuisineResponse: Codable {

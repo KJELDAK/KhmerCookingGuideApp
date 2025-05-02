@@ -128,9 +128,6 @@ struct RecipeView: View {
                         else{
 
                             ScrollView {
-//                                let sortedRecipes = isSortByRating
-//                                ? recipeViewModel.viewAllRecipeByCuisineId.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
-//                                    : recipeViewModel.viewAllRecipeByCuisineId
                                 let filteredRecipes = searchFoodRecipesByCuisineId
                                 let sortedRecipes = isSortByRating
                                     ? filteredRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }

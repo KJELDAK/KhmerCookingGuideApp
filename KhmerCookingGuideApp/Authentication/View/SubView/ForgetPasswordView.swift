@@ -110,11 +110,8 @@ struct ForgetPasswordView: View {
                     isNavigateToOTPView = true
                     isEmailExist = true
                     authenticationViewModel.sendOTP(email: email) { isSuccess, message in
-                       
                             print(message)
-                     
                     }
-                   
                 }
                 else {
                     isEmailNotExist = true
@@ -125,7 +122,6 @@ struct ForgetPasswordView: View {
         .disabled(!isValidationInEmail)
         .opacity(!isValidationInEmail ? 0.4 : 1)
     }
-    
     // MARK: - Back to Login Link
     private func BackToLoginLink() -> some View {
         HStack {
@@ -138,7 +134,6 @@ struct ForgetPasswordView: View {
             }
         }
     }
-    
     // MARK: - Footer View
     private func FooterView() -> some View {
         VStack(spacing: 10) {

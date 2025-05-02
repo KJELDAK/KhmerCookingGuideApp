@@ -12,6 +12,10 @@ struct ReviewCardView: View {
     var userName : String
     var reviewText: String
     var rating: Int
+    var isHasThreeDots: Bool
+    @State var isShowPopover : Bool = false
+    var onEditTapped: () -> Void // Callback when "Edit" is tapped
+    var onDeleteTapped: () -> Void
 
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
@@ -65,10 +69,34 @@ struct ReviewCardView: View {
                     .font(.system(size: 14))
                     .foregroundColor(Color(.darkGray))
             }
+            
             .padding()
             .background(Color.gray.opacity(0.1))
             .cornerRadius(12)
-
+            .overlay(alignment: .topTrailing){
+                if isHasThreeDots{
+                    Button{
+                        isShowPopover = true
+                    }label: {
+                        Image("black-dot")
+                            .resizable()
+                            .frame(width: 12, height: 12)
+                    }
+                    .padding()
+                    .popover(isPresented: $isShowPopover) {
+                        PopupView(showPopup: $isShowPopover, onEditTapped: {
+                            onEditTapped()
+                            isShowPopover = false
+                            
+                        }, onDeleteTapped: {
+                            onDeleteTapped()
+                            isShowPopover = false
+                        }
+                        )
+                        .presentationCompactAdaptation(.none)
+                    }
+                }
+            }
         }
     }
 }

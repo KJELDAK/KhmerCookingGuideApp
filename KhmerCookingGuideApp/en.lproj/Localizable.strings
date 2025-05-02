@@ -16,7 +16,7 @@
 //MARK: - recipe details
 
 "ingredients" = "Ingredients";
-"decription" = "Decription";
+"_description" = "Description";
 "step" = "steps";
 "no_rating_and_feedback_yet" = "No rating and feedback yet";
 "write_a_review" = "Write a review";
@@ -69,5 +69,6 @@
 "_duration" = "Duration";
 "_level" = "level";
 
-
+//MARK: - update recipe
+"update_recipe" = "Update Recipe";
 

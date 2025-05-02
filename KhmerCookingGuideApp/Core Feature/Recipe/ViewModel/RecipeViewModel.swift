@@ -14,6 +14,7 @@ class RecipeViewModel: ObservableObject {
     @Published var viewAllRecipeByCuisineId : [FoodRecipeByCuisine] = []
     @Published var viewAllRateAndFeedBack : [RatingFeedback] = []
     @Published var userFoodFeedback : UserFoodFeedbackResponse?
+    @Published var isLoadingWhenPerfromAction : Bool = false
     func fetchRecipeById(id : Int, completion: @escaping (Bool, String) -> Void) {
         let url = "\(API.baseURL)/foods/detail/\(id)?itemType=FOOD_RECIPE"
         isLoading = true
@@ -29,6 +30,7 @@ class RecipeViewModel: ObservableObject {
                 case .failure(let error):
                     self.isLoading = false
                     if let data = response.data{
+                        //                        print(String(data: data, encoding: .utf8) ?? "Invalid UTF8 data")
                         if let severError = try? JSONDecoder().decode(ErrorResponse.self, from: data){
                             print(severError.detail)
                             completion(false,severError.detail)
@@ -36,7 +38,6 @@ class RecipeViewModel: ObservableObject {
                         else{
                             completion(false,error.localizedDescription)
                         }
-                        
                     }
                     else{
                         print("faild to get all categories")
@@ -96,15 +97,14 @@ class RecipeViewModel: ObservableObject {
         let url = "\(API.baseURL)/feedback/guest-user/\(foodId)?itemType=FOOD_RECIPE"
         self.isLoading = true
         print("get all rate and feedback url: \(url)")
-
+        
         AF.request(url, method: .get, encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken).validate()
             .responseDecodable(of: RatingFeedbackResponse.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print("Successfully fetched feedbacks: \(value.payload)")
                     self.viewAllRateAndFeedBack = value.payload
                     completion(true, value.message)
-
+                    
                 case .failure(let error):
                     self.isLoading = false
                     if let data = response.data {
@@ -123,18 +123,17 @@ class RecipeViewModel: ObservableObject {
     }
     func getFeedBackByFoodItemForCurrentUser(foodId: Int, completion: @escaping (Bool ,String) -> Void) {
         let url = "\(API.baseURL)/feedback/\(foodId)?itemType=FOOD_RECIPE"
-       
+        
         self.isLoading = true
         print("get all rate and feedback url: \(url)")
-
+        
         AF.request(url, method: .get, encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken).validate()
             .responseDecodable(of: UserFoodFeedbackResponse.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print("Successfully fetched feedbacks: \(value.payload)")
                     self.userFoodFeedback = value
                     completion(true, value.message)
-
+                    
                 case .failure(let error):
                     self.isLoading = false
                     if let data = response.data {
@@ -151,8 +150,6 @@ class RecipeViewModel: ObservableObject {
                 }
             }
     }
-
-
     func postRateAndFeedback(foodId: Int, ratingValue: String, commentText: String, completion: @escaping (Bool, String) -> Void){
         let url = ("\(API.baseURL)/feedback?itemType=FOOD_RECIPE")
         self.isLoading = true
@@ -179,26 +176,116 @@ class RecipeViewModel: ObservableObject {
                         else{
                             completion(false,error.localizedDescription)
                         }
-                        
                     }
                     else{
                         print("faild to get all categories")
                         completion(false, error.localizedDescription)
                     }
                 }
+            }
+    }
+    func updateRateAndFeedback(feedBackId: Int,foodId: Int, ratingValue: String, commentText: String, completion: @escaping (Bool, String) -> Void){
+        let url = ("\(API.baseURL)/feedback/\(feedBackId)")
+        self.isLoading = true
+        let parameter: [String: Any] = [
+            "foodId": foodId,
+            "ratingValue": ratingValue,
+            "commentText": commentText,
+        ]
+        AF.request(url, method: .put, parameters: parameter, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken).validate()
+            .responseDecodable(of: FeedbackResponse.self){ response in
+                switch response.result{
+                case .success(let value):
+                    completion(true, value.message)
+                case .failure(let error):
+                    self.isLoading = false
+                    if let data = response.data{
+                        if let severError = try? JSONDecoder().decode(RateAndFeedbackErrorResponse.self, from: data){
+                            print(severError.detail)
+                            completion(false,severError.detail)
+                        }
+                        else{
+                            completion(false,error.localizedDescription)
+                        }
+                    }
+                    else{
+                        
+                        completion(false, error.localizedDescription)
+                    }
+                }
                 
             }
+    }
+    func deleteRateAndFeedbackById(id: Int, completion: @escaping(Bool, String) -> Void){
         
+        let url = "\(API.baseURL)/feedback/\(id)"
+        self.isLoadingWhenPerfromAction = true
+        AF.request(url,method: .delete,encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken).validate()
+            .responseDecodable(of: ResponseWrapper<String>.self) { response in
+                switch response.result{
+                case .success(let value):
+                    self.userFoodFeedback = nil
+                    completion(true, value.message)
+                    self.isLoadingWhenPerfromAction = false
+                case .failure(let error):
+                    self.isLoadingWhenPerfromAction = false
+                    if let data = response.data{
+                        if let severError = try? JSONDecoder().decode(ResponseWrapper<String>.self, from: data){
+                            print(severError.message)
+                            completion(false,severError.message)
+                        }
+                        else{
+                            completion(false,error.localizedDescription)
+                        }
+                        
+                    }
+                    else{
+                        
+                        completion(false, error.localizedDescription)
+                    }
+                }
+                
+            }
+            
+    }
+    func deleteRecipeById(id: Int, completion: @escaping(Bool, String) -> Void){
+        
+        let url = "\(API.baseURL)/food-recipe/delete/\(id)"
+        print(url)
+        self.isLoadingWhenPerfromAction = true
+        AF.request(url, method: .delete,encoding: JSONEncoding.default,headers: HeaderToken.shared.headerToken).validate()
+            .responseDecodable(of: ResponseWrapper<String>.self) { response in
+                switch response.result{
+                case .success(let value):
+                    completion(true, value.message)
+                    self.isLoadingWhenPerfromAction = false
+                case .failure(let error):
+                    self.isLoadingWhenPerfromAction = false
+                    if let data = response.data{
+                        if let severError = try? JSONDecoder().decode(ResponseWrapper<String>.self, from: data){
+                            print(severError.message)
+                            completion(false,severError.message)
+                        }
+                        else{
+                            completion(false,error.localizedDescription)
+                        }
+                        
+                    }
+                    else{
+                        
+                        completion(false, error.localizedDescription)
+                    }
+                }
+                
+            }
     }
 }
-
-
 import Foundation
 
 // MARK: - Feedback Response for Food Item by Current User
 struct UserFoodFeedbackResponse: Codable {
     let message: String
-    let payload: RatingFeedback
+    let payload: RatingFeedback?
     let statusCode: String
     let timestamp: String
 }

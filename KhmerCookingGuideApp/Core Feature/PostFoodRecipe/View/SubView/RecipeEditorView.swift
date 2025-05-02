@@ -4,17 +4,12 @@
 //
 //  Created by Sok Reaksa on 19/1/25.
 //
-
 import SwiftUI
-
 import SwiftUI
-
 struct RecipeEditorView: View {
-//    @State private var ingredients: [Ingredienth] = [Ingredienth(id: 1, name: "", quantity: "", price: "")]
-//    @State private var cookingSteps: [CookingStep] = [CookingStep(id: 1, description: "")]
-    @Binding var ingredients: [Ingredienth]  // Use Binding to persist ingredients
-       @Binding var cookingSteps: [CookingStep]  // Use Binding to persist cooking steps
-    @State private var nextIngredientId: Int = 2 // Tracks the next available Ingredient ID
+    @Binding var ingredients: [Ingredienth]
+    @Binding var cookingSteps: [CookingStep]
+    @State private var nextIngredientId: Int = 2
     @Environment(\.dismiss) var dismiss
     @Binding var isNavigateToPreviousView: Bool
     @Binding var foodName: String
@@ -39,17 +34,7 @@ struct RecipeEditorView: View {
             NavigationView {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
-                        // Ingredients Section
                         SectionHeader(title: "ingredients")
-                        
-//                        ForEach(ingredients.indices, id: \.self) { index in
-//                            IngredientInputView(
-//                                Ingredienth: $ingredients[index],
-//                                onDelete: {
-//                                    ingredients.remove(at: index)
-//                                }
-//                            )
-//                        }
                         ForEach(ingredients, id: \.id) { ingredient in
                             IngredientInputView(
                                 Ingredienth: Binding(
@@ -66,10 +51,7 @@ struct RecipeEditorView: View {
                                     }
                                 }
                             )
-//                            .transition(.asymmetric(
-//                                   insertion: .move(edge: .trailing).combined(with: .opacity),
-//                                   removal: .move(edge: .leading).combined(with: .opacity)
-//                               ))
+
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                         }
 
@@ -87,23 +69,6 @@ struct RecipeEditorView: View {
                         // Cooking Steps Section
                         SectionHeader(title: "Steps")
                         
-//                        ForEach(cookingSteps) { step in
-//                            CookingStepInputView(
-//                                step: step,
-//                                onUpdate: { updatedStep in
-//                                    if let index = cookingSteps.firstIndex(where: { $0.id == step.id }) {
-//                                        cookingSteps[index] = updatedStep
-//                                    }
-//                                },
-//                                onDelete: {
-//                                    // Delete the step and re-adjust IDs
-//                                    if let index = cookingSteps.firstIndex(where: { $0.id == step.id }) {
-//                                        cookingSteps.remove(at: index)
-//                                        updateStepIds()
-//                                    }
-//                                }
-//                            )
-//                        }
                         ForEach(cookingSteps) { step in
                             CookingStepInputView(
                                 step: step,
@@ -126,16 +91,6 @@ struct RecipeEditorView: View {
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             ))
                         }
-
-
-
-                        
-                        // Add Step Button
-//                        AddButton {
-//                            cookingSteps.append(
-//                                CookingStep(id: cookingSteps.count + 1, description: "")
-//                            )
-//                        }
                         AddButton {
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                                 cookingSteps.append(
@@ -187,7 +142,6 @@ struct RecipeEditorView: View {
                                         let fileNames = postFoodRecipeViewModel.image.map { url in
                                             (url as NSString).lastPathComponent
                                         }
-
                                         let newFoodRecipe = PostFoodRequest(
                                           photo: fileNames.enumerated().map { index, fileName in
                                                 Photo(id: index + 1, photo: fileName)
@@ -202,7 +156,6 @@ struct RecipeEditorView: View {
                                             ,
                                             cookingSteps: cookingSteps
                                         )
-
                                         // Call API
                                         postFoodRecipeViewModel.postFoodRecipe(newFoodRecipe) { success, message in
                                             messageFromServer = message
@@ -224,6 +177,22 @@ struct RecipeEditorView: View {
                                 }
 
                             }, content: "Submit")
+                            .disabled(
+                                ingredients.isEmpty ||
+                                cookingSteps.isEmpty ||
+                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
+                            )
+                            .opacity(
+                                ingredients.isEmpty ||
+                                cookingSteps.isEmpty ||
+                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
+                                }) ? 0.4 : 1
+                            )
+
                         }
                     }
                     .padding()
@@ -302,15 +271,7 @@ struct IngredientInputView: View {
             }
             
             HStack {
-//                TextField("Quantity", text: Binding(
-//                    get: { String(Ingredienth.quantity) },
-//                    set: { Ingredienth.quantity = Double($0) ?? 0 } // Convert String back to Double safely
-//                ))
-//                .frame(height: 50)
-//                .padding(.horizontal)
-//                .overlay {
-//                    RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"), lineWidth: 2)
-//                }
+
                 NumericTextField(value: $Ingredienth.quantity ,placeholder: "Eter ingredient quantity")
 
                    
@@ -324,8 +285,6 @@ struct IngredientInputView: View {
         
     }
 }
-
-
 struct CookingStepInputView: View {
     let step: CookingStep
     let onUpdate: (CookingStep) -> Void
@@ -339,7 +298,6 @@ struct CookingStepInputView: View {
         self.onDelete = onDelete
         self._stepDescription = State(initialValue: step.description) // Initialize the description
     }
-
     var body: some View {
         HStack(alignment: .top) {
             Text("\(step.id)")

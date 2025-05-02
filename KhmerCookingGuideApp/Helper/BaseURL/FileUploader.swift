@@ -44,7 +44,7 @@ final class FileUploader {
                 self.image = value.payload
                 completion(true, "Upload successful")
             case .failure(let error):
-                print("❌ File upload failed: \(error.localizedDescription)")
+                print("❌ File upload failed sdsd: \(error.localizedDescription)")
                 completion(false, "Upload failed: \(error.localizedDescription)")
             }
         }

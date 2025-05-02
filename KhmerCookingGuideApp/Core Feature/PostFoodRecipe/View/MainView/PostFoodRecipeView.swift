@@ -10,13 +10,6 @@ import PhotosUI
 import Alamofire
 import UIKit
 
-//#Preview {
-//    PostFoodRecipeView(isSheetPresent: .constant(false))
-//}
-
-import SwiftUI
-import PhotosUI
-
 struct PostFoodRecipeView: View {
     @State private var ingredients: [Ingredienth] = [Ingredienth(id: 1, name: "", quantity: "", price: 0)]
      @State private var cookingSteps: [CookingStep] = [CookingStep(id: 1, description: "")]
@@ -151,19 +144,6 @@ struct PostFoodRecipeView: View {
                                         .foregroundColor(.red)
                                         .padding(.top)
                                 }
-                                
-                                //                    // Add your API button here
-                                //                    Button("Upload Images") {
-                                //                        Task {
-                                //                            // Get the image data and pass to your API logic
-                                //                            let imageDataArray = photoPicker.prepareImageDataForAPI()
-                                //
-                                //                            // Call your API method with the imageDataArray here
-                                //                            print("Uploading \(imageDataArray.count) images to API")
-                                //                        }
-                                //                    }
-                                //                    .buttonStyle(.borderedProminent)
-                                //                    .padding()
                                 //MARK: - Food Name
                                 Text("food_name")
                                     .customFontMediumLocalize(size: 16)
@@ -176,7 +156,7 @@ struct PostFoodRecipeView: View {
                                         RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"),lineWidth: 2)
                                     }
                                 //MARK: - Description
-                                Text("decription")
+                                Text("_description")
                                     .customFontMediumLocalize(size: 16)
                                 TextEditorWithPlaceholder(text:$foodDescription, placeholder: "Tell me a little about your food", isTextBlack: .constant(true))
                                     .frame(height: 112)
@@ -236,11 +216,12 @@ struct PostFoodRecipeView: View {
                                 
                                 ButtonComponent(action: {
                                     isRecipeInputation = true
-                                    let imageData = photoPicker.prepareImageDataForAPI()
-    //                                postFoodRecipeViewModel.uploadFiles(imageDataArray: imageData) { success, message in
-    //                                    print(message)
-    //                                }
+//                                    let imageData = photoPicker.prepareImageDataForAPI()
                                 }, content: "Next")
+                                .disabled(foodName.isEmpty || foodDescription.isEmpty || photoPicker.prepareImageDataForAPI().isEmpty
+)
+                                .opacity(foodName.isEmpty || foodDescription.isEmpty || photoPicker.prepareImageDataForAPI().isEmpty
+? 0.2 : 1)
                                 .padding(.top)
                                 
                                 

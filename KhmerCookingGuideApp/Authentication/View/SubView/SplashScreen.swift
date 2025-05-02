@@ -51,6 +51,7 @@ struct SplashScreen: View {
                 if isActive {
                     if isLoggedIn {
                         ContentView()
+//                        UpdateFoodRecipeView()
                     } else {
                         AuthenticationView()
                     }

@@ -17,7 +17,7 @@
 "view_all" = "មើលទាំងអស់";
 //MARK: - Recipe details
 "ingredients" = "គ្រឿងផ្សំ";
-"decription" = "ការពិពណ៌នា";
+"_description" = "ការពិពណ៌នា";
 "step" = "ជំហាន";
 "ratings_and_review" = "ការវាយតម្លៃ និងមតិយោបល់";
 "tap_to_rate" = "ចុចដើម្បីវាយតម្លៃ";
@@ -73,5 +73,6 @@
 "_duration" = "រយៈពេល";
 "_level" = "កម្រិត";
 
-
+//MARK: - update recipe
+"update_recipe" = "កែប្រែរូបមន្តធ្វើម្ហូប";
 

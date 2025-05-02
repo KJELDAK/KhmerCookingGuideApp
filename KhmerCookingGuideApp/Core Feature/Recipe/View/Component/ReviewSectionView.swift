@@ -14,7 +14,12 @@ struct ReviewSectionView: View {
     var userProfile : String
     var userName : String
     var reviewText : String
+    var isHasThreeDots: Bool
+    var onEditTapeed : () -> Void
+    var onDeleteTapeed : () -> Void
+  
     var body: some View {
+    
         VStack(alignment: .leading, spacing: 16) {
             
             // Tap to Rate Section
@@ -35,14 +40,17 @@ struct ReviewSectionView: View {
                     }
                 }
             }
-            
             // Review Card Section
             ReviewCardView(
                 userProfile: userProfile,
                 userName: userName,
                 reviewText: reviewText,
-                rating: totalStarRating
-            )
+                rating: totalStarRating,
+                isHasThreeDots: isHasThreeDots) {
+                    onEditTapeed()
+                }onDeleteTapped: {
+                    onDeleteTapeed()
+                }
             
             // Write a Review Button
             Button(action: {
