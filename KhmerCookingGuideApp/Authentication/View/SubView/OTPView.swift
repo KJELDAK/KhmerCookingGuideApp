@@ -28,6 +28,10 @@ struct OTPView: View {
     @State private var timerCancellable: AnyCancellable? // For managing the timer
     @State var isOTPvalid: Bool = false
     @State var isOTPNotValid: Bool = false
+    var isOTPComplete: Bool {
+        [pinOne, pinTwo, pinThree, pinFour, pinFive, pinSix].allSatisfy { $0.count == 1 }
+    }
+
     @Environment(\.dismiss) var dismiss
     // Start the timer
     @State var isNavigationToCreatePasswordView: Bool = false
@@ -70,16 +74,16 @@ struct OTPView: View {
                     .padding(.top,-40)
                     HStack{
                         VStack(alignment: .leading, spacing: 10){
-                            Text("Verification Code")
-                                .customFontMedium(size: 22)
+                            Text("verification_code")
+                                .customFontMediumLocalize(size: 22)
                                 .fontWeight(.semibold)
                             Group{
-                                Text("Enter 6 digits code sent to your email")
+                                Text("enter_otp_message")
                                 
                                 Text(email)
                             }
                             
-                            .customFont(size: 13)
+                            .customFontLocalize(size: 13)
                         }
                         .padding(.leading)
                         Spacer()
@@ -97,7 +101,7 @@ struct OTPView: View {
                     .padding(.vertical)
                     
                     if resendEnabled {
-                        Button("Resend Code") {
+                        Button("resend_code") {
                             startTimer()
                             print("Resend code triggered")
                             authenticationViewModel.sendOTP (email: email){ isSuccess, message in
@@ -107,10 +111,19 @@ struct OTPView: View {
                             }
                             
                         }
+                        .customFontLocalize(size: 14)
                         .foregroundColor(.blue)
                     } else {
-                        Text("Resend code in \(String(format: "%02d:%02d", timerValue / 60, timerValue % 60))")
-                            .foregroundColor(.gray)
+                        HStack{
+                            Text("resend_in")
+                            Text("\(String(format: "%02d:%02d", timerValue / 60, timerValue % 60))")
+                               
+                        }
+                        .foregroundColor(.gray)
+                        .customFontLocalize(size: 14)
+   
+
+
                     }
                     ButtonComponent(action: {
                         let otp = verifyOtp()
@@ -118,19 +131,28 @@ struct OTPView: View {
                         print(pinOne)
                         authenticationViewModel.verifyOTP(email: email, otp: otp) { isSuccess, message in
                             messageFromAPI = message
-                            print(message)
-                            if isSuccess{
-                                isOTPvalid = true
-                                
-                              
+                            switch message {
+                            case "Invalid OTP format [6 digits only].":
+                                messageFromAPI = "invalid_OTP_format"
+                            case "Invalid OTP provided.":
+                                messageFromAPI = "invalid_otp_provided"
+                            case"OTP validated and email verified successfully":
+                                messageFromAPI = "otp_validated_and_email_verified"
+                            default :
+                                messageFromAPI = message
                             }
-                            else{
+                            print(message)
+                            if isSuccess {
+                                isOTPvalid = true
+                            } else {
                                 isOTPNotValid = true
-                                
                             }
                         }
-                    }, content: "Continue")
+                    }, content: "_continue")
+                    .disabled(!isOTPComplete)
+                    .opacity(isOTPComplete ? 1.0 : 0.5)
                     .padding()
+
                     Spacer()
                 }
                 .navigationDestination(isPresented: $isNavigationToCreatePasswordView, destination: {
@@ -154,13 +176,13 @@ struct OTPView: View {
             }
             
             if isOTPvalid{
-                SuccessAndFailedAlert(status: true, message: messageFromAPI, duration: 3, isPresented: $isOTPvalid)
+                SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isOTPvalid)
                     .onDisappear{
                         isNavigationToCreatePasswordView = true
                     }
             }
             else if isOTPNotValid{
-                SuccessAndFailedAlert(status: false, message: messageFromAPI, duration: 3, isPresented: $isOTPNotValid)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isOTPNotValid)
             }
         }
         
@@ -191,11 +213,6 @@ struct OTPView: View {
     }
 }
 
-//struct OtpFormFieldView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        OTPView()
-//    }
-//}
 
 // Modifier for limiting input and styling text fields
 struct OTPModifier: ViewModifier {

@@ -165,6 +165,7 @@ class RecipeViewModel: ObservableObject {
             .responseDecodable(of: FeedbackResponse.self){ response in
                 switch response.result{
                 case .success(let value):
+                    print(value.message)
                     completion(true, value.message)
                 case .failure(let error):
                     self.isLoading = false
@@ -179,7 +180,7 @@ class RecipeViewModel: ObservableObject {
                     }
                     else{
                         print("faild to get all categories")
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                     }
                 }
             }
@@ -196,6 +197,7 @@ class RecipeViewModel: ObservableObject {
             .responseDecodable(of: FeedbackResponse.self){ response in
                 switch response.result{
                 case .success(let value):
+                    print(value.message)
                     completion(true, value.message)
                 case .failure(let error):
                     self.isLoading = false
@@ -224,7 +226,9 @@ class RecipeViewModel: ObservableObject {
             .responseDecodable(of: ResponseWrapper<String>.self) { response in
                 switch response.result{
                 case .success(let value):
+                    self.viewAllRateAndFeedBack.removeLast()
                     self.userFoodFeedback = nil
+                   
                     completion(true, value.message)
                     self.isLoadingWhenPerfromAction = false
                 case .failure(let error):

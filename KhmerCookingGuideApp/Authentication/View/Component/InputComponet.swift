@@ -38,11 +38,11 @@ struct InputComponent: View {
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
                         Text(placeHolder)
-                            .customFont(size: 16)
+                            .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }
                     TextField("", text: $textInput)
-                        .customFont(size: 20)
+                        .customFontLocalize(size: 20)
                         .multilineTextAlignment(.leading)
                         .onChange(of: textInput){
 //                            newValue in
@@ -61,8 +61,8 @@ struct InputComponent: View {
             )
             // Error Message
             if !isValidation && !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .customFont(size: 12)
+                Text(LocalizedStringKey(errorMessage))
+                    .customFontLocalize(size: 12)
                     .foregroundColor(.red)
                     .padding(.leading, 8)
             }
@@ -74,7 +74,7 @@ struct ValidationEmail {
     
     func validate(_ email: String) -> String? {
         if email.isEmpty {
-            return "email is empty."
+            return "email_is_empty"
         }
         else {
             return nil

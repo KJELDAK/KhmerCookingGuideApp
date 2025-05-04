@@ -10,42 +10,39 @@ import SwiftUI
 struct AdditionalInformationView: View {
     @Environment(\.dismiss) var dismiss
     @State var username: String = ""
-    @State var dateOfBirth = ""
-    @State var gender = ""
     @State var messageFromAPI: String = ""
     @State var isSaveUserInfoSuccess : Bool = false
     @State var isSaveUserInfoFailed : Bool = false
+    @State var phoneNumber = ""
     @StateObject var authenticationViewModel = AuthenticationViewModel()
     @State var isNavigateToLoginView: Bool = false
     var body: some View {
         ZStack{
             NavigationView {
                 VStack(alignment: .leading, spacing: 16){
-                    Text("Basic Information")
-                        .customFontRobotoBold(size: 18)
+                    Text("basic_information")
+                        .customFontMediumLocalize(size: 18)
                         .padding(.top)
                     VStack(alignment: .leading, spacing: 16){
-                        Text("Username")
-                            .customFontMedium(size: 16)
+                        Text("full_name")
+                            .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
                             .padding(.top)
-                        InputationComponet(placeHolder: .constant("User Name"), textInput: $username, image: .constant("usernamePlaceholder"))
-                        Text("Date of birth")
-                            .customFontMedium(size: 16)
+                        InputationComponet(placeHolder: .constant("user_name"), textInput: $username, image: .constant("usernamePlaceholder"))
+                        Text("phone_number")
+                            .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
-                        DateInputComponent(placeHolder: .constant("Date of birth"), image: .constant("calendar"), requestDateOfBirth: $dateOfBirth)
-                        Text("Username")
-                            .customFontMedium(size: 16)
-                            .foregroundColor(Color(hex: "0A0019"))
-                        GenderPickerComponent(placeHolder: .constant("Gender"),  image: .constant("gender"), requestGender: $gender)
+                        InputationComponet(placeHolder: .constant("phone_number"), textInput: $phoneNumber, image: .constant("phone"))
+                            .keyboardType(.numberPad)
+                        
                         ButtonComponent(action: {
-                            print(gender, dateOfBirth, username)
+                           
                        
-                            if gender.isEmpty || dateOfBirth.isEmpty || username.isEmpty{
+                            if  username.isEmpty{
                                 isSaveUserInfoFailed = true
-                                messageFromAPI = "Please fill all information"
+                                messageFromAPI = "please_fill_all_information"
                             }else{
-                                authenticationViewModel.saveUserInfo(userName: username, dateOfBirth: dateOfBirth, gender: gender) { sussess, message in
+                                authenticationViewModel.saveUserInfo(userName: username, phoneNumber: phoneNumber) { sussess, message in
                                     messageFromAPI = message
                                     if sussess{
                                         isSaveUserInfoSuccess = true
@@ -56,7 +53,7 @@ struct AdditionalInformationView: View {
                                 
                                 }
                             }
-                        }, content: "Save").padding(.top)
+                        }, content: "_save").padding(.top)
                         
                     }
                     
@@ -74,11 +71,11 @@ struct AdditionalInformationView: View {
                         }
                     }
             }
-            SuccessAndFailedAlert(status: true, message: messageFromAPI, duration: 3, isPresented: $isSaveUserInfoSuccess)
+            SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isSaveUserInfoSuccess)
                 .onDisappear{
                     isNavigateToLoginView = true
                 }
-            SuccessAndFailedAlert(status: false, message: messageFromAPI, duration: 3, isPresented: $isSaveUserInfoFailed)
+            SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isSaveUserInfoFailed)
             
         }
         .fullScreenCover(isPresented: $isNavigateToLoginView) {

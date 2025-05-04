@@ -67,7 +67,7 @@ struct RecipeEditorView: View {
                         }
                         
                         // Cooking Steps Section
-                        SectionHeader(title: "Steps")
+                        SectionHeader(title: "step")
                         
                         ForEach(cookingSteps) { step in
                             CookingStepInputView(
@@ -104,34 +104,44 @@ struct RecipeEditorView: View {
                             BackButtonComponent(action: {
                                 isNavigateToPreviousView = true
                                 
-                            }, content: "Back")
+                            }, content: "_back")
 
                             ButtonComponent(action: {
                                 logRecipeData()
                                 print(photoPicker.prepareImageDataForAPI(), foodName, foodDescription)
                                 print("Ingredients:", ingredients)
-                                print("Cooking Steps:", cookingSteps)
+                                print("_hard:", cookingSteps, reqLevel)
+                                switch selectedLevel {
+                                case "_hard":
+                                    reqLevel = "Hard"
+                                case "_medium":
+                                    reqLevel = "Medium"
+                                case "_easy":
+                                    reqLevel = "Easy"
+                                default:
+                                    reqLevel = "Easy" // Default value
+                                }
 
                                 switch selectedCategory{
-                                case  "Dinner":
+                                case  "_dinner":
                                     reqCategory = 3
-                                case "Lunch":
+                                case "_lunch":
                                     reqCategory = 2
                                 default:
                                     reqCategory = 1
                                 }
                                 switch selectedCuisines{
-                                case "Steam":
+                                case "_steam":
                                     reqCuisines = 7
-                                case "Dessert":
+                                case "_dessert":
                                     reqCuisines = 6
-                                case "Stir-Fried":
+                                case "_stir-Fried":
                                     reqCuisines = 5
-                                case "Fry":
+                                case "_fry":
                                     reqCuisines = 4
-                                case "Grill":
+                                case "_grill":
                                     reqCuisines = 3
-                                case "Salad":
+                                case "_salad":
                                     reqCuisines = 2
                                 default :
 
@@ -149,7 +159,7 @@ struct RecipeEditorView: View {
                                             name: foodName,
                                             description: foodDescription,
                                             durationInMinutes: duration,
-                                            level: selectedLevel,
+                                          level: reqLevel,
                                             cuisineId: reqCuisines,
                                             categoryId: reqCategory,
                                             ingredients: ingredients
@@ -161,11 +171,10 @@ struct RecipeEditorView: View {
                                             messageFromServer = message
                                             if success {
                                                 isPostRecipeSuccess = true
-                                                print("🎉 Recipe successfully posted: \(message)")
+                                                
                                                 print(newFoodRecipe)
                                             } else {
                                                 isPostRecipeFailed = true
-                                                print("⚠️ Failed to post recipe: \(message)")
                                                 print(newFoodRecipe)
                                             }
                                         }
@@ -176,7 +185,7 @@ struct RecipeEditorView: View {
                                     }
                                 }
 
-                            }, content: "Submit")
+                            }, content: "_submit")
                             .disabled(
                                 ingredients.isEmpty ||
                                 cookingSteps.isEmpty ||
@@ -196,31 +205,36 @@ struct RecipeEditorView: View {
                         }
                     }
                     .padding()
-                    .navigationTitle("Recipe")
+                    
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
+                        ToolbarItem(placement: .principal){
+                            Text("_recipe")
+                                .customFontSemiBoldLocalize(size: 20)
+                        }
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button(action: {
                                 isSheetPresent = false
                                 selectedTab = 0
                             }) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.black)
-                            }
+                                Image("iconClose")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)                            }
                         }
                     }
+                    .navigationBarTitleDisplayMode(.inline)
                 }
             }
             if postFoodRecipeViewModel.isLoading{
                 LoadingComponent()
             }
             else{
-                SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isPostRecipeSuccess)
+                SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeSuccess)
                     .onDisappear{
                         isSheetPresent = false
                         selectedTab = 0
                     }
-                SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isPostRecipeFailed)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeFailed)
                     .onDisappear{
                         isSheetPresent = false
                         selectedTab = 0
@@ -257,7 +271,7 @@ struct IngredientInputView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                TextField("Enter Ingredienth", text: $Ingredienth.name)
+                TextField("enter_ingredient", text: $Ingredienth.name)
                     .padding()
                     .font(.custom("KantumruyPro-Regular", size: 16))
 
@@ -272,7 +286,7 @@ struct IngredientInputView: View {
             
             HStack {
 
-                NumericTextField(value: $Ingredienth.quantity ,placeholder: "Eter ingredient quantity")
+                NumericTextField(value: $Ingredienth.quantity ,placeholder: "enter_ingredient_quantity")
 
                    
             }
@@ -308,7 +322,7 @@ struct CookingStepInputView: View {
 
             TextEditorWithPlaceholder(
                 text: $stepDescription,
-                placeholder: "Enter step description",
+                placeholder: "enter_step_description",
                 isTextBlack: .constant(true)
             )
             .onChange(of: stepDescription) { newValue in
@@ -380,7 +394,7 @@ struct NumericTextField: View {
     }()
     
     var body: some View {
-        TextField(placeholder, text: $value)
+        TextField(LocalizedStringKey(placeholder), text: $value)
 //        .keyboardType(.decimalPad) // Use decimal keyboard
             .font(.custom("KantumruyPro-Regular", size: 16))
         .frame(height: 50)

@@ -38,7 +38,8 @@ struct ToggleButtonGroup: View {
 //                                }
 //                            }
                         }) {
-                            Text(item)
+                            Text(LocalizedStringKey(item))
+                                .customFontLocalize(size: 16)
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 8)
                                 .background(selection.contains(item) ? Color(hex: "primary") : Color.clear)

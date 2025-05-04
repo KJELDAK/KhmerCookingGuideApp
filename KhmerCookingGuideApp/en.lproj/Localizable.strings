@@ -19,7 +19,21 @@
 "_description" = "Description";
 "step" = "steps";
 "no_rating_and_feedback_yet" = "No rating and feedback yet";
+"all_rating_and_review" = "All Rating and Review";
 "write_a_review" = "Write a review";
+"_cancel" = "Cancel";
+"_post" = "បញ្ជូន";
+"cannot_feedback_own_recipe" = "You cannot provide feedback on your own recipe";
+"_edit" = "Edit";
+"_delete" = "Delete";
+"are_you_sure_to_delete" = "Are you sure to delete?";
+"recipe_will_be_deleted" = "This recipe will be deleted.";
+"_confirm" = "Confirm";
+"_submit" = "Submit";
+"_back" = "Back";
+"_level" = "Level";
+"user_rating_comment_duplicate" = "You have already provided a rating and comment for this item.";
+
 
 //MARK: - Profile
 "my_profile" = "My Profile";
@@ -42,7 +56,7 @@
 
 //MARK: - Term And Condiction
 
-"terms_title" = "📄 Terms & Conditions";
+"terms_title" = "Terms & Conditions";
 "terms_intro" = "Please read carefully before using the Khmer Cooking Guide App";
 
 "purpose_title" = "🎯 1. Purpose of the App";
@@ -71,4 +85,146 @@
 
 //MARK: - update recipe
 "update_recipe" = "Update Recipe";
+"recipe_updated_successfully" = "Recipe updated successfully";
+//MARK: - Rate And Feedback
+"update_rate_and_feedback" = "Update rate and feedback";
+"write_a_review" = "Write a Review";
+"feedback_update_successfully" = "Feedback updated successfully";
+//MARK: - Regiseter
+"full_name" = "Full Name";
+"phone_number" = "Phone Number";
+"basic_information" = "Basic Information";
+"please_fill_all_information" = "Please fill all information.";
+"user_info_saved" = "User information saved successfully.";
+"technical_error" ="Technical error,\nplease try again.";
+"register_title" = "Create an Account";
+"register_subtitle" = "Please enter your email to get started";
+"email_already_registered" = "The email address is already registered. Please use a different email.";
+"email_invalid_format" = "Oops! Your email seems incorrect. Please use the format: example@gmail.com";
+"email_password_invalid" = "Email and Password are not valid";
+"incorrect_password" = "Incorrect password!";
+"login_success" = "Login Successfully";
+"email_not_exist" = "Email does not exist. Please check and try again";
+"register_footer_line_1" = "Discover, Cook, Share – It All Starts Here";
+"register_footer_line_2" = "Sign Up and Start Cooking!";
+
+
+
+//MARK:- Login
+
+"enter_account" = "Please enter your account here";
+"welcome_to_you" = "Welcome to you";
+"_email" = "អ៊ីមែល";
+"_password" = "Password";
+"_register" = "Register";
+"no_account" = "Don't have an account?";
+"login_agreement" = "By clicking “LOGIN” you agreed to our";
+"terms_of_service" = "Term of Service";
+"_and" = "and";
+"_privacy" = "Privacy";
+"_login" = "Login";
+"forgot_password" = "Forgot Password";
+"input_password" = "Input your password";
+"forgot_password_title" = "Forgot Your Password?";
+"forgot_password_message" = "Enter your email address to receive a reset link.";
+"_next" = "Next";
+"discover_cook_share" = "Discover, Cook, Share – It All Starts Here";
+"sign_up_start_cooking" = "Sign Up and Start Cooking!";
+"_back_to" = "Back to";
+//MARK: - verify OTP view
+"verification_code" = "Verification Code";
+"enter_otp_message" = "Enter 6 digits code sent to your email";
+"resend_code" = "Resend Code";
+"resend_in" = "Resend code in";
+"_continue" = "Continue";
+"invalid_OTP_format" = "Invalid OTP format [requires 6 digits]";
+"invalid_otp_provided" = "Invalid OTP provided";
+"otp_validated_and_email_verified" = "OTP validated and email verified successfully";
+//MARL: - Create password
+"create_new_password" = "Create New Password";
+"new_password" = "New Password";
+"confirm_new_password" = "Confirm New Password";
+"enter_new_password" = "Please enter your new password";
+"enter_confirm_password" = "Please enter your confirm password";
+"passwords_do_not_match" = "Passwords do not match";
+"next" = "Next";
+"input_your_password" = "Input your password";
+"password_created_successfully" = "Password created successfully";
+"_save" = "Save";
+"email_is_empty" = "Email is empty.";
+//MARK: - Create Recipe
+"recipe_created_successfully" = "Recipe created successfully";
+"_cuisines" = "Cuisines";
+"_soup" = "Soup";
+"_salad" = "Salad";
+"_grill" = "Grill";
+"_fry" = "Fry";
+"_stir_fried" = "Stir-Fried";
+"_dessert" = "Dessert";
+"_steam" = "Steam";
+"_breakfast" = "Breakfast";
+"_lunch" = "Lunch";
+"_dinner" = "Dinner";
+"_snack" = "Snack";
+"_hard" = "Hard";
+"_medium" = "Medium";
+"_easy" = "Easy";
+"_you_can_only_select_up_to_5_images" = "You can only select up to 5 images.";
+"enter_food_name" = "Enter food name";
+"tell_me_about_your_food" = "Tell me a little about your food";
+"enter_step_description" = "Enter step description";
+"enter_ingredient" = "Enter ingredient";
+"enter_ingredient_quantity" = "Enter ingredient quantity";
+"your_dishes" = "Your dishes";
+"_recipe" = "Recipe";
+"food_recipe_posted_successfully" = "Food recipe posted successfully";
+//MARK: - Recipe
+"search_here" = "Search here";
+"All" = "All";
+"Star Rating" = "Star Rating";
+"_apply" = "Apply";
+"Soup" = "Soup";
+"Salad" = "Salad";
+"Grill" = "Grill";
+"Fry" = "Fry";
+"Stir-Fried" = "Stir-Fried";
+"Dessert" = "Dessert";
+"Steam" = "Steam";
+"_minutes" = "minutes";
+"no_data" = "No data";
+"please_try_again" = "Please try again";
+"result_not_found" = "Result not found";
+//MARK: - Favorite
+"no_favorites_yet" = "No Favorites Yet";
+"start_exploring_text" = "Start exploring delicious Khmer recipes and save your favorites here!";
+"discover_recipes" = "Discover Recipes";
+"favorites_title" = "Favorites";
+"feedback_success" = "Thanks! We've received your feedback.";
+"delete_title" = "Are you sure you want to delete?";
+"delete_message" = "This rating and feedback will be permanently removed.";
+//MARK: - Profile
+"my_profile" = "My Profile";
+"full_name" = "Full Name";
+"email_address" = "Email Address";
+"gender" = "Gender";
+"created_at" = "Created At";
+"edit_profile" = "Edit Profile";
+//MARK: -
+"Breakfast" = "Breakfast";
+"Lunch" = "Lunch";
+"Dinner" = "Dinner";
+"Home" = "Home";
+"Recipe" = "Recipe";
+"Favorite" = "Favorite";
+"Profile" = "Profile";
+"update_profile_success" = "Update profile successfully";
+"update_profile_failed" = "Could not update profile\nplease try again later";
+"enter_full_name" = "Please enter your full name";
+"enter_phone_number" = "Please enter your phone number";
+"logout_title" = "Log Out";
+"logout_message" = "Are you sure you want to log out?";
+
+
+
+
 

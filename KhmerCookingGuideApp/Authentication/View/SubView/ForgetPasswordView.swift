@@ -40,6 +40,7 @@ struct ForgetPasswordView: View {
             NavigationView {
                 VStack {
                     HeaderView()
+                        .padding(.bottom,32)
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             InputFields()
@@ -61,7 +62,7 @@ struct ForgetPasswordView: View {
                 LoadingComponent()
             }
             else if isEmailNotExist{
-                SuccessAndFailedAlert(status: false, message: messageFromApi, duration: 3, isPresented: $isEmailNotExist)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromApi), duration: 3, isPresented: $isEmailNotExist)
             }
         }
     }
@@ -69,21 +70,15 @@ struct ForgetPasswordView: View {
     // MARK: - Header View
     private func HeaderView() -> some View {
         VStack {
-            HStack {
-                Spacer()
-                Image("english")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
-            }
+      
             Image("logo")
                 .resizable()
                 .frame(width: 275, height: 150)
-            Text("Welcome to you")
-                .customFontRobotoBold(size: 26)
+            Text("forgot_password_title")
+                .customFontSemiBoldLocalize(size: 26)
                 .padding(.top, -30)
-            Text("Please enter your account here")
-                .customFontRobotoRegular(size: 12)
+            Text("forgot_password_message")
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "757575"))
                 .padding(.top, -10)
         }
@@ -92,7 +87,7 @@ struct ForgetPasswordView: View {
     // MARK: - Input Fields
     private func InputFields() -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Email")
+            Text("_email")
                 .customFont(size: 12)
                 .foregroundColor(Color(hex: "757575"))
             InputComponent(textInput: $email, placeHolder: "example@mail.com", errorMessage: $errorMessageInEmail, isValidation: $isValidationInEmail)
@@ -105,7 +100,14 @@ struct ForgetPasswordView: View {
         ButtonComponent(action: {
             authenticationViewModel.CheckEmailExists(email: email) { isSuccess, message in
               
-                messageFromApi = message
+               
+                switch message{
+                case "🚫 Oops! Your email seems incorrect. Please use the format: example@gmail.com 🌈":
+                    messageFromApi = "email_invalid_format"
+              
+                default:
+                    messageFromApi = message
+                }
                 if isSuccess{
                     isNavigateToOTPView = true
                     isEmailExist = true
@@ -118,32 +120,34 @@ struct ForgetPasswordView: View {
                 }
             }
 //            isNavigateToOTPView = true
-        }, content: "Next")
+        }, content: "_next")
         .disabled(!isValidationInEmail)
         .opacity(!isValidationInEmail ? 0.4 : 1)
     }
     // MARK: - Back to Login Link
     private func BackToLoginLink() -> some View {
         HStack {
-            Text("Back to")
+            Text("_back_to")
+                .customFontLocalize(size: 16)
             Button {
                 dismiss()
             } label: {
                 Text("Login?")
                     .foregroundColor(Color(hex: "primary"))
+                    .customFontLocalize(size: 16)
             }
         }
     }
     // MARK: - Footer View
     private func FooterView() -> some View {
         VStack(spacing: 10) {
-            Text("Discover, Cook, Share – It All Starts Here")
+            Text("discover_cook_share")
                 .multilineTextAlignment(.center)
-                .customFont(size: 12)
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "0A0019"))
-            Text("Sign Up and Start Cooking!")
+            Text("sign_up_start_cooking")
                 .multilineTextAlignment(.center)
-                .customFont(size: 12)
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "0A0019"))
         }
     }

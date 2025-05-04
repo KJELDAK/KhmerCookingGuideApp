@@ -19,9 +19,9 @@ struct SearchBarComponent: View {
             ZStack(alignment: .leading) {
                 // Placeholder text
                 if searchText.isEmpty {
-                    Text("search here")
+                    Text("search_here")
                         .foregroundColor(Color(hex: "#767388"))
-                        .customFont(size: 16)
+                        .customFontLocalize(size: 16)
                         .padding(.leading, 8)
                 }
                 // TextField

@@ -29,7 +29,7 @@ struct UpdateFoodRecipeView: View {
     @State private var selectedApiImageIndices: Set<Int> = []
     @State private var originalApiImages: [String] = []
     @State private var hasFetched = false
-
+    
     @Environment(\.dismiss) var dismiss
     
     
@@ -82,6 +82,7 @@ struct UpdateFoodRecipeView: View {
                                         
                                     } else {
                                         placeholderView
+                                            .padding(.bottom)
                                     }
                                 }
                             }
@@ -100,7 +101,8 @@ struct UpdateFoodRecipeView: View {
                             // MARK: - Food Name
                             Text("food_name")
                                 .customFontMediumLocalize(size: 16)
-                            TextField("Enter food name", text: $foodName)
+                            
+                            TextField("enter_food_name", text: $foodName)
                                 .font(.custom("KantumruyPro-Regular", size: 16))
                                 .frame(height: 56)
                                 .padding(.horizontal)
@@ -109,9 +111,10 @@ struct UpdateFoodRecipeView: View {
                             // MARK: - Description
                             Text("_description")
                                 .customFontMediumLocalize(size: 16)
+                                .padding(.top)
                             TextEditorWithPlaceholder(
                                 text: $foodDescription,
-                                placeholder: "Tell me a little about your food",
+                                placeholder: "tell_me_about_your_food",
                                 isTextBlack: .constant(true)
                             )
                             .frame(height: 112)
@@ -120,7 +123,7 @@ struct UpdateFoodRecipeView: View {
                             
                             Spacer()
                         }
-                        .padding(.horizontal)
+                        .padding()
                         .toolbar {
                             ToolbarItem(placement: .navigationBarLeading) {
                                 Button {
@@ -146,21 +149,21 @@ struct UpdateFoodRecipeView: View {
                         VStack(alignment: .leading, spacing: 16) {
                             ToggleButtonGroup(
                                 title: "_level",
-                                items: ["Hard", "Medium", "Easy"],
+                                items: ["_hard", "_medium", "_easy"],
                                 selection: $selectedLevel,
                                 isSingleSelection: true
                             )
                             
                             ToggleButtonGroup(
-                                title: "Cuisines",
-                                items: ["Soup", "Salad", "Grill", "Fry", "Stir-Fried", "Dessert"],
+                                title: "_cuisines",
+                                items: ["_soup", "_salad", "_grill","_fry","_stir_fried", "_dessert"],
                                 selection: $selectedCuisines,
                                 isSingleSelection: true
                             )
                             
                             ToggleButtonGroup(
-                                title: "Category",
-                                items: ["Breakfast", "Lunch", "Dinner", "Snack"],
+                                title: "category",
+                                items: ["_breakfast", "_lunch", "_dinner"],
                                 selection: $selectedCategory,
                                 isSingleSelection: true
                             )
@@ -169,7 +172,7 @@ struct UpdateFoodRecipeView: View {
                                 print("this is",originalApiImages)
                                 handleSubmitRecipeUpdate()
                                 isRecipeInputation = true
-                            }, content: "Next")
+                            }, content: "_next")
                             .padding(.top)
                         }
                         .padding()
@@ -177,19 +180,56 @@ struct UpdateFoodRecipeView: View {
                 }
                 .onAppear {
                     // only fetch the very first time
-                        guard !hasFetched else { return }
-                        hasFetched = true
+                    guard !hasFetched else { return }
+                    hasFetched = true
                     
                     recipeViewModel.fetchRecipeById(id: foodId) { success, _ in
                         if success {
                             guard success,
-                                         let photos = recipeViewModel.viewRecipeById?.photo
-                                   else { return }
+                                  let photos = recipeViewModel.viewRecipeById?.photo
+                            else { return }
                             foodName = recipeViewModel.viewRecipeById?.name ?? ""
                             foodDescription = recipeViewModel.viewRecipeById?.description ?? ""
-                            selectedLevel = recipeViewModel.viewRecipeById?.level ?? ""
-                            selectedCategory = recipeViewModel.viewRecipeById?.categoryName ?? ""
-                            selectedCuisines = recipeViewModel.viewRecipeById?.cuisineName ?? ""
+                            
+                            switch recipeViewModel.viewRecipeById?.level{
+                            case "Easy":
+                                selectedLevel = "_easy"
+                            case "Medium":
+                                selectedLevel = "_medium"
+                            case "Hard":
+                                selectedLevel = "_hard"
+                            default:
+                                selectedLevel = "_easy"
+                            }
+                            switch recipeViewModel.viewRecipeById?.cuisineName{
+                            case "Soup":
+                                selectedCuisines = "_soup"
+                            case "Salad":
+                                selectedCuisines = "_salad"
+                            case "Grill":
+                                selectedCuisines = "_grill"
+                            case "Fry":
+                                selectedCuisines = "_fry"
+                            case "Stir-Fried":
+                                selectedCuisines = "_stir_fried"
+                            case "Dessert":
+                                selectedCuisines = "_dessert"
+                            case "Steam":
+                                selectedCuisines = "_steam"
+                            default:
+                                selectedCuisines = "_soup"
+                            }
+                            
+                            switch recipeViewModel.viewRecipeById?.categoryName {
+                            case "Breakfast":
+                                selectedCategory = "_breakfast"
+                            case "Lunch":
+                                selectedCategory = "_lunch"
+                            case "Dinner":
+                                selectedCategory = "_dinner"
+                            default:
+                                selectedCategory = "_breakfast"
+                            }
                             duration = recipeViewModel.viewRecipeById!.durationInMinutes
                             print("this is duration", duration)
                             
@@ -201,23 +241,23 @@ struct UpdateFoodRecipeView: View {
                                 }
                             }
                             cookingSteps = recipeViewModel.viewRecipeById?.cookingSteps ?? []
-
-                                   originalApiImages = photos.map { $0.photo }
-                                   // 2️⃣ Clear any previous UIImages
-                                   apiImages = []
-                                   // 3️⃣ Loop through each filename and fetch
-                                   for filename in originalApiImages {
-                                       guard let url = URL(string: "http://localhost:8080/api/v1/fileView/\(filename)")
-                                       else { continue }
-
-                                       fetchImage(from: url) { image in
-                                           guard let image = image else { return }
-                                           DispatchQueue.main.async {
-                                               apiImages.append(image)
-                                           }
-                                       }
-                                   }
-                               }
+                            
+                            originalApiImages = photos.map { $0.photo }
+                            // 2️⃣ Clear any previous UIImages
+                            apiImages = []
+                            // 3️⃣ Loop through each filename and fetch
+                            for filename in originalApiImages {
+                                guard let url = URL(string: "http://localhost:8080/api/v1/fileView/\(filename)")
+                                else { continue }
+                                
+                                fetchImage(from: url) { image in
+                                    guard let image = image else { return }
+                                    DispatchQueue.main.async {
+                                        apiImages.append(image)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -393,7 +433,7 @@ struct UpdateRecipeEditorView: View {
                             }
                         }
                         // Cooking Steps Section
-                        SectionHeader(title: "Steps")
+                        SectionHeader(title: "step")
                         
                         ForEach(cookingSteps) { step in
                             CookingStepInputView(
@@ -432,34 +472,46 @@ struct UpdateRecipeEditorView: View {
                             BackButtonComponent(action: {
                                 isNavigateToPreviousView = true
                                 
-                            }, content: "Back")
+                            }, content: "_back")
                             
                             ButtonComponent(action: {
                                 logRecipeData()
                                 print(photoPicker.prepareImageDataForAPI(), foodName, foodDescription)
-                                print("Ingredients:", ingredients)
-                                print("Cooking Steps:", cookingSteps)
+                                print("jhvjhvhj",reqCategory , reqCuisines)
+                                
+                                switch selectedLevel {
+                                case "_hard":
+                                    reqLevel = "Hard"
+                                case "_medium":
+                                    reqLevel = "Medium"
+                                case "_easy":
+                                    reqLevel = "Easy"
+                                default:
+                                    reqLevel = "Easy" // Default value
+                                }
                                 
                                 switch selectedCategory{
-                                case  "Dinner":
+                                case "_dinner":
                                     reqCategory = 3
-                                case "Lunch":
+                                case "_lunch":
                                     reqCategory = 2
+                                case "_breakfast":
+                                    reqCategory = 1
                                 default:
                                     reqCategory = 1
                                 }
                                 switch selectedCuisines{
-                                case "Steam":
+                                case "_steam":
                                     reqCuisines = 7
-                                case "Dessert":
+                                case "_dessert":
                                     reqCuisines = 6
-                                case "Stir-Fried":
+                                case "_stir-Fried":
                                     reqCuisines = 5
-                                case "Fry":
+                                case "_fry":
                                     reqCuisines = 4
-                                case "Grill":
+                                case "_grill":
                                     reqCuisines = 3
-                                case "Salad":
+                                case "_salad":
                                     reqCuisines = 2
                                 default :
                                     
@@ -483,14 +535,19 @@ struct UpdateRecipeEditorView: View {
                                         name: foodName,
                                         description: foodDescription,
                                         durationInMinutes: duration,
-                                        level: selectedLevel,
+                                        level: reqLevel,
                                         cuisineId: reqCuisines,
                                         categoryId: reqCategory,
                                         ingredients: ingredients,
                                         cookingSteps: cookingSteps
                                     )
                                     postFoodRecipeViewModel.updateFoodRecipeById(id: foodId,newFoodRecipe) { success, message in
-                                        messageFromServer = message
+                                        switch message{
+                                        case"Recipe updated successfully":
+                                            messageFromServer = "recipe_updated_successfully";
+                                        default:
+                                            messageFromServer = message
+                                        }
                                         isPostRecipeSuccess = success
                                         isPostRecipeFailed = !success
                                     }
@@ -509,14 +566,20 @@ struct UpdateRecipeEditorView: View {
                                                 name: foodName,
                                                 description: foodDescription,
                                                 durationInMinutes: duration,
-                                                level: selectedLevel,
+                                                level: reqLevel,
                                                 cuisineId: reqCuisines,
                                                 categoryId: reqCategory,
                                                 ingredients: ingredients,
                                                 cookingSteps: cookingSteps
                                             )
                                             postFoodRecipeViewModel.updateFoodRecipeById(id: foodId, newFoodRecipe) { success, message in
-                                                messageFromServer = message
+                                               
+                                                switch message{
+                                                case"Recipe updated successfully":
+                                                    messageFromServer = "recipe_updated_successfully";
+                                                default:
+                                                    messageFromServer = message
+                                                }
                                                 isPostRecipeSuccess = success
                                                 isPostRecipeFailed = !success
                                             }
@@ -527,7 +590,7 @@ struct UpdateRecipeEditorView: View {
                                     }
                                 }
                                 
-                            }, content: "Submit")
+                            }, content: "_submit")
                             .disabled(
                                 ingredients.isEmpty ||
                                 cookingSteps.isEmpty ||
@@ -539,11 +602,11 @@ struct UpdateRecipeEditorView: View {
                                 ingredients.isEmpty ||
                                 cookingSteps.isEmpty ||
                                 ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
+                                    ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                    cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
                                 }) ? 0.4 : 1
                             )
-
+                            
                         }
                     }
                     .padding()
@@ -564,14 +627,14 @@ struct UpdateRecipeEditorView: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
-
+                    
                 }
             }
             if postFoodRecipeViewModel.isLoading{
                 LoadingComponent()
             }
             else{
-                SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isPostRecipeSuccess)
+                SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeSuccess)
                     .onDisappear{
                         isSheetPresent = false
                         selectedTab = 0
@@ -582,9 +645,9 @@ struct UpdateRecipeEditorView: View {
                         }
                         dismiss()
                         
-                       
+                        
                     }
-                SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isPostRecipeFailed)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeFailed)
                     .onDisappear{
                         isSheetPresent = false
                         selectedTab = 0

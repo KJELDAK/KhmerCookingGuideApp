@@ -8,44 +8,6 @@
 import SwiftUI
 
 import SwiftUI
-
-//struct CustomFontLocalization: ViewModifier {
-//    var size: CGFloat
-//    @Environment(\.locale) var local
-//    
-//    func body(content: Content) -> some View {
-//        content
-//            .font(.custom(local.identifier == "km" ? "KantumruyPro-Regular" : local.identifier == "en" ? "Roboto-Regular" : "NotoSansKR-Regular", size: size))
-//    }
-//}
-//
-//struct CustomFontMediumLocalization: ViewModifier {
-//    var size: CGFloat
-//    @Environment(\.locale) var local
-//    func body(content: Content) -> some View {
-//        content
-//            .font(.custom(local.identifier == "km" ? "KantumruyPro-Medium" : local.identifier == "en" ? "Roboto-Medium" : "NotoSansKR-Medium", size: size))
-//    }
-//}
-//
-//struct CustomFontSemiblodLocalization: ViewModifier {
-//    var size: CGFloat
-//    @Environment(\.locale) var local
-//    func body(content: Content) -> some View {
-//        content
-//            .font(.custom(local.identifier == "km" ? "KantumruyPro-SemiBold" : local.identifier == "en" ? "Roboto-Medium" : "NotoSansKR-SemiBold", size: size))
-//    }
-//}
-//
-//struct CustomFontBoldLocalization: ViewModifier {
-//    var size: CGFloat
-//    @Environment(\.locale) var local
-//    func body(content: Content) -> some View {
-//        content
-//            .font(.custom(local.identifier == "km" ? "KantumruyPro-Bold" : local.identifier == "en" ? "Roboto-Black" : "NotoSansKR-Bold", size: size))
-//    }
-//}
-
 struct CustomFontModifier: ViewModifier {
     var size: CGFloat
     func body(content: Content) -> some View {

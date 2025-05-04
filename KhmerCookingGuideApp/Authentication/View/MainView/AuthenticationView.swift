@@ -18,8 +18,10 @@ struct AuthenticationView: View {
     @State private var isNavigateToHome: Bool = false
     @State private var isNavigateToRegistration: Bool = false
     @State private var isNavigateToForgotPasswordView : Bool = false
+    @State private var isShowLanguagePicker : Bool = false
     @StateObject var authenticationViewModel = AuthenticationViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
+    @EnvironmentObject var languageManager: LanguageManager
     var body: some View {
         ZStack{
             NavigationStack{
@@ -36,6 +38,11 @@ struct AuthenticationView: View {
                     .scrollDisabled(true)
                     FooterView()
                 }
+                .sheet(isPresented: $isShowLanguagePicker) {
+                    LanguageSelectionView(showLanguageSheet: $isShowLanguagePicker)
+/*                        .environmentObject(languageManager)*/ // passed from App level
+                }
+
                 .navigationDestination(isPresented: $isNavigateToHome) {
                         ContentView().navigationBarBackButtonHidden()
                     
@@ -53,13 +60,13 @@ struct AuthenticationView: View {
                 LoadingComponent()
             }
             else if islogInSuccess{
-                SuccessAndFailedAlert(status: islogInSuccess, message: messageFromApi , duration: 3, isPresented: $islogInSuccess)
+                SuccessAndFailedAlert(status: islogInSuccess, message: LocalizedStringKey(messageFromApi) , duration: 3, isPresented: $islogInSuccess)
                     .onDisappear{
                         isNavigateToHome = true
                     }
             }
             else if isLogInFaild{
-                SuccessAndFailedAlert(status: false, message: messageFromApi , duration: 3, isPresented: $isLogInFaild)
+                SuccessAndFailedAlert(status: false, message:  LocalizedStringKey(messageFromApi) , duration: 3, isPresented: $isLogInFaild)
             }
             else{}
         }
@@ -70,19 +77,22 @@ struct AuthenticationView: View {
         VStack {
             HStack {
                 Spacer()
-                Image("english")
+                Image(languageManager.lang == "en" ? "usa" : "khmerLogo")
                     .resizable()
                     .frame(width: 28, height: 28)
                     .padding(.horizontal, 16)
             }
+            .onTapGesture {
+                isShowLanguagePicker.toggle()
+            }
             Image("logo")
                 .resizable()
                 .frame(width: 275, height: 150)
-            Text("Welcome to you")
-                .customFontRobotoBold(size: 26)
+            Text("welcome_to_you")
+                .customFontSemiBoldLocalize(size: 26)
                 .padding(.top, -30)
-            Text("Please enter your account here")
-                .customFontRobotoRegular(size: 12)
+            Text("enter_account")
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "757575"))
                 .padding(.top, -10)
         }
@@ -91,12 +101,12 @@ struct AuthenticationView: View {
     // MARK: - Input Fields
     private func InputFields() -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Email")
-                .customFont(size: 12)
+            Text("_email")
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "757575"))
             InputComponent(textInput: $email, placeHolder: "example@mail.com", errorMessage: $errorMessageInEmail, isValidation: $isValidationInEmail)
-            Text("Password")
-                .customFont(size: 12)
+            Text("_password")
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "757575"))
             PasswordInputationComponent(password: $password, errorMessage: $errorMessage, isValidation: $isValidation)
                 .padding(.top, -12)
@@ -111,9 +121,9 @@ struct AuthenticationView: View {
             Button {
                 isNavigateToForgotPasswordView = true
             } label: {
-                Text("Forgot Password")
+                Text("forgot_password")
                     .underline()
-                    .customFontBold(size: 12)
+                    .customFontSemiBoldLocalize(size: 12)
                     .foregroundColor(Color(hex: "0A0019"))
             }
         }
@@ -124,9 +134,22 @@ struct AuthenticationView: View {
     private func LoginButton() -> some View {
         ButtonComponent(action: {
             authenticationViewModel.loginUser(email: email, password: password ){ success, message in
+                if message == "🚫 Oops! Your email seems incorrect. Please use the format: example@gmail.com 🌈"{
+                    messageFromApi = "email_invalid_format"
+                }
+                else if message == "Incorrect password!"{
+                    messageFromApi = "incorrect_password"
+                }
+                else if message == "Login Successfully" {
+                    messageFromApi = "login_success"
+
+                }
+                else{
+                                        messageFromApi = message ?? ""
+                }
                 if success {
                     islogInSuccess = true
-                    messageFromApi = message ?? ""
+                    
                     print(message!)
                     profileViewModel.getUserInfo { success, message in
                         print("get user role", HeaderToken.shared.role)
@@ -134,10 +157,10 @@ struct AuthenticationView: View {
                 }
                 else{
                     isLogInFaild = true
-                    messageFromApi = message ?? ""
+                   
                 }
             }
-        }, content: "Login")
+        }, content: "_login")
         .disabled(!isValidation || !isValidationInEmail)
         .opacity(!isValidation  || !isValidationInEmail ? 0.4 : 1)
     }
@@ -145,40 +168,42 @@ struct AuthenticationView: View {
     // MARK: - Registration Link
     private func RegistrationLink() -> some View {
         HStack {
-            Text("Don't have an account?")
+            Text("no_account")
+                .customFontLocalize(size: 16)
             Button {
                 isNavigateToRegistration = true
             } label: {
-                Text("Register")
+                Text("_register")
                     .foregroundColor(Color(hex: "primary"))
+                    .customFontLocalize(size: 16)
             }
         }
     }
     // MARK: - Footer View
     private func FooterView() -> some View {
         VStack(spacing: 10) {
-            Text("By clicking “ LOGIN “ you agreed to our ")
+            Text("login_agreement")
                 .multilineTextAlignment(.center)
-                .customFont(size: 12)
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "0A0019"))
             HStack {
                 Button {
                     // Add terms of service action
                 } label: {
-                    Text("Terms of Service ")
+                    Text("terms_of_service")
                         .underline()
-                        .customFont(size: 12)
+                        .customFontLocalize(size: 12)
                         .foregroundColor(Color(hex: "primary"))
                 }
-                Text("and")
-                    .customFont(size: 12)
+                Text("_and")
+                    .customFontLocalize(size: 12)
                     .foregroundColor(Color(hex: "0A0019"))
                 Button {
                     // Add privacy policy action
                 } label: {
-                    Text("Privacy")
+                    Text("_privacy")
                         .underline()
-                        .customFont(size: 12)
+                        .customFontLocalize(size: 12)
                         .foregroundColor(Color(hex: "primary"))
                 }
             }

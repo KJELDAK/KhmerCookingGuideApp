@@ -22,16 +22,32 @@
 "ratings_and_review" = "ការវាយតម្លៃ និងមតិយោបល់";
 "tap_to_rate" = "ចុចដើម្បីវាយតម្លៃ";
 "no_rating_and_feedback_yet" = "មិនទាន់មានការវាយតម្លៃ និងមតិយោបល់នៅឡើយ";
+"all_rating_and_review" = "មតិយោបល់ និងការវាយតម្លៃទាំងអស់";
 "write_a_review" = "សរសេរការបញ្ចេញមតិ";
+"_cancel" = "បោះបង់";
+"_post" = "បញ្ជូន";
+"cannot_feedback_own_recipe" = "អ្នកមិនអាចផ្តល់មតិយោបល់លើមុខម្ហូបរបស់ខ្លួនឯងបានទេ";
+"_edit"="កែប្រែ";
+"_delete" = "លុប";
+"are_you_sure_to_delete" = "តើអ្នកប្រាកដទេថាចង់លុបវា?";
+"recipe_will_be_deleted" = "រូបមន្តធ្វើម្ហូបនេះនឹងត្រូវបានលុបចេញ។";
+"_confirm" = "បញ្ជាក់";
+"_submit" = "បញ្ជូន";
+"_back" = "ត្រឡប់";
+"_level" = "កម្រិត";
+"user_rating_comment_duplicate" = "អ្នកបានធ្វើការវាយតម្លៃ និងបញ្ចេញមតិរួចម្តងហើយ";
+
+
+
 
 //MARK: - Profile
 
-"my_profile" = "ប្រូហ្វាល់របស់ខ្ញុំ";
-"favorites" = "ពេញចិត្ត";
+"my_profile" = "ព័ត៌មានផ្ទាល់ខ្លួនរបស់ខ្ញុំ";
+"favorites" = "កំណត់ត្រា";
 "terms_and_conditions" = "លក្ខខណ្ឌ និង គោលការណ៍";
 "application_language" = "ភាសាកម្មវិធី";
 "logout" = "ចាកចេញ";
-"edit_profile" = "កែប្រែប្រូហ្វាល់";
+"edit_profile" = "កែប្រែព័ត៌មានផ្ទាល់ខ្លួន";
 "_role" = "តួរនាទី:";
 "_language" = "ភាសា";
 "please_select_a_display_language" = "សូមជ្រើសរើសភាសាសម្រាប់បង្ហាញ";
@@ -75,4 +91,160 @@
 
 //MARK: - update recipe
 "update_recipe" = "កែប្រែរូបមន្តធ្វើម្ហូប";
+"recipe_updated_successfully" = "បានធ្វើកែប្រែរូបមន្តធ្វើម្ហូបដោយជោគជ័យ";
+
+//MARK: - Rate And Feedback
+"update_rate_and_feedback" = "កែប្រែការវាយតម្លៃ និងការបញ្ចេញមតិ";
+"write_a_review" = "សរសេរការបញ្ចេញមត្តិ";
+"feedback_update_successfully" = "កែប្រែការវាយតម្លៃ និងការបញ្ចេញមតិជោគជ័យ";
+//MARK: - Regiseter
+"full_name" = "ឈ្មោះពេញ";
+"phone_number" = "លេខទូរស័ព្ទ";
+"basic_information" = "ព័ត៌មានទូទៅ";
+"please_fill_all_information" = "សូមបំពេញព័ត៌មានទាំងអស់";
+"user_info_saved" = "ព័ត៌មានអ្នកប្រើបានរក្សាទុកដោយជោគជ័យ";
+"technical_error" ="មានកំហុសបច្ចេកទេស សូមព្យាយាមម្តងទៀត";
+"register_title" = "បង្កើតគណនីថ្មី";
+"register_subtitle" = "សូមបញ្ចូលអ៊ីមែលរបស់អ្នកដើម្បីចាប់ផ្ដើម";
+"email_already_registered" = "អាសយដ្ឋានអ៊ីមែលនេះត្រូវបានចុះឈ្មោះរួចហើយ។ សូមប្រើអាសយដ្ឋានផ្សេង។";
+"email_invalid_format" = "អ៊ីមែលរបស់អ្នកមើលទៅមិនត្រឹមត្រូវទេ។ សូមប្រើទម្រង់: example@gmail.com";
+"email_password_invalid" = "អ៊ីមែល និងពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ";
+"incorrect_password" = "ពាក្យសម្ងាត់មិនត្រឹមត្រូវ!";
+"login_success" = "ចូលប្រើបានជោគជ័យ";
+"email_not_exist" = "អ៊ីមែលនេះមិនមាននៅក្នុងប្រព័ន្ធទេ។ សូមពិនិត្យម្តងទៀត។";
+"register_footer_line_1" = "ស្វែងរក ចម្អិន ចែករំលែក – រឿងទាំងអស់ចាប់ផ្តើមនៅទីនេះ";
+"register_footer_line_2" = "ចុះឈ្មោះ និងចាប់ផ្តើមចម្អិនម្ហូប!";
+
+//MARK: - login
+"enter_account" = "សូមបញ្ចូលគណនីរបស់អ្នកនៅទីនេះ";
+"welcome_to_you" = "សូមស្វាគមន៍";
+"_email" = "អ៊ីមែល";
+"_password" = "លេខសម្ងាត់";
+"_register" = "បង្កើតគណនីថ្មី";
+"no_account" = "មិនទាន់មានគណនីមែនទេ?";
+"login_agreement" = "ដោយការចុច “LOGIN” អ្នកបានយល់ព្រមទៅនឹង";
+"terms_of_service" = "លក្ខខ័ណ្ឌសេវាកម្ម";
+"_and" = "ហើយនិង";
+"_privacy" = "ឯកជនភាព";
+"_login" = "ចូល";
+"forgot_password" = "ភ្លេចពាក្យសម្ងាត់";
+"input_password" = "បញ្ចូលពាក្យសម្ងាត់របស់អ្នក";
+"forgot_password_title" = "ភ្លេចពាក្យសម្ងាត់របស់អ្នក?";
+"forgot_password_message" = "បញ្ចូលអ៊ីមែលរបស់អ្នកដើម្បីទទួលតំណភ្ជាប់សម្រាប់កំណត់ពាក្យសម្ងាត់ឡើងវិញ។";
+"_next" = "បន្ទាប់";
+"discover_cook_share" = "រុករក ចម្អិន ចែករំលែក – គ្រប់យ៉ាងចាប់ផ្តើមទីនេះ";
+"sign_up_start_cooking" = "ចុះឈ្មោះ ហើយចាប់ផ្តើមចម្អិន!";
+"_back_to" = "ត្រឡប់ទៅកាន់";
+
+//MARK: - verify OTP view
+"verification_code" = "ផ្ទៀងផ្ទាត់លេខកូដ";
+"enter_otp_message" = "បញ្ចូលកូដ 6 ខ្ទង់ដែលបានផ្ញើទៅអ៊ីមែលរបស់អ្នក";
+"resend_code" = "ផ្ញើកូដម្តងទៀត";
+"resend_in" = "ផ្ញើកូដឡើងវិញក្នុងរយៈពេល";
+"_continue" = "បន្ត";
+"invalid_OTP_format" = "ទម្រង់ OTP មិនត្រឹមត្រូវ [ត្រូវការខ្ទង់ 6]";
+"invalid_otp_provided" = "OTP មិនត្រឹមត្រូវ";
+"otp_validated_and_email_verified" = "បានផ្ទៀងផ្ទាត់ OTP និងអ៊ីមែលដោយជោគជ័យ";
+//MARK: - Create password
+"create_new_password" = "បង្កើតពាក្យសម្ងាត់ថ្មី";
+"new_password" = "ពាក្យសម្ងាត់ថ្មី";
+"confirm_new_password" = "បញ្ជាក់ពាក្យសម្ងាត់ថ្មី";
+"enter_new_password" = "សូមបញ្ចូលពាក្យសម្ងាត់ថ្មីរបស់អ្នក";
+"enter_confirm_password" = "សូមបញ្ចូលការបញ្ជាក់ពាក្យសម្ងាត់";
+"passwords_do_not_match" = "ពាក្យសម្ងាត់មិនត្រូវគ្នា";
+"next" = "បន្ទាប់";
+"input_your_password" = "សូមបញ្ចូលពាក្យសម្ងាត់";
+"password_created_successfully" = "ពាក្យសម្ងាត់ត្រូវបានបង្កើតដោយជោគជ័យ";
+"_save" = "រក្សាទុក";
+"user_name" = "ឈ្មោះពេញរបស់អ្នក";
+"email_is_empty" = "អ៊ីមែលគឺទទេ";
+//MARK: - Create Recipe
+"recipe_created_successfully" = "បានបញ្ចូលរបៀបធ្វើម្ហូបដោយជោគជ័យ";
+"_cuisines" = "ប្រភេទម្ហូប";
+"_soup" = "ស៊ុប";
+"_salad" = "សាឡាដ";
+"_grill" = "អាំង";
+"_fry" = "ចៀន";
+"_stir_fried" = "ឆា";
+"_dessert" = "បង្អែម";
+"_steam" = "ចំហុយ";
+"_breakfast" = "អាហារពេលព្រឹក";
+"_lunch" = "អាហារថ្ងៃត្រង់";
+"_dinner" = "អាហារពេលល្ងាច";
+"_snack" = "អាហារសម្រន់";
+"_hard" = "ពីបាក";
+"_medium" = "មធ្យម";
+"_easy" = "ងាយស្រូល";
+"you_can_only_select_up_to_5_images" = "អ្នកអាចជ្រើសរើសរូបភាពបានតែ 5 រូបប៉ុណ្ណោះ។";
+"enter_food_name" = "បញ្ចូលឈ្មោះអាហារ";
+"tell_me_about_your_food" = "ប្រាប់ខ្ញុំបន្តិចអំពីអាហាររបស់អ្នក";
+"enter_step_description" = "ពិពណ៌នាអំពីជំហាននៃការធ្វើម្ហូប";
+"enter_ingredient" = "បញ្ចូលគ្រឿងផ្សំ";
+"enter_ingredient_quantity" = "បញ្ចូលបរិមាណគ្រឿងផ្សំ";
+"your_dishes" = "ម្ហូបរបស់អ្នក";
+
+"_recipe" = "របៀបធ្វើម្ហូប";
+"food_recipe_posted_successfully" = "របៀបធ្វើម្ហូបត្រូវបានបង្ហោះដោយជោគជ័យ";
+//MARK: - Recipe
+"search_here" = "ស្វែងរកនៅទីនេះ";
+"All" = "ទាំងអស់";
+"Star Rating" = "ចំណាត់ថ្នាក់ផ្កាយ";
+"_apply" = "អនុវត្ត";
+"Soup" = "ស៊ុប";
+"Salad" = "សាឡាដ";
+"Grill" = "អាំង";
+"Fry" = "ចៀន";
+"Stir-Fried" = "ឆា";
+"Dessert" = "បង្អែម";
+"Steam" = "ចំហុយ";
+"_minutes" = "នាទី";
+"no_data" = "គ្មានទិន្នន័យ";
+"please_try_again" = "សូមព្យាយាមម្តងទៀត";
+"result_not_found" = "រកមិនឃើញលទ្ធផលទេ។";
+//MARK: - Favorite
+"no_favorites_yet" = "មិនមានកំណត់ត្រានៅឡើយទេ";
+"start_exploring_text" = "ចាប់ផ្តើមស្វែងរករូបមន្តម្ហូបខ្មែរឆ្ងាញ់ៗ ហើយរក្សាទុករូបមន្តដែលអ្នកចូលចិត្តនៅទីនេះ!";
+"discover_recipes" = "ស្វែងរកមុខម្ហូប";
+"favorites_title" = "កំណត់ត្រា";
+"feedback_success" = "សូមអរគុណ! យើងបានទទួលមតិយោបល់របស់អ្នក។";
+"delete_title" = "តើអ្នកប្រាកដជាចង់លុបមែនទេ?";
+"delete_message" = "ការវាយតម្លៃ និងមតិយោបល់នេះនឹងត្រូវលុបចោលជាអចិន្ត្រៃយ៍។";
+//MARK: - Profile
+"my_profile" = "ពត៌មានផ្ទាល់ខ្លួន";
+"full_name" = "ឈ្មោះពេញ";
+"email_address" = "អាសយដ្ឋានអ៊ីមែល";
+"gender" = "ភេទ";
+"created_at" = "បង្កើតនៅ";
+"edit_profile" = "កែប្រែព័ត៌មានផ្ទាល់ខ្លួន";
+//MARK: -
+"Breakfast" = "អាហារពេលព្រឹក";
+"Lunch" = "អាហារថ្ងៃត្រង់";
+"Dinner" = "អាហារពេលល្ងាច";
+"Home" = "ទំព័រដើម";
+"Recipe" = "រូបមន្តម្ហូប";
+"Favorite" = "កំណត់ត្រា";
+"Profile" = "ពត៌មានផ្ទាល់ខ្លួន";
+"update_profile_success" = "ព័ត៌មានផ្ទាល់ខ្លួនត្រូវបានកែប្រែដោយជោគជ័យ";
+"update_profile_failed" = "មិនអាចកែប្រែព័ត៌មានផ្ទាល់ខ្លួនបានទេ\nសូមព្យាយាមម្តងទៀតក្នុងពេលក្រោយ";
+"enter_full_name" = "សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក";
+"enter_phone_number" = "សូមបញ្ចូលលេខទូរស័ព្ទរបស់អ្នក";
+"logout_title" = "ចាកចេញ";
+"logout_message" = "តើអ្នកពិតជាចង់ចាកចេញមែនទេ?";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

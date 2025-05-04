@@ -17,7 +17,7 @@ struct FillterList: View {
             HStack(spacing: 15) {
                 ForEach(filters, id: \.self) { filter in
                     VStack {
-                        Text(filter.cuisineName) // Use categoryName for display
+                        Text(LocalizedStringKey(filter.cuisineName)) // Use categoryName for display
                             .foregroundColor(selectedFilter == filter.cuisineName ? .white : .gray)
                             .font(.system(size: 16, weight: .medium))
                             .padding(.horizontal, 20)

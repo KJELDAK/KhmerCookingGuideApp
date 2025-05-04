@@ -64,13 +64,13 @@ class AuthenticationViewModel: ObservableObject {
                                 else{
                                     self.isLoading = false
                                     // Fallback to a generic error message
-                                    completion(false, "Email and Password are not valid")
+                                    completion(false, "email_password_invalid")
                                 }
 
                             }
                         }
                         else{
-                            completion(false, error.localizedDescription)
+                            completion(false, "technical_error")
                             self.isLoading = false
 
                         }
@@ -112,7 +112,7 @@ class AuthenticationViewModel: ObservableObject {
                         else{
                             self.isLoading = false
                             // Fallback to a generic error message
-                            completion(false, "Email is not exist")
+                            completion(false, "email_not_exist")
                         }
 
                     }
@@ -142,7 +142,7 @@ class AuthenticationViewModel: ObservableObject {
                         }
                     }
                     else{
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                         self.isLoading = false
 
                     }
@@ -177,7 +177,7 @@ class AuthenticationViewModel: ObservableObject {
                         }
                     }
                     else{
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                         self.isLoading = false
                     }
                 }
@@ -208,7 +208,7 @@ class AuthenticationViewModel: ObservableObject {
                         }
                     }
                     else{
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                         self.isLoading = false
                     }
                 }
@@ -235,7 +235,7 @@ class AuthenticationViewModel: ObservableObject {
                     }
                     else{
                         print("yoo",  error.localizedDescription)
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                         self.isLoading = false
                     }
                     
@@ -243,8 +243,8 @@ class AuthenticationViewModel: ObservableObject {
                 
             }
     }
-    func saveUserInfo(userName: String, dateOfBirth: String, gender: String, completion: @escaping(Bool, String) -> Void){
-        let parameters: [String: Any] = ["userName": userName,"phoneNumber": gender, "address": dateOfBirth]
+    func saveUserInfo(userName: String, phoneNumber: String, completion: @escaping(Bool, String) -> Void){
+        let parameters: [String: Any] = ["userName": userName,"phoneNumber": phoneNumber, "address": "null"]
         let url = "\(API.baseURL)/auth/save-user-info"
         print(HeaderToken.shared.headerToken)
         AF.request(url, method: .post,parameters: parameters, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
@@ -252,9 +252,9 @@ class AuthenticationViewModel: ObservableObject {
             .responseDecodable(of: UserInfoResponse.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print("fghj",value.message)
+                   
                     self.isLoading = false
-                    completion(true, value.message)
+                    completion(true, "user_info_saved")
                 case .failure(let error):
                     print("",error)
                     if let data = response.data{
@@ -265,7 +265,7 @@ class AuthenticationViewModel: ObservableObject {
                     }
                     else{
                         print("yoo",  error.localizedDescription)
-                        completion(false, error.localizedDescription)
+                        completion(false, "technical_error")
                         self.isLoading = false
                     }
                     

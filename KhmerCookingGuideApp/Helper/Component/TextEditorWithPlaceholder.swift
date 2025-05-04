@@ -15,9 +15,9 @@ struct TextEditorWithPlaceholder: View {
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                    VStack {
-                       Text(placeholder)
-//                           .customFont(size: 16)
-                           .padding( [.top],10)
+                       Text(LocalizedStringKey(placeholder))
+                           .font(.custom("KantumruyPro-Regular", size: 16))
+                           .padding( [.top],16)
 
 //                            .opacity(0.9)
                             

@@ -28,9 +28,9 @@ struct PostFoodRecipeView: View {
         GridItem(.flexible())   // Column 3
     ]
     // State for each toggle group
-    @State  var selectedLevel: String = "Hard"
-    @State  var selectedCuisines: String = "Soup"
-    @State  var selectedCategory: String = "Breakfast"
+    @State  var selectedLevel: String = "_hard"
+    @State  var selectedCuisines: String = "_soup"
+    @State  var selectedCategory: String = "_breakfast"
     @State var isRecipeInputation = false
     @State var isNavigateToPreviouseView = false
     @StateObject var postFoodRecipeViewModel = PostFoodRecipeViewModel()
@@ -121,12 +121,15 @@ struct PostFoodRecipeView: View {
                                                 }.frame(maxWidth: .infinity)
                                                     .cornerRadius(16)
                                                     .padding()
+                                                  
                                                     .overlay {
                                                         RoundedRectangle(cornerRadius: 16).stroke(Color(hex: "#E5E7EB") ,  style: StrokeStyle(lineWidth: 2, dash: [10, 5]))
                                                     }
+                                                    .padding(.bottom)
                                             }
                                         }
                                     }
+                                    .padding(.top)
                                 }
                                 //                .frame(height: 250)
                                 //                    .background(.red)
@@ -139,16 +142,18 @@ struct PostFoodRecipeView: View {
 
                                 // Show a message if the limit is reached
                                 if photoPicker.isImageLimitReached {
-                                    Text("You can only select up to 5 images.")
-                                        .font(.caption)
+                                    Text("_you_can_only_select_up_to_5_images")
+                                        .customFontLocalize(size: 14)
                                         .foregroundColor(.red)
                                         .padding(.top)
+                                      
                                 }
                                 //MARK: - Food Name
                                 Text("food_name")
                                     .customFontMediumLocalize(size: 16)
+                                 
                                 
-                                TextField("Enter food name", text: $foodName)
+                                TextField("enter_food_name", text: $foodName)
                                     .font(.custom("KantumruyPro-Regular", size: 16))
                                     .frame(height: 56)
                                     .padding(.horizontal)
@@ -158,7 +163,8 @@ struct PostFoodRecipeView: View {
                                 //MARK: - Description
                                 Text("_description")
                                     .customFontMediumLocalize(size: 16)
-                                TextEditorWithPlaceholder(text:$foodDescription, placeholder: "Tell me a little about your food", isTextBlack: .constant(true))
+                                    .padding(.top)
+                                TextEditorWithPlaceholder(text:$foodDescription, placeholder: "tell_me_about_your_food", isTextBlack: .constant(true))
                                     .frame(height: 112)
                                     .padding(.horizontal)
                                     .overlay {
@@ -179,8 +185,8 @@ struct PostFoodRecipeView: View {
                                           
                                     }
                                     ToolbarItem(placement: .principal){
-                                        Text("Your dishes")
-                                            .customFontRobotoBold(size: 16)
+                                        Text("your_dishes")
+                                            .customFontSemiBoldLocalize(size: 20)
                                     }
                                 }
                                 .navigationBarTitleDisplayMode(.inline)
@@ -192,7 +198,7 @@ struct PostFoodRecipeView: View {
                                 // Level (Single Selection)
                                 ToggleButtonGroup(
                                     title: "_level",
-                                    items: ["Hard", "Medium", "Easy"],
+                                    items: ["_hard", "_medium", "_easy"],
                                     selection: $selectedLevel,
                                     isSingleSelection: true
                                 )
@@ -200,16 +206,16 @@ struct PostFoodRecipeView: View {
                                 
                                 // Cuisines (Multi-Selection)
                                 ToggleButtonGroup(
-                                    title: "Cuisines",
-                                    items: ["Soup", "Salad", "Grill","Fry","Stir-Fried", "Dessert"],
+                                    title: "_cuisines",
+                                    items: ["_soup", "_salad", "_grill","_fry","_stir_fried", "_dessert"],
                                     selection: $selectedCuisines,
                                     isSingleSelection: true
                                 )
                                 
                                 // Category (Single Selection)
                                 ToggleButtonGroup(
-                                    title: "Category",
-                                    items: ["Breakfast", "Lunch", "Dinner", "Snack"],
+                                    title: "category",
+                                    items: ["_breakfast", "_lunch", "_dinner"],
                                     selection: $selectedCategory,
                                     isSingleSelection: true
                                 )
@@ -217,7 +223,7 @@ struct PostFoodRecipeView: View {
                                 ButtonComponent(action: {
                                     isRecipeInputation = true
 //                                    let imageData = photoPicker.prepareImageDataForAPI()
-                                }, content: "Next")
+                                }, content: "_next")
                                 .disabled(foodName.isEmpty || foodDescription.isEmpty || photoPicker.prepareImageDataForAPI().isEmpty
 )
                                 .opacity(foodName.isEmpty || foodDescription.isEmpty || photoPicker.prepareImageDataForAPI().isEmpty
@@ -232,6 +238,7 @@ struct PostFoodRecipeView: View {
                         
                     }
                 }
+                
                 .onAppear {
                     print("sdvhb", selectedTab,selectedLevel)
                 }

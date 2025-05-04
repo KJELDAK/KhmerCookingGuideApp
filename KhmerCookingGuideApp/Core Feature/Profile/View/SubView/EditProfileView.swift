@@ -14,7 +14,7 @@ struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     @State private var fullName: String = ""
     @State private var email: String = ""
-    @State private var gender: String = ""
+    @State private var phoneNumber: String = ""
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     @State private var firstName: String = ""
@@ -77,13 +77,13 @@ struct EditProfileView: View {
                                     .customFontMediumLocalize(size: 12)
                                     .foregroundColor(Color(hex: "00000"))
                                 
-                                InputTextComponent(textInput: $fullName, placeHolder: "please enter your full name")
+                                InputTextComponent(textInput: $fullName, placeHolder: "enter_full_name")
                                 
                                 Text("_gender")
                                     .customFontMediumLocalize(size: 12)
                                     .foregroundColor(Color(hex: "00000"))
                                 
-                                GenderPickerComponent(placeHolder: .constant("Gender"), image: .constant("gender"), requestGender: $gender)
+                                InputTextComponent(textInput: $phoneNumber, placeHolder: "enter_phone_number")
                             }
                             .padding()
                             
@@ -93,7 +93,7 @@ struct EditProfileView: View {
                     
                     // Button at bottom
                     ButtonComponent(action: {
-                        saveProfile( fullName: fullName, gender: "0975195858")
+                        saveProfile( fullName: fullName, phoneNumber: phoneNumber)
                     }, content: LocalizedStringKey("save_changes"))
                     .padding()
                     .background(Color.white) // Optional: background to avoid transparency
@@ -110,14 +110,15 @@ struct EditProfileView: View {
                         }
                     }
                     ToolbarItem(placement: .principal) {
-                        Text("Edit Profile")
-                            .customFontRobotoBold(size: 16)
+                        Text("edit_profile")
+                            .customFontSemiBoldLocalize(size: 20)
                     }
                 }
                 .onAppear {
                     if let payload = profileViewModel.userInfo?.payload {
                         fullName = payload.fullName
-                        gender = payload.phoneNumber
+                        phoneNumber = payload.phoneNumber
+//                        imageUrl = payload.profileImage
                     }
                 }
                 .onChange(of: selectedItem) {
@@ -132,14 +133,14 @@ struct EditProfileView: View {
             if profileViewModel.isLoadingWhenUpdate{
                 LoadingComponent()
             }
-            SuccessAndFailedAlert(status: true, message: "Update profile successfully", duration: 3, isPresented: $isShowSuccessAlert)
+            SuccessAndFailedAlert(status: true, message: "update_profile_success", duration: 3, isPresented: $isShowSuccessAlert)
                 .onDisappear{
                     dismiss()
                 }
-            SuccessAndFailedAlert(status: false, message: "Could not update profile \nplease try again later", duration: 3, isPresented: $isShowErrorAlert)
+            SuccessAndFailedAlert(status: false, message: "update_profile_failed", duration: 3, isPresented: $isShowErrorAlert)
         }
     }
-    private func saveProfile(fullName: String, gender: String) {
+    private func saveProfile(fullName: String, phoneNumber: String) {
         if let imageData = selectedImageData {
             // User selected a new image
             FileUploader.shared.uploadFiles(imageDataArray: [imageData]) { success, message in
@@ -150,7 +151,7 @@ struct EditProfileView: View {
                         profileViewModel.updateUserProfile(
                             profileImage: fileName,
                             fullName: fullName,
-                            phoneNumber: gender
+                            phoneNumber: phoneNumber
                         ) { success, message in
                             if success {
                                 isShowSuccessAlert = true
@@ -175,7 +176,7 @@ struct EditProfileView: View {
                 profileViewModel.updateUserProfile(
                     profileImage: fileName,
                     fullName: fullName,
-                    phoneNumber: gender
+                    phoneNumber: phoneNumber
                 ) { success, message in
                     if success {
                         isShowSuccessAlert = true

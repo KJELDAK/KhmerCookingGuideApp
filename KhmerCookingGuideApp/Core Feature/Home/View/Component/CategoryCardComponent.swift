@@ -15,8 +15,10 @@ struct CategoryCardComponent : View {
             
                 ZStack{
                     VStack{
-                        Text(title ?? "Soup")
-                            .customFontRobotoMedium(size: 14)
+                        Text(LocalizedStringKey(title ?? "Soup") )
+//                            .customFontRobotoMedium(size: 14)
+                            .customFontLocalize(size: 14)
+                            .foregroundColor(.black)
                     }
                     .frame(maxWidth: 70)
                     Image(image ?? "mhob7")

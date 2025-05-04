@@ -22,12 +22,12 @@ struct InputationComponet: View {
                 
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
-                        Text(placeHolder)
-                            .customFont(size: 16)
+                        Text(LocalizedStringKey(placeHolder))
+                            .customFontKhmer(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }
                     TextField("", text: $textInput)
-                        .customFont(size: 16)
+                        .customFontKhmer(size: 16)
                         .multilineTextAlignment(.leading)
                         .onChange(of: textInput){
 //                            newValue in

@@ -32,14 +32,13 @@ struct FoodRecipeFilterComponent: View {
                 VStack {
                     Text("Filter")
                         .foregroundStyle(Color(hex: "#374957"))
-                        .customFontRobotoBold(size: 20)
+                        .customFontSemiBoldLocalize(size: 20)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 
                 Text("category")
                     .foregroundStyle(Color(hex: "#090920"))
-//                    .customFontMediumLocalize(size: 16)
-                    .customFontRobotoBold(size: 16)
+                    .customFontMediumLocalize(size: 16)
                 VStack(alignment: .leading, spacing: 25) {
                     ForEach(["All", "Star Rating"].map { $0 as String }, id: \.self){ type in
                         Button(action: {
@@ -60,7 +59,7 @@ struct FoodRecipeFilterComponent: View {
                                 .padding(.horizontal, 2)
                                 Text(LocalizedStringKey(type))
                                     .foregroundColor(.black)
-                                    .customFont(size: 18)
+                                    .customFontLocalize(size: 18)
                                     .padding(.leading, 8)
                             }
                         }
@@ -72,7 +71,7 @@ struct FoodRecipeFilterComponent: View {
                 selectedType = localSelectedType
                 isPresented = false
                
-            }, content: "Apply")
+            }, content: "_apply")
             .buttonStyle(.borderedProminent)
         }
         .padding(25)

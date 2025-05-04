@@ -29,7 +29,7 @@ struct CreatePasswordView: View {
         var isValid = true
         
         if newPassword.isEmpty {
-            newPasswordErrorMessage = "Please enter your new password"
+            newPasswordErrorMessage = "enter_new_password"
             isValidationNewPassword = false
             isValid = false
         } else {
@@ -37,12 +37,12 @@ struct CreatePasswordView: View {
         }
 
         if confirmPassword.isEmpty {
-            confirmPasswordErrorMessage = "Please enter your confirm password"
+            confirmPasswordErrorMessage = "enter_confirm_password"
             isValidationConfirmPassword = false
             isValid = false
         }
         else if newPassword != confirmPassword {
-            confirmPasswordErrorMessage = "Passwords do not match"
+            confirmPasswordErrorMessage = "passwords_do_not_match"
             isValidationConfirmPassword = false
             isValid = false
         } else {
@@ -56,11 +56,11 @@ struct CreatePasswordView: View {
         ZStack{
             NavigationView{
                 VStack(alignment: .leading){
-                    Text("Create New Password")
-                        .customFontRobotoBold(size: 18)
+                    Text("create_new_password")
+                        .customFontSemiBoldLocalize(size: 18)
                     HStack{
-                        Text("New Password")
-                            .customFontMedium(size: 16)
+                        Text("new_password")
+                            .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
                         Text("*").foregroundColor(Color(hex: "primary"))
                         
@@ -73,8 +73,8 @@ struct CreatePasswordView: View {
                         .padding(.top,-10)
                   
                     HStack{
-                        Text("Confirm New Password")
-                            .customFontMedium(size: 16)
+                        Text("confirm_new_password")
+                            .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
                         Text("*").foregroundColor(Color(hex: "primary"))
                         
@@ -91,6 +91,12 @@ struct CreatePasswordView: View {
                             if isRegister{
                                 authenticationViewModel.createPassword(email: email, password: confirmPassword) { isSuccess, message in
                                     messageFromAPI = message
+                                    switch messageFromAPI {
+                                    case "Password created successfully":
+                                        messageFromAPI = "password_created_successfully"
+                                    default:
+                                        messageFromAPI = message
+                                    }
                                     if isSuccess{
                                         print("true")
                                         isCreatePasswordSuccess = true
@@ -118,12 +124,16 @@ struct CreatePasswordView: View {
                         }
                         else{
                             print("does not match")
-                            confirmPasswordErrorMessage = "Password does not match"
+                            confirmPasswordErrorMessage =  "passwords_do_not_match"
+                           
                             isValidationConfirmPassword = false
                         }
                         
                         
-                    }, content: "Next").padding(.top)
+                    }, content: "_next").padding(.top)
+                        .disabled(!isValidationConfirmPassword)
+                        .opacity(isValidationNewPassword && isValidationConfirmPassword ? 1 : 0.5)
+
 
                     Spacer()
                 }
@@ -143,12 +153,8 @@ struct CreatePasswordView: View {
                     AdditionalInformationView().navigationBarBackButtonHidden(true)
                 }
                 
-//                .navigationDestination(isPresented: $isNavigateToLoginView) {
-//                    AuthenticationView().navigationBarBackButtonHidden(true)
-//                        .interactiveDismissDisabled(true)
-//                }
             }
-            SuccessAndFailedAlert(status: true, message: messageFromAPI , duration: 3, isPresented: $isCreatePasswordSuccess)
+            SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI) , duration: 3, isPresented: $isCreatePasswordSuccess)
                 .onDisappear{
                     if isRegister{
                         //dfghjk
@@ -158,7 +164,7 @@ struct CreatePasswordView: View {
                         isNavigateToLoginView = true
                     }
                 }
-            SuccessAndFailedAlert(status: false, message: messageFromAPI, duration: 3, isPresented: $isCreatePasswordFailed)
+            SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI) , duration: 3, isPresented: $isCreatePasswordFailed)
         }
         .fullScreenCover(isPresented: $isNavigateToLoginView) {
             AuthenticationView()
@@ -167,8 +173,3 @@ struct CreatePasswordView: View {
         
     }
 }
-//
-//#Preview {
-//    @StateObject var authenticationViewModel = AuthenticationViewModel()
-//    CreatePasswordView(authenticationViewModel: authenticationViewModel, email: .constant("sreaksa492@gmail.com"))
-//}

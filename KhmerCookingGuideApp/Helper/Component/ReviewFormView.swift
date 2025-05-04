@@ -11,8 +11,8 @@ import Kingfisher
 struct ReviewFormView: View {
     @ObservedObject var recipeViewModel : RecipeViewModel
     @State private var reviewText: String = ""
-    @State private var rating: Int = 5 // Default rating
-    @Binding var isPresented: Bool  // Use Binding to control visibility
+    @State private var rating: Int = 5
+    @Binding var isPresented: Bool
     @State var isShowSuccesAlert: Bool = false
     @State var isShowFaildAlert: Bool = false
     @State var messageFromServer: String = ""
@@ -21,7 +21,7 @@ struct ReviewFormView: View {
     var profile: String
     var userName: String
     var foodId : Int?
-    @State private var showPopup: Bool = false // For animation
+    @State private var showPopup: Bool = false
     
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
@@ -61,6 +61,9 @@ struct ReviewFormView: View {
                                 .foregroundColor(.black)
                             StarRatingView(rating: $rating) // Interactive stars
                         }
+                        .onAppear{
+                            print("dsgsdg",userName)
+                        }
                         
                         Spacer()
                     }
@@ -75,10 +78,19 @@ struct ReviewFormView: View {
                     HStack {
                         BackButtonComponent(action: {
                             dismissPopup()
-                        }, content: "Cancel")
+                        }, content: "_cancel")
                         ButtonComponent(action: {
                             recipeViewModel.postRateAndFeedback(foodId: foodId!, ratingValue: String(rating), commentText: reviewText) { isSuccess, message in
-                                messageFromServer = message
+                                switch message {
+                                case "You cannot provide feedback on your own recipe":
+                                    messageFromServer = "cannot_feedback_own_recipe"
+                                case "User has already provided both a rating and a comment for this item and cannot modify them further.":
+                                    messageFromServer = "user_rating_comment_duplicate"
+                                case "Feedback added successfully":
+                                    messageFromServer = "feedback_success"
+                                default :
+                                    messageFromServer = message
+                                }
                                 if isSuccess{
                                     isShowSuccesAlert = true
                                     recipeViewModel.fetchRecipeById(id: foodId ?? 0) { _, _ in
@@ -90,7 +102,7 @@ struct ReviewFormView: View {
                                     print("error")
                                 }
                             }
-                        }, content: "Post")
+                        }, content: "_post")
                         .disabled(reviewText.isEmpty)
                         .opacity(reviewText.isEmpty ? 0.5 : 1)
                     }
@@ -99,11 +111,11 @@ struct ReviewFormView: View {
                 }
                 .padding()
                 .background(Color.white)
-                SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isShowSuccesAlert)
+                SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowSuccesAlert)
                     .onDisappear{
                         dismiss()
                     }
-                SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isShowFaildAlert)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowFaildAlert)
                     .onDisappear{
                         dismiss()
                     }
@@ -227,10 +239,16 @@ struct updateRateAndFeedbackView: View {
                     HStack {
                         BackButtonComponent(action: {
                             dismissPopup()
-                        }, content: "Cancel")
+                        }, content: "_cancel")
                         ButtonComponent(action: {
                             recipeViewModel.updateRateAndFeedback(feedBackId: feedbackId,foodId: foodId!, ratingValue: String(rating), commentText: reviewText) { isSuccess, message in
-                                messageFromServer = message
+                                switch message {
+                                case "Feedback updated successfully":
+                                    messageFromServer = "feedback_update_successfully"
+                                default:
+                                    messageFromServer = message
+                                }
+                                
                                 if isSuccess{
                                     isShowSuccesAlert = true
                                 }
@@ -239,7 +257,7 @@ struct updateRateAndFeedbackView: View {
                                     print("error")
                                 }
                             }
-                        }, content: "Post")
+                        }, content: "_post")
                         .disabled(reviewText.isEmpty)
                         .opacity(reviewText.isEmpty ? 0.5 : 1)
                     }
@@ -248,7 +266,7 @@ struct updateRateAndFeedbackView: View {
                 }
                 .padding()
                 .background(Color.white)
-                SuccessAndFailedAlert(status: true, message: messageFromServer, duration: 3, isPresented: $isShowSuccesAlert)
+                SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowSuccesAlert)
                     .onDisappear{
                         recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: foodId ?? 0) { _, _ in
                             
@@ -261,7 +279,7 @@ struct updateRateAndFeedbackView: View {
                         }
                         dismiss()
                     }
-                SuccessAndFailedAlert(status: false, message: messageFromServer, duration: 3, isPresented: $isShowFaildAlert)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowFaildAlert)
                     .onDisappear{
                         dismiss()
                     }
@@ -286,7 +304,7 @@ struct updateRateAndFeedbackView: View {
                     }
                 }
                 ToolbarItem( placement: .principal) {
-                    Text("write_a_review")
+                    Text("update_rate_and_feedback")
                         .customFontSemiBoldLocalize(size: 20)
                 }
                 

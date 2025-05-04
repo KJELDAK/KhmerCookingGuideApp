@@ -32,7 +32,12 @@ struct HomeScreenView : View {
             Text("category")
                 .customFontSemiBoldLocalize(size: 16)
 //                .customFontRobotoMedium(size: 16)
-            CategoryView(homeViewModel: homeViewModel)
+            if homeViewModel.categories.isEmpty{
+                Text("no_data")
+                    .customFontLocalize(size: 20)
+            }else{
+                CategoryView(homeViewModel: homeViewModel)
+            }
             VStack{
                 HStack{
                     Text("popular_dishes")
@@ -51,9 +56,22 @@ struct HomeScreenView : View {
                         }
                     }
                 }
-                PopularFoodRecipes(popularRecipes: $homeViewModel.foodRecipes)
+                if homeViewModel.foodRecipes.isEmpty{
+                    SearchNotFoundComponent(content: "no_data")
+                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                     List{}.refreshable {
+                         print("haha")
+                     }.listStyle(PlainListStyle())
+                        .padding(.top)
+                    
+                }
+                else{
+                    PopularFoodRecipes(popularRecipes: $homeViewModel.foodRecipes)
+                        .padding(.top)
+                }
+               
 
-                    .padding(.top)
+                   
             }.padding(.top)
                 
             Spacer()

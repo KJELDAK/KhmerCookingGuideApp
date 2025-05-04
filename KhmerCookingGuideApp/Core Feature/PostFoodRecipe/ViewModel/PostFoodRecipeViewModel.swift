@@ -61,7 +61,7 @@ class PostFoodRecipeViewModel: ObservableObject {
                    
                 case .success(let value):
                     print("✅ Food recipe posted successfully: \(value)")
-                    completion(true, value.message)
+                    completion(true, "food_recipe_posted_successfully")
                     
                 case .failure(let error):
                     print("❌ Error posting food recipe:", error)
@@ -71,7 +71,7 @@ class PostFoodRecipeViewModel: ObservableObject {
                             print("Server Error:", serverError.payload)
                         }
                     }
-                    completion(false, error.localizedDescription)
+                    completion(false, "technical_error")
                 }
             }
     }
@@ -90,7 +90,7 @@ class PostFoodRecipeViewModel: ObservableObject {
                 switch response.result {
                    
                 case .success(let value):
-                    print("✅ Food recipe updated successfully: \(value)")
+                    print(value.message)
                     completion(true, value.message)
                     
                 case .failure(let error):
@@ -101,7 +101,7 @@ class PostFoodRecipeViewModel: ObservableObject {
                             print("Server Error:", serverError.payload)
                         }
                     }
-                    completion(false, error.localizedDescription)
+                    completion(false, "technical_error")
                 }
             }
     }

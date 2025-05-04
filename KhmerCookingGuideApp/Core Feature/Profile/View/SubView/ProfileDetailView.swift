@@ -12,6 +12,7 @@ import Kingfisher
 struct MyProfileView: View {
     @State private var selectedTab = "Personal"
     @ObservedObject var profileViewModel: ProfileViewModel
+    @State var createAt = ""
     @Environment(\.dismiss) var dismiss
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
@@ -47,10 +48,10 @@ struct MyProfileView: View {
                         .offset(x: 35, y: 35)
                 }
                     VStack(alignment: .leading, spacing: 16) {
-                        ProfileField(title: "Full Name", value: profileViewModel.userInfo?.payload.fullName ?? "")
-                        ProfileField(title: "Email Address", value: profileViewModel.userInfo?.payload.email ?? "")
-                        ProfileField(title: "Gender", value: profileViewModel.userInfo?.payload.phoneNumber ?? "")
-                        ProfileField(title: "Create At", value: profileViewModel.userInfo?.payload.createdAt ?? "")
+                        ProfileField(title: "full_name", value: profileViewModel.userInfo?.payload.fullName ?? "")
+                        ProfileField(title: "email_address", value: profileViewModel.userInfo?.payload.email ?? "")
+                        ProfileField(title: "phone_number", value: profileViewModel.userInfo?.payload.phoneNumber ?? "")
+                        ProfileField(title: "created_at", value: createAt)
                     }
                     .padding()
                 
@@ -67,17 +68,35 @@ struct MyProfileView: View {
                     }
                 }
                 ToolbarItem(placement: .principal) {
-                    Text("My Profile")
-                        .customFontRobotoBold(size: 16)
+                    Text("my_profile")
+                        .customFontSemiBoldLocalize(size: 20)
                 }
             }
             .onAppear{
                 profileViewModel.getUserInfo { _, _ in
+                    createAt = formatDateString(profileViewModel.userInfo?.payload.createdAt ?? "")
+                    print("wefwe",profileViewModel.userInfo?.payload.createdAt ?? "")
                     
                 }
             }
         }
     }
+    func formatDateString(_ isoDate: String) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+
+        if let date = formatter.date(from: isoDate) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.locale = Locale(identifier: "en_US")
+            outputFormatter.dateFormat = "d MMMM yyyy, h:mm a" // Example: 12 March 2025, 6:24 PM
+            return outputFormatter.string(from: date)
+        } else {
+            return "Invalid date"
+        }
+    }
+
+
 }
 
 struct ProfileField: View {
@@ -86,11 +105,11 @@ struct ProfileField: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption)
+            Text(LocalizedStringKey(title))
+                .customFontLocalize(size: 16)
                 .foregroundColor(.gray)
             Text(value)
-                .font(.body)
+                .customFontKhmer(size: 16)
                 .foregroundColor(.black)
             Divider()
         }

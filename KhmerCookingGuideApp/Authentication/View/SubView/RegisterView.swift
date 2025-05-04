@@ -23,6 +23,7 @@ struct RegistrationView: View {
             NavigationView {
                 VStack {
                     HeaderView()
+                        .padding(.bottom,32)
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             InputFields()
@@ -33,8 +34,6 @@ struct RegistrationView: View {
                     .scrollDisabled(true)
                     FooterView()
                 }
-//                .navigationDestination(isPresented: $isNavigateToLogin) { AuthenticationView().navigationBarBackButtonHidden()
-//                }
                 .navigationDestination(isPresented: $isNavigateToOTPView){
                     OTPView(email: $email,authenticationViewModel: authenticationViewModel, isRegister: .constant(true)).navigationBarBackButtonHidden(true)
                 }
@@ -46,11 +45,12 @@ struct RegistrationView: View {
                 LoadingComponent()
             }
             else if isEmailExist{
-                SuccessAndFailedAlert(status: false, message: "The email address is already registered. Please use a different email.", duration: 3, isPresented: $isEmailExist)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey("email_already_registered")
+, duration: 3, isPresented: $isEmailExist)
 
             }
             else if isEmailNotCorrectFomart{
-                SuccessAndFailedAlert(status: false, message: "🚫 Oops! Your email seems incorrect. Please use the format: example@gmail.com 🌈", duration: 3, isPresented: $isEmailNotCorrectFomart)
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey("email_invalid_format"), duration: 3, isPresented: $isEmailNotCorrectFomart)
             }
         }
         .onAppear{
@@ -62,21 +62,15 @@ struct RegistrationView: View {
     // MARK: - Header View
     private func HeaderView() -> some View {
         VStack {
-            HStack {
-                Spacer()
-                Image("english")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .padding(.horizontal, 16)
-            }
+        
             Image("logo")
                 .resizable()
                 .frame(width: 275, height: 150)
-            Text("Welcome to you")
-                .customFontRobotoBold(size: 26)
+            Text("register_title")
+                .customFontSemiBoldLocalize(size: 26)
                 .padding(.top, -30)
-            Text("Please enter your account here")
-                .customFontRobotoRegular(size: 12)
+            Text("register_subtitle")
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "757575"))
                 .padding(.top, -10)
         }
@@ -85,7 +79,7 @@ struct RegistrationView: View {
     // MARK: - Input Fields
     private func InputFields() -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Email")
+            Text("_email")
                 .customFont(size: 12)
                 .foregroundColor(Color(hex: "757575"))
             InputComponent(textInput: $email, placeHolder: "example@mail.com", errorMessage: $errorMessageInEmail, isValidation: $isValidationInEmail)
@@ -127,7 +121,7 @@ struct RegistrationView: View {
                 }
             }
 //            isNavigateToOTPView = true
-        }, content: "Next")
+        }, content: "_next")
         .disabled(!isValidationInEmail)
         .opacity(!isValidationInEmail ? 0.4 : 1)
     }
@@ -135,11 +129,13 @@ struct RegistrationView: View {
     // MARK: - Back to Login Link
     private func BackToLoginLink() -> some View {
         HStack {
-            Text("Back to")
+            Text("_back_to")
+                .customFontLocalize(size: 16)
             Button {
                 dismiss()
             } label: {
                 Text("Login?")
+                    .customFontLocalize(size: 16)
                     .foregroundColor(Color(hex: "primary"))
             }
         }
@@ -148,13 +144,13 @@ struct RegistrationView: View {
     // MARK: - Footer View
     private func FooterView() -> some View {
         VStack(spacing: 10) {
-            Text("Discover, Cook, Share – It All Starts Here")
+            Text("register_footer_line_1")
                 .multilineTextAlignment(.center)
-                .customFont(size: 12)
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "0A0019"))
-            Text("Sign Up and Start Cooking!")
+            Text("register_footer_line_2")
                 .multilineTextAlignment(.center)
-                .customFont(size: 12)
+                .customFontLocalize(size: 12)
                 .foregroundColor(Color(hex: "0A0019"))
         }
     }

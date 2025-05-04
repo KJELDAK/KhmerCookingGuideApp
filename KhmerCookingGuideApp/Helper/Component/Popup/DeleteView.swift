@@ -42,11 +42,11 @@ struct DeleteView: View {
                     .frame(width: 60, height: 60)
                     .foregroundColor(status == true ? Color(hex: "#3F61E9") : Color(hex: "#EC221F"))
                     .background(Circle().fill(status == true ? Color(hex: "#D2DAFF") : Color(hex: "#EC221F").opacity(0.15)))
-                Text(title)
-                    .customFontMedium(size: 16)
+                Text(LocalizedStringKey(title))
+                    .customFontMediumLocalize(size: 16)
                     .multilineTextAlignment(.center)
-                Text(message)
-                    .customFont(size: 13)
+                Text(LocalizedStringKey(message))
+                    .customFontLocalize(size: 13)
                     .foregroundStyle(Color(hex: "#9E9E9E"))
                     .multilineTextAlignment(.center)
                 HStack(spacing: 15) {
@@ -54,7 +54,7 @@ struct DeleteView: View {
                         closePopup()
                     }) {
                         Spacer()
-                        Text("Cancel")
+                        Text("_cancel")
                             .customFontMediumLocalize(size: 13)
                             .foregroundColor(Color(hex: "#757575"))
                         Spacer()
@@ -67,7 +67,7 @@ struct DeleteView: View {
                         confirmAction()
                     }) {
                         Spacer()
-                        Text("Confirm")
+                        Text("_confirm")
                             .customFontMediumLocalize(size: 13)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)

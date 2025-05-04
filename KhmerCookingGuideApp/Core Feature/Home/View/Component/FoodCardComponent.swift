@@ -118,10 +118,10 @@ struct FoodCardComponent2: View {
                         .lineLimit(1)
                 }
                 HStack {
-                    Text("Level").foregroundColor(Color(hex: "Primary"))
-                    Text(level).foregroundColor(.black.opacity(0.4))
+                    Text("_level").foregroundColor(Color(hex: "Primary"))
+                    Text(LocalizedStringKey(mapLevel(level: level))).foregroundColor(.black.opacity(0.4))
                 }
-                .customFont(size: 10)
+                .customFontLocalize(size: 10)
             }
             .padding(.horizontal)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -148,6 +148,18 @@ struct FoodCardComponent2: View {
         }
         .onAppear{
             print("this is food :", id, isFavorite)
+        }
+    }
+    func mapLevel (level: String) -> String {
+        switch level {
+        case "Easy":
+            return "_easy"
+        case "Medium":
+            return "_medium"
+        case "Hard":
+            return "_hard"
+        default:
+            return ""
         }
     }
 }

@@ -22,8 +22,8 @@ struct PasswordInputationComponent: View {
                 // Password Field (SecureField or TextField based on visibility)
                 ZStack(alignment: .leading) {
                     if password.isEmpty {
-                        Text("Input your password")
-                            .customFont(size: 16)
+                        Text("input_password")
+                            .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }
 

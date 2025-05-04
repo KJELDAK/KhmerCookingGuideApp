@@ -11,7 +11,7 @@ import SwiftUI
 
 struct SuccessAndFailedAlert: View {
     var status: Bool
-     var message: String
+    var message: LocalizedStringKey
     let duration : Double
     @Binding var isPresented: Bool
     @State var scale:CGFloat = 0.0

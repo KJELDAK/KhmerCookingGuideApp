@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct AllRateAndFeedbackView: View {
+    @ObservedObject var  recipeViewModel : RecipeViewModel
     var rateAndFeebackPayload: [RatingFeedback]
     var userRateAndFeedbackPayload: UserFoodFeedbackResponse
+    @StateObject var profileViewModel = ProfileViewModel()
     @Environment(\.dismiss) var dismiss
     @State var isNavigateToUpdateRateAndFeedBack: Bool = false
-    @ObservedObject var  recipeViewModel : RecipeViewModel
     @State var isDeleteRateAndFeedbackTapped : Bool = false
     @State var messageFromServerWhenDelete = ""
     @State var isShowDeleteRateAndFeedbackFailAlert = false
+    @State var isAllRateAndFeedbackEmpty: Bool = false
     var body: some View {
         ZStack{
             NavigationView {
@@ -67,9 +69,13 @@ struct AllRateAndFeedbackView: View {
                     }
                 }
                 .navigationDestination(isPresented: $isNavigateToUpdateRateAndFeedBack, destination: {
-                    updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isNavigateToUpdateRateAndFeedBack , profile: recipeViewModel.viewRecipeById?.user.profileImage ?? "", userName: recipeViewModel.viewRecipeById?.user.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id).navigationBarBackButtonHidden(true)
+                    updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isNavigateToUpdateRateAndFeedBack , profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id).navigationBarBackButtonHidden(true)
                 })
                 .toolbar {
+                    ToolbarItem(placement: .principal){
+                        Text("all_rating_and_review")
+                            .customFontSemiBoldLocalize(size: 20)
+                    }
                     ToolbarItem( placement: .navigationBarLeading) {
                         Button{
                             dismiss()
@@ -78,15 +84,15 @@ struct AllRateAndFeedbackView: View {
                         }
                     }
                 }
-                .navigationTitle("All Reviews")
+               
                 .navigationBarTitleDisplayMode(.inline)
                 .background(Color(.systemGroupedBackground).ignoresSafeArea())
             }
             if isDeleteRateAndFeedbackTapped{
                 DeleteView(
                     status: false,
-                    title: "Are you sure to delete?",
-                    message: "This rating and feedback will be deleted."
+                    title: "delete_title",
+                    message: "delete_message"
                 ) {
                     recipeViewModel.deleteRateAndFeedbackById(id: recipeViewModel.userFoodFeedback?.payload?.id ?? 0) { success, message in
                         messageFromServerWhenDelete = message
@@ -107,7 +113,12 @@ struct AllRateAndFeedbackView: View {
             else if recipeViewModel.isLoadingWhenPerfromAction{
                 LoadingComponent()
             }
-            SuccessAndFailedAlert(status: false, message: messageFromServerWhenDelete, duration: 3, isPresented: $isShowDeleteRateAndFeedbackFailAlert)
+            SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServerWhenDelete), duration: 3, isPresented: $isShowDeleteRateAndFeedbackFailAlert)
+        }
+        .onAppear{
+            profileViewModel.getUserInfo { _, _ in
+                
+            }
         }
     }
 }

@@ -55,8 +55,23 @@ class ProfileViewModel: ObservableObject {
                     completion(true, value.message)
                     self.isLoadingWhenUpdate = false
                 case .failure(let error):
-                    completion(false, "Could not update profile,please try again later")
                     self.isLoadingWhenUpdate = false
+
+                    if let data = response.data{
+                       if  let severError = try? JSONDecoder().decode(APIErrorResponseInVeryOTP.self, from: data){
+                           print(severError.detail)
+                           completion(false,severError.detail)
+                        }
+                    }
+                    else{
+                        print("yoo",  error.localizedDescription)
+                        completion(false, "Could not update profile,please try again later")
+                        self.isLoadingWhenUpdate = false
+
+                    }
+
+                    print(error)
+                    
                 }
                 
             }

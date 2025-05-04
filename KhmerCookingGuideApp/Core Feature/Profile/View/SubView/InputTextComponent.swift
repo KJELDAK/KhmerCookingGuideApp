@@ -21,7 +21,7 @@ struct InputTextComponent: View {
                 
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
-                        Text(placeHolder)
+                        Text(LocalizedStringKey(placeHolder))
 //
                             .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))

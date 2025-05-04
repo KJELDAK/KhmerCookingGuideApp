@@ -12,11 +12,12 @@ struct ProfileView: View {
     @Binding var selectedTab: Int
     @StateObject var profileViewModel = ProfileViewModel()
     @State var isNavigateToMyProfileView: Bool = false
-    @State var isLogout: Bool = false
+ 
     @State var isShowLanguagePicker: Bool = false
     @State var isNavigateToTermAndConditionView: Bool = false
     @EnvironmentObject var languageManager: LanguageManager
     @State var isNavigateToEditProfileView : Bool = false
+    @Binding var isShowLogoutAlert: Bool
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
         NavigationView {
@@ -99,17 +100,16 @@ struct ProfileView: View {
                     }
 
                     Button{
-                        authenticationViewModel.logout()
-                        isLogout = true
+                        isShowLogoutAlert = true
                         
                     }label: {
                         ProfileOptionRow(icon: "arrow.left.circle.fill", title: "logout")
                     }
                     
                 }
-                .fullScreenCover(isPresented: $isLogout, content: {
-                    AuthenticationView()
-                })
+//                .fullScreenCover(isPresented: $isLogout, content: {
+//                    AuthenticationView()
+//                })
                 .sheet(isPresented: $isShowLanguagePicker) {
                     LanguageSelectionView(showLanguageSheet: $isShowLanguagePicker)
                         .environmentObject(languageManager) // passed from App level
@@ -124,6 +124,11 @@ struct ProfileView: View {
                 Spacer()
                 
             }
+            .overlay(content: {
+           
+
+            })
+     
             .navigationDestination(isPresented: $isNavigateToTermAndConditionView, destination: {
                 TermsAndConditionsView().navigationBarBackButtonHidden(true)
             })

@@ -35,7 +35,7 @@ struct RecipeView: View {
                         }.padding(.leading)
                     } .sheet(isPresented: $isPresented){
                         FoodRecipeFilterComponent(isPresented: $isPresented, selectedType: $selectedType)
-                            .presentationDetents([.height(400), .height(405)])
+                            .presentationDetents([.height(300), .height(305)])
                             .presentationBackground(.white)
                             .presentationCornerRadius(20)
                     }
@@ -63,7 +63,7 @@ struct RecipeView: View {
                         }
                         //MARK: - hanlde when search not found
                        else if homeViewModel.foodRecipes.isEmpty{
-                           SearchNotFoundComponent(content: "No data")
+                           SearchNotFoundComponent(content: "no_data")
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             List{}.refreshable {
                                 print("haha")
@@ -71,7 +71,7 @@ struct RecipeView: View {
 
                         }
                         else if searchAllFoodRecipes.isEmpty{
-                            SearchNotFoundComponent(content: "Result not found")
+                            SearchNotFoundComponent(content: "result_not_found")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                 List{}.refreshable {
                                     print("haha")
@@ -112,14 +112,14 @@ struct RecipeView: View {
                             ProgressView()
                         }
                         else if recipeViewModel.viewAllRecipeByCuisineId.isEmpty{
-                            SearchNotFoundComponent(content: "No data")
+                            SearchNotFoundComponent(content: "no_data")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                 List{}.refreshable {
                                     print("haha")
                                 }.listStyle(PlainListStyle())
                         }
                         else if searchFoodRecipesByCuisineId.isEmpty{
-                            SearchNotFoundComponent(content: "Result not found")
+                            SearchNotFoundComponent(content: "result_not_found")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                 List{}.refreshable {
                                     print("haha")

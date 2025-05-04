@@ -32,18 +32,18 @@ struct PasswordInputation: View {
                 // Password Field (SecureField or TextField based on visibility)
                 ZStack(alignment: .leading) {
                     if password.isEmpty {
-                        Text("Input your password")
-                            .customFont(size: 16)
+                        Text("input_your_password")
+                            .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }
 
                     if isPasswordVisible {
                         TextField("", text: $password)
-                            .customFont(size: 16)
+                            .customFontLocalize(size: 16)
 //                            ./*onChange(of: password, perform: validatePassword)*/
                     } else {
                         SecureField("", text: $password)
-                            .customFont(size: 16)
+                            .customFontLocalize(size: 16)
 //                            .onChange(of: password, perform: validatePassword)
                     }
                 }
@@ -69,8 +69,8 @@ struct PasswordInputation: View {
 
             // Error Message
             if !isValidation && !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .customFont(size: 12)
+                Text(LocalizedStringKey(errorMessage)) 
+                    .customFontLocalize(size: 12)
                     .foregroundColor(.red)
                     .padding(.leading, 8)
             }

@@ -17,8 +17,8 @@ struct PopupView: View {
                 onEditTapped() // Call the callback when Edit is tapped
             }) {
                 HStack {
-                    Text("Edit")
-                        .customFont(size: 14)
+                    Text("_edit")
+                        .customFontLocalize(size: 14)
                     Spacer()
                     Image("pencil")
                 }
@@ -31,8 +31,8 @@ struct PopupView: View {
                 onDeleteTapped() // Call the callback when delete is tapped
             }) {
                 HStack {
-                    Text("Delete")
-                        .customFont(size: 14)
+                    Text("_delete")
+                        .customFontLocalize(size: 14)
                     Spacer()
                     Image("trash")
                 }

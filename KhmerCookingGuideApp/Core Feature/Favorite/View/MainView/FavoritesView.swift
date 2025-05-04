@@ -14,27 +14,31 @@ struct FavoritesView: View {
     var body: some View {
         NavigationView {
             VStack {
+                
                 if favoriteViewModel.favoriteList.isEmpty {
                     // Empty State
                     VStack {
                         Image(systemName: "star")
                             .font(.system(size: 64))
                             .foregroundColor(.gray)
-                        Text("No Favorites Yet")
-                            .font(.headline)
+                        Text("no_favorites_yet")
+                            .customFontMediumLocalize(size: 18)
                             .padding(.top)
-                        Text("Start exploring delicious Khmer recipes and save your favorites here!")
-                            .font(.subheadline)
+                        Text("start_exploring_text")
+                            .customFontLocalize(size: 16)
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
+                            .lineSpacing(8)
                             .padding()
                         ButtonComponent(action: {
                             selectedTab = 1
-                        }, content: "Discover Recipes")
+                        }, content: "discover_recipes")
                     }
                     .padding()
                 } else {
+                  
                     ScrollView {
+                     
                         LazyVStack(spacing: 16) {
                             ForEach(favoriteViewModel.favoriteList.indices, id: \.self) { index in
                                 let recipe = favoriteViewModel.favoriteList[index]
@@ -62,7 +66,14 @@ struct FavoritesView: View {
                         }
                         .padding(.top)
                     }
-                    .navigationTitle("Favorites")
+                   
+                }
+            }
+            .toolbar{
+                ToolbarItem(placement: .principal) {
+                    
+                    Text("favorites_title")
+                        .customFontSemiBoldLocalize(size: 20)
                 }
             }
             .onAppear {

@@ -11,7 +11,14 @@ import SwiftUI
 struct RatingsAndReviewView: View {
     var averageRating: Double
     var reviewCount: Int
+    var ratePercentage: RatingPercentages
+    private var percentageArray: [Double] {
+        [ratePercentage.one, ratePercentage.two, ratePercentage.three, ratePercentage.four, ratePercentage.five]
+            .reversed()
+    }
+
     var onTappAction: () -> Void
+    
     func calculateStarDistribution(averageRating: Double, totalReviews: Int) -> [Int] {
         guard totalReviews > 0 else { return [0, 0, 0, 0, 0] }
 
@@ -73,10 +80,11 @@ struct RatingsAndReviewView: View {
                 .frame(width: 100, alignment: .leading)
                 
                 // Right: Stars and Progress Bars
+                // Right: Stars and Progress Bars using actual percentage
                 VStack(alignment: .trailing, spacing: 8) {
-                    ForEach((1...5).reversed(), id: \.self) { starCount in
-                        let count = starCounts[starCount - 1]
-                        let progress = progressForStar(starCount: starCount)
+                    ForEach(0..<5, id: \.self) { index in
+                        let starCount = 5 - index
+                        let percentage = percentageArray[index]
                         
                         HStack {
                             // Star Icons
@@ -89,16 +97,19 @@ struct RatingsAndReviewView: View {
                                 }
                             }
                             .frame(width: 70, alignment: .trailing)
-                          
-                            // Progress Bar
-                            ProgressView(value: progress)
+                            
+                            // Progress bar
+                            ProgressView(value: min(max(percentage / 100, 0), 1))
+
                                 .frame(height: 8)
                                 .tint(Color.blue)
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(4)
+                          
                         }
                     }
                 }
+                
             }
             
             HStack {

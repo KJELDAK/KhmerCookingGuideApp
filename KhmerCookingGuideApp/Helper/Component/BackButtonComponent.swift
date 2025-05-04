@@ -24,7 +24,7 @@ struct BackButtonComponent: View {
                 action()
             }, label: {
                 Text(content)
-                    .customFontRobotoBold(size: 16)
+                    .customFontSemiBoldLocalize(size: 16)
                     .fontWeight(.semibold)
                     .foregroundColor(Color(hex: "EC221F"))
                     .padding()
