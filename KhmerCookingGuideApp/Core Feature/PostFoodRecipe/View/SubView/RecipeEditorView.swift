@@ -5,7 +5,7 @@
 //  Created by Sok Reaksa on 19/1/25.
 //
 import SwiftUI
-import SwiftUI
+
 struct RecipeEditorView: View {
     @Binding var ingredients: [Ingredienth]
     @Binding var cookingSteps: [CookingStep]
@@ -16,15 +16,15 @@ struct RecipeEditorView: View {
     @Binding var foodDescription: String
     @Binding var isSheetPresent: Bool
     @ObservedObject var photoPicker: PhotoPicker
-    @Binding var selectedTab : Int
+    @Binding var selectedTab: Int
     @StateObject var postFoodRecipeViewModel = PostFoodRecipeViewModel()
-    @Binding var selectedLevel : String
-    @Binding var selectedCuisines : String
-    @Binding var selectedCategory : String
-    @State var reqLevel : String = ""
+    @Binding var selectedLevel: String
+    @Binding var selectedCuisines: String
+    @Binding var selectedCategory: String
+    @State var reqLevel: String = ""
     @State var reqCuisines = 1
     @State var reqCategory = 1
-    @Binding var duration : Int
+    @Binding var duration: Int
     @State var isPostRecipeSuccess: Bool = false
     @State var isPostRecipeFailed: Bool = false
     @State var messageFromServer: String = ""
@@ -55,7 +55,6 @@ struct RecipeEditorView: View {
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                         }
 
-                        
                         // Add Ingredient Button
                         AddButton {
                             withAnimation {
@@ -65,10 +64,10 @@ struct RecipeEditorView: View {
                                 nextIngredientId += 1
                             }
                         }
-                        
+
                         // Cooking Steps Section
                         SectionHeader(title: "step")
-                        
+
                         ForEach(cookingSteps) { step in
                             CookingStepInputView(
                                 step: step,
@@ -99,11 +98,11 @@ struct RecipeEditorView: View {
                             }
                         }
                         Spacer()
-                        
+
                         HStack {
                             BackButtonComponent(action: {
                                 isNavigateToPreviousView = true
-                                
+
                             }, content: "_back")
 
                             ButtonComponent(action: {
@@ -122,15 +121,15 @@ struct RecipeEditorView: View {
                                     reqLevel = "Easy" // Default value
                                 }
 
-                                switch selectedCategory{
-                                case  "_dinner":
+                                switch selectedCategory {
+                                case "_dinner":
                                     reqCategory = 3
                                 case "_lunch":
                                     reqCategory = 2
                                 default:
                                     reqCategory = 1
                                 }
-                                switch selectedCuisines{
+                                switch selectedCuisines {
                                 case "_steam":
                                     reqCuisines = 7
                                 case "_dessert":
@@ -143,27 +142,27 @@ struct RecipeEditorView: View {
                                     reqCuisines = 3
                                 case "_salad":
                                     reqCuisines = 2
-                                default :
+                                default:
 
                                     reqCuisines = 1
                                 }
                                 postFoodRecipeViewModel.uploadFiles(imageDataArray: photoPicker.prepareImageDataForAPI()) { success, message in
-                                    if success{
+                                    if success {
                                         let fileNames = postFoodRecipeViewModel.image.map { url in
                                             (url as NSString).lastPathComponent
                                         }
                                         let newFoodRecipe = PostFoodRequest(
-                                          photo: fileNames.enumerated().map { index, fileName in
+                                            photo: fileNames.enumerated().map { index, fileName in
                                                 Photo(id: index + 1, photo: fileName)
                                             },
                                             name: foodName,
                                             description: foodDescription,
                                             durationInMinutes: duration,
-                                          level: reqLevel,
+                                            level: reqLevel,
                                             cuisineId: reqCuisines,
                                             categoryId: reqCategory,
-                                            ingredients: ingredients
-                                            ,
+                                            ingredients: ingredients,
+
                                             cookingSteps: cookingSteps
                                         )
                                         // Call API
@@ -171,44 +170,41 @@ struct RecipeEditorView: View {
                                             messageFromServer = message
                                             if success {
                                                 isPostRecipeSuccess = true
-                                                
+
                                                 print(newFoodRecipe)
                                             } else {
                                                 isPostRecipeFailed = true
                                                 print(newFoodRecipe)
                                             }
                                         }
-                                    }
-                                    else{
+                                    } else {
                                         isPostRecipeFailed = true
                                         messageFromServer = "⚠️ Failed to post recipe, please try again later!"
                                     }
                                 }
 
                             }, content: "_submit")
-                            .disabled(
-                                ingredients.isEmpty ||
-                                cookingSteps.isEmpty ||
-                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
-                            )
-                            .opacity(
-                                ingredients.isEmpty ||
-                                cookingSteps.isEmpty ||
-                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
-                                }) ? 0.4 : 1
-                            )
-
+                                .disabled(
+                                    ingredients.isEmpty ||
+                                        cookingSteps.isEmpty ||
+                                        ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                        ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                        cookingSteps.contains(where: { $0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+                                )
+                                .opacity(
+                                    ingredients.isEmpty ||
+                                        cookingSteps.isEmpty ||
+                                        ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                                cookingSteps.contains(where: { $0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+                                        }) ? 0.4 : 1
+                                )
                         }
                     }
                     .padding()
-                    
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
-                        ToolbarItem(placement: .principal){
+                        ToolbarItem(placement: .principal) {
                             Text("_recipe")
                                 .customFontSemiBoldLocalize(size: 20)
                         }
@@ -219,44 +215,44 @@ struct RecipeEditorView: View {
                             }) {
                                 Image("iconClose")
                                     .resizable()
-                                    .frame(width: 24, height: 24)                            }
+                                    .frame(width: 24, height: 24)
+                            }
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
                 }
             }
-            if postFoodRecipeViewModel.isLoading{
+            if postFoodRecipeViewModel.isLoading {
                 LoadingComponent()
-            }
-            else{
+            } else {
                 SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeSuccess)
-                    .onDisappear{
+                    .onDisappear {
                         isSheetPresent = false
                         selectedTab = 0
                     }
                 SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeFailed)
-                    .onDisappear{
+                    .onDisappear {
                         isSheetPresent = false
                         selectedTab = 0
                     }
             }
         }
     }
-    
+
     // Function to re-adjust step IDs after deletion
     private func updateStepIds() {
         for index in cookingSteps.indices {
             cookingSteps[index].id = index + 1
         }
     }
-    
+
     // Function to log data
     private func logRecipeData() {
         print("=== Ingredients ===")
         for Ingredienth in ingredients {
             print("Name: \(Ingredienth.name), Quantity: \(Ingredienth.quantity), Price: \(Ingredienth.price)")
         }
-        
+
         print("=== Cooking Steps ===")
         for step in cookingSteps {
             print("ID: \(step.id), Description: \(step.description)")
@@ -267,7 +263,7 @@ struct RecipeEditorView: View {
 struct IngredientInputView: View {
     @Binding var Ingredienth: Ingredienth
     let onDelete: () -> Void
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -275,7 +271,6 @@ struct IngredientInputView: View {
                     .padding()
                     .font(.custom("KantumruyPro-Regular", size: 16))
 
-                
                 Button(action: onDelete) {
                     Image(systemName: "xmark")
                         .foregroundColor(.black)
@@ -283,22 +278,19 @@ struct IngredientInputView: View {
                 .padding(.horizontal)
                 .padding(.top)
             }
-            
+
             HStack {
-
-                NumericTextField(value: $Ingredienth.quantity ,placeholder: "enter_ingredient_quantity")
-
-                   
+                NumericTextField(value: $Ingredienth.quantity, placeholder: "enter_ingredient_quantity")
             }
             .padding()
         }
         .overlay {
-            RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"),lineWidth: 2)
+            RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"), lineWidth: 2)
         }
         .padding(.vertical, 8)
-        
     }
 }
+
 struct CookingStepInputView: View {
     let step: CookingStep
     let onUpdate: (CookingStep) -> Void
@@ -310,8 +302,9 @@ struct CookingStepInputView: View {
         self.step = step
         self.onUpdate = onUpdate
         self.onDelete = onDelete
-        self._stepDescription = State(initialValue: step.description) // Initialize the description
+        _stepDescription = State(initialValue: step.description) // Initialize the description
     }
+
     var body: some View {
         HStack(alignment: .top) {
             Text("\(step.id)")
@@ -348,7 +341,7 @@ struct CookingStepInputView: View {
 
 struct SectionHeader: View {
     let title: LocalizedStringKey
-    
+
     var body: some View {
         Text(title)
             .customFontSemiBoldLocalize(size: 16)
@@ -358,7 +351,7 @@ struct SectionHeader: View {
 
 struct AddButton: View {
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             Circle()
@@ -375,12 +368,13 @@ struct AddButton: View {
 }
 
 // Data Model
-struct Ingredienth : Codable, Identifiable {
+struct Ingredienth: Codable, Identifiable {
     var id: Int
     var name: String
     var quantity: String
     var price: Double = 0.0
 }
+
 import SwiftUI
 
 struct NumericTextField: View {
@@ -392,16 +386,16 @@ struct NumericTextField: View {
         formatter.maximumFractionDigits = 2 // Limit to 2 decimal places
         return formatter
     }()
-    
+
     var body: some View {
         TextField(LocalizedStringKey(placeholder), text: $value)
 //        .keyboardType(.decimalPad) // Use decimal keyboard
             .font(.custom("KantumruyPro-Regular", size: 16))
-        .frame(height: 50)
-        .padding(.horizontal)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color(hex: "D0DBEA"), lineWidth: 2)
-        )
+            .frame(height: 50)
+            .padding(.horizontal)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(hex: "D0DBEA"), lineWidth: 2)
+            )
     }
 }

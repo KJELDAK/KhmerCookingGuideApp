@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+
 struct DeleteView: View {
     @State var status: Bool
     var title: String
     var message: String
-    @State var scale:CGFloat = 0.0
-    @State var opacity:Double = 1
+    @State var scale: CGFloat = 0.0
+    @State var opacity: Double = 1
     var confirmAction: () -> Void
     var cancelAction: () -> Void
-    
+
     private func closePopup() {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
             scale = 0
@@ -26,7 +27,7 @@ struct DeleteView: View {
     }
 
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black.opacity(0.4)
                 .edgesIgnoringSafeArea(.all)
                 .onAppear {
@@ -62,7 +63,7 @@ struct DeleteView: View {
                     .frame(maxWidth: .infinity, maxHeight: 35)
                     .background(Color(hex: "#E5E7EB").opacity(0.5))
                     .cornerRadius(10)
-                    
+
                     Button(action: {
                         confirmAction()
                     }) {
@@ -90,14 +91,12 @@ struct DeleteView: View {
             .padding(.horizontal, 40)
             .scaleEffect(scale)
             .opacity(opacity)
-            .onAppear{
+            .onAppear {
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                     scale = 1
                     opacity = 1
                 }
             }
-            
         }
     }
 }
-

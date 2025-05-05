@@ -17,21 +17,21 @@ import SwiftUI
 import SwiftUI
 
 struct BackButtonComponent: View {
-    @State var action :() -> ()
+    @State var action: () -> Void
     var content: LocalizedStringKey
     var body: some View {
-            Button(action: {
-                action()
-            }, label: {
-                Text(content)
-                    .customFontSemiBoldLocalize(size: 16)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(hex: "EC221F"))
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.white)
-            })
-            .buttonStyle(CustomRejectButtonStyle())
+        Button(action: {
+            action()
+        }, label: {
+            Text(content)
+                .customFontSemiBoldLocalize(size: 16)
+                .fontWeight(.semibold)
+                .foregroundColor(Color(hex: "EC221F"))
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.white)
+        })
+        .buttonStyle(CustomRejectButtonStyle())
     }
 }
 
@@ -55,4 +55,3 @@ struct CustomRejectButtonStyle: ButtonStyle {
             )
     }
 }
-

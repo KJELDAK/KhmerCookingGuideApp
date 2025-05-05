@@ -6,19 +6,20 @@
 //
 
 import SwiftUI
-struct HomeScreenView : View {
+
+struct HomeScreenView: View {
     @StateObject var homeViewModel = HomeViewModel()
     @EnvironmentObject var languageManager: LanguageManager
     @Binding var selectedTab: Int
     var body: some View {
-        VStack(alignment: .leading,spacing: 16){
-            HStack{
-                VStack(alignment: .leading){
-                    Group{
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Group {
                         Text("what_would_you_like")
                         Text("to_eat_today?")
-                            .padding(.top,-10)
-                    } .customFontSemiBoldLocalize(size: 24)
+                            .padding(.top, -10)
+                    }.customFontSemiBoldLocalize(size: 24)
                 }
                 Spacer()
                 Image("logo")
@@ -27,27 +28,27 @@ struct HomeScreenView : View {
                     .scaledToFit()
             }
 //            .customFontRobotoMedium(size: 24)
-           
+
             SlideShowComponent()
             Text("category")
                 .customFontSemiBoldLocalize(size: 16)
 //                .customFontRobotoMedium(size: 16)
-            if homeViewModel.categories.isEmpty{
+            if homeViewModel.categories.isEmpty {
                 Text("no_data")
                     .customFontLocalize(size: 20)
-            }else{
+            } else {
                 CategoryView(homeViewModel: homeViewModel)
             }
-            VStack{
-                HStack{
+            VStack {
+                HStack {
                     Text("popular_dishes")
 //                        .customFontRobotoMedium(size: 16)
                         .customFontSemiBoldLocalize(size: 16)
                     Spacer()
-                    Button{
+                    Button {
                         selectedTab = 1
-                    }label: {
-                        HStack{
+                    } label: {
+                        HStack {
                             Text("view_all")
                                 .foregroundColor(Color(hex: "FF0000"))
                                 .customFontSemiBoldLocalize(size: 16)
@@ -56,36 +57,32 @@ struct HomeScreenView : View {
                         }
                     }
                 }
-                if homeViewModel.foodRecipes.isEmpty{
+                if homeViewModel.foodRecipes.isEmpty {
                     SearchNotFoundComponent(content: "no_data")
-                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                     List{}.refreshable {
-                         print("haha")
-                     }.listStyle(PlainListStyle())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    List {}.refreshable {
+                        print("haha")
+                    }.listStyle(PlainListStyle())
                         .padding(.top)
-                    
-                }
-                else{
+                } else {
                     PopularFoodRecipes(popularRecipes: $homeViewModel.foodRecipes)
                         .padding(.top)
                 }
-               
 
-                   
             }.padding(.top)
-                
+
             Spacer()
-            
+
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .padding()
-            .onAppear{
-                homeViewModel.getPopularFoods { isSuccess, message  in
+            .onAppear {
+                homeViewModel.getPopularFoods { _, message in
                     print(message)
                 }
-                homeViewModel.getAllCategories { isSuccess, message in
+                homeViewModel.getAllCategories { _, message in
                     print(message)
                 }
-                homeViewModel.getAllFoodRecipes { success, message in
+                homeViewModel.getAllFoodRecipes { _, message in
                     print(message)
                 }
             }

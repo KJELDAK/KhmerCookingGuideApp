@@ -5,18 +5,21 @@
 //  Created by Sok Reaksa on 5/1/25.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 // MARK: - FoodRecipeResponse
-struct FoodRecipeResponse <T: Codable>: Codable {
+
+struct FoodRecipeResponse<T: Codable>: Codable {
     let message: String
     let payload: T
     let statusCode: String
     let timestamp: String
 }
+
 // MARK: - FoodRecipeResponseByCuisinseId
-struct FoodRecipeResponseByCuisinseId  : Codable {
+
+struct FoodRecipeResponseByCuisinseId: Codable {
     let message: String
     let payload: [FoodRecipeByCuisine]
     let statusCode: String
@@ -24,6 +27,7 @@ struct FoodRecipeResponseByCuisinseId  : Codable {
 }
 
 // MARK: - FoodRecipePayload
+
 struct FoodRecipePayload: Codable {
     let id: Int
     let photo: [Photo]
@@ -44,20 +48,17 @@ struct FoodRecipePayload: Codable {
     let ratingPercentages: RatingPercentages
 }
 
-
-
 // MARK: - Ingredient
+
 struct Ingredient: Codable, Identifiable {
     var id: Int
     var name: String
     var quantity: String
     var price: Double
-
 }
 
-
-
 // MARK: - CookingStep
+
 struct CookingStep: Codable, Identifiable {
     var id: Int
     var description: String
@@ -79,8 +80,8 @@ struct RatingPercentages: Codable {
     }
 }
 
-
 // MARK: - CuisineResponse
+
 struct CuisineResponse: Codable {
     let paginationMeta: PaginationMeta
     let message: String
@@ -90,6 +91,7 @@ struct CuisineResponse: Codable {
 }
 
 // MARK: - PaginationMeta
+
 struct PaginationMeta: Codable {
     let totalCategories: Int
     let totalPages: Int
@@ -100,11 +102,14 @@ struct PaginationMeta: Codable {
 }
 
 // MARK: - Cuisine
+
 struct Cuisine: Codable, Identifiable, Hashable {
     let id: Int
     let cuisineName: String
 }
+
 // MARK: - FoodRecipeByCuisine
+
 struct FoodRecipeByCuisine: Codable, Identifiable {
     let id: Int
     let photo: [Photo]
@@ -120,6 +125,7 @@ struct FoodRecipeByCuisine: Codable, Identifiable {
 }
 
 // MARK: - FeedbackResponse
+
 struct FeedbackResponse: Codable {
     let message: String
     let payload: FeedbackPayload
@@ -128,6 +134,7 @@ struct FeedbackResponse: Codable {
 }
 
 // MARK: - FeedbackPayload
+
 struct FeedbackPayload: Codable {
     let feedbackId: Int
     let user: FeedbackUser
@@ -137,6 +144,7 @@ struct FeedbackPayload: Codable {
 }
 
 // MARK: - FeedbackUser
+
 struct FeedbackUser: Codable {
     let id: Int
     let fullName: String
@@ -144,9 +152,6 @@ struct FeedbackUser: Codable {
     let role: String
     let deleted: Bool
 }
-
-
-
 
 struct RateAndFeedbackErrorResponse: Codable {
     let type: String

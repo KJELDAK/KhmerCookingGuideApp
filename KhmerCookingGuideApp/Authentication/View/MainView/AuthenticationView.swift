@@ -5,6 +5,7 @@
 //  Created by Sok Reaksa on 9/12/24.
 //
 import SwiftUI
+
 struct AuthenticationView: View {
     @State private var email: String = ""
     @State private var password: String = ""
@@ -17,21 +18,20 @@ struct AuthenticationView: View {
     @State private var isLogInFaild: Bool = false
     @State private var isNavigateToHome: Bool = false
     @State private var isNavigateToRegistration: Bool = false
-    @State private var isNavigateToForgotPasswordView : Bool = false
-    @State private var isShowLanguagePicker : Bool = false
+    @State private var isNavigateToForgotPasswordView: Bool = false
+    @State private var isShowLanguagePicker: Bool = false
     @StateObject var authenticationViewModel = AuthenticationViewModel()
     @StateObject var profileViewModel = ProfileViewModel()
     @EnvironmentObject var languageManager: LanguageManager
     var body: some View {
-        ZStack{
-            NavigationStack{
+        ZStack {
+            NavigationStack {
                 VStack {
                     HeaderView()
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
                             InputFields()
                             LoginButton()
-                           
                         }
                         RegistrationLink()
                     }
@@ -40,39 +40,36 @@ struct AuthenticationView: View {
                 }
                 .sheet(isPresented: $isShowLanguagePicker) {
                     LanguageSelectionView(showLanguageSheet: $isShowLanguagePicker)
-/*                        .environmentObject(languageManager)*/ // passed from App level
+                    /*                        .environmentObject(languageManager)*/ // passed from App level
                 }
 
                 .navigationDestination(isPresented: $isNavigateToHome) {
-                        ContentView().navigationBarBackButtonHidden()
-                    
+                    ContentView().navigationBarBackButtonHidden()
                 }
-                .navigationDestination(isPresented: $isNavigateToRegistration){
+                .navigationDestination(isPresented: $isNavigateToRegistration) {
                     RegistrationView().navigationBarBackButtonHidden()
                 }
-                .navigationDestination(isPresented: $isNavigateToForgotPasswordView){
+                .navigationDestination(isPresented: $isNavigateToForgotPasswordView) {
                     ForgetPasswordView().navigationBarBackButtonHidden()
                 }
                 .ignoresSafeArea(.keyboard)
                 .padding(.horizontal)
             }
-            if authenticationViewModel.isLoading{
+            if authenticationViewModel.isLoading {
                 LoadingComponent()
-            }
-            else if islogInSuccess{
-                SuccessAndFailedAlert(status: islogInSuccess, message: LocalizedStringKey(messageFromApi) , duration: 3, isPresented: $islogInSuccess)
-                    .onDisappear{
+            } else if islogInSuccess {
+                SuccessAndFailedAlert(status: islogInSuccess, message: LocalizedStringKey(messageFromApi), duration: 3, isPresented: $islogInSuccess)
+                    .onDisappear {
                         isNavigateToHome = true
                     }
-            }
-            else if isLogInFaild{
-                SuccessAndFailedAlert(status: false, message:  LocalizedStringKey(messageFromApi) , duration: 3, isPresented: $isLogInFaild)
-            }
-            else{}
+            } else if isLogInFaild {
+                SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromApi), duration: 3, isPresented: $isLogInFaild)
+            } else {}
         }
     }
-    
+
     // MARK: - Header View
+
     private func HeaderView() -> some View {
         VStack {
             HStack {
@@ -97,8 +94,9 @@ struct AuthenticationView: View {
                 .padding(.top, -10)
         }
     }
-    
+
     // MARK: - Input Fields
+
     private func InputFields() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("_email")
@@ -113,8 +111,9 @@ struct AuthenticationView: View {
             ForgotPasswordLink()
         }
     }
-    
+
     // MARK: - Forgot Password Link
+
     private func ForgotPasswordLink() -> some View {
         HStack {
             Spacer()
@@ -129,43 +128,39 @@ struct AuthenticationView: View {
         }
         .padding(.top, -12)
     }
-    
+
     // MARK: - Login Button
+
     private func LoginButton() -> some View {
         ButtonComponent(action: {
-            authenticationViewModel.loginUser(email: email, password: password ){ success, message in
-                if message == "🚫 Oops! Your email seems incorrect. Please use the format: example@gmail.com 🌈"{
+            authenticationViewModel.loginUser(email: email, password: password) { success, message in
+                if message == "🚫 Oops! Your email seems incorrect. Please use the format: example@gmail.com 🌈" {
                     messageFromApi = "email_invalid_format"
-                }
-                else if message == "Incorrect password!"{
+                } else if message == "Incorrect password!" {
                     messageFromApi = "incorrect_password"
-                }
-                else if message == "Login Successfully" {
+                } else if message == "Login Successfully" {
                     messageFromApi = "login_success"
-
-                }
-                else{
-                                        messageFromApi = message ?? ""
+                } else {
+                    messageFromApi = message ?? ""
                 }
                 if success {
                     islogInSuccess = true
-                    
+
                     print(message!)
-                    profileViewModel.getUserInfo { success, message in
+                    profileViewModel.getUserInfo { _, _ in
                         print("get user role", HeaderToken.shared.role)
                     }
-                }
-                else{
+                } else {
                     isLogInFaild = true
-                   
                 }
             }
         }, content: "_login")
-        .disabled(!isValidation || !isValidationInEmail)
-        .opacity(!isValidation  || !isValidationInEmail ? 0.4 : 1)
+            .disabled(!isValidation || !isValidationInEmail)
+            .opacity(!isValidation || !isValidationInEmail ? 0.4 : 1)
     }
-    
+
     // MARK: - Registration Link
+
     private func RegistrationLink() -> some View {
         HStack {
             Text("no_account")
@@ -179,7 +174,9 @@ struct AuthenticationView: View {
             }
         }
     }
+
     // MARK: - Footer View
+
     private func FooterView() -> some View {
         VStack(spacing: 10) {
             Text("login_agreement")
@@ -210,6 +207,7 @@ struct AuthenticationView: View {
         }
     }
 }
+
 #Preview {
     AuthenticationView()
 }

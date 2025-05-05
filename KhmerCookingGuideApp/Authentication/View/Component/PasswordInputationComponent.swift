@@ -47,7 +47,7 @@ struct PasswordInputationComponent: View {
                         isPasswordVisible.toggle()
                     }
             }
-            .frame( maxWidth: .infinity,minHeight: 36, maxHeight: 36)
+            .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36)
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .background(Color(hex: "#F9FAFB"))
@@ -68,6 +68,7 @@ struct PasswordInputationComponent: View {
     }
 
     // MARK: - Password Validation
+
     func validatePassword(_ password: String) {
         if let validationResult = validator.validate(password) {
             isValidation = false
@@ -80,6 +81,7 @@ struct PasswordInputationComponent: View {
 }
 
 // MARK: - Password Validator
+
 struct ValidationPassword {
     func validate(_ password: String) -> String? {
         if password.isEmpty {
@@ -93,10 +95,9 @@ struct ValidationPassword {
             //        } else if !containsSpecialCharacter(password) {
             //            return "Password must contain at least one special character (e.g., !@#$%^&*)."
             //        }
+        } else {
+            return nil // Valid password
         }
-            else{
-                return nil // Valid password
-            }
     }
 
     // Helper function to check for uppercase letters

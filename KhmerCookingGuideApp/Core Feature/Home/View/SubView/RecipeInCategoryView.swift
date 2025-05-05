@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+
 //
-//struct RecipeInCategoryView: View {
+// struct RecipeInCategoryView: View {
 //     var categoryId : Int
 //    @Environment(\.dismiss) var dismiss
-//    
+//
 //    @StateObject var homeViewModel = HomeViewModel()
 //    var body: some View {
 //        ZStack{
-//            
+//
 //            NavigationView {
-//      
+//
 //
 //                VStack {
 //                  ScrollView {
@@ -25,13 +26,13 @@ import SwiftUI
 //                        Group {
 //                          // 1️⃣ extract the String
 //                          let fileName = photoObj.photo
-//                          
+//
 //                          // 2️⃣ map Bool? → Bool
 //                          let isFav = Binding<Bool>(
 //                            get:  { recipe.isFavorite ?? false },
 //                            set: { recipe.isFavorite = $0 }
 //                          )
-//                          
+//
 //                          NavigationLink(
 //                            destination:
 //                              RecipeDetails(isLike: isFav, id: recipe.id)
@@ -63,9 +64,9 @@ import SwiftUI
 //                            dismiss()
 //                        }label: {
 //                            Image(.backButton2)
-//                                
+//
 //                        }
-//                        
+//
 //                    }
 //                    ToolbarItem(placement: .principal) {
 //                        Text(categoryId == 1 ? "Breakfast" : categoryId == 2 ? "Lunch" : "Dinner")
@@ -73,7 +74,7 @@ import SwiftUI
 //                    }
 //                }
 //                .navigationBarTitleDisplayMode(.inline)
-//                
+//
 //            }
 //        }
 //        .onAppear{
@@ -84,19 +85,19 @@ import SwiftUI
 //        }
 //
 //    }
-//}
+// }
 
 import SwiftUI
 
 import SwiftUI
 
-//struct RecipeInCategoryView: View {
+// struct RecipeInCategoryView: View {
 //    var categoryId: Int
 //    @Environment(\.dismiss) var dismiss
-//    
+//
 //    @StateObject var homeViewModel = HomeViewModel()
 //    @State private var searchQuery: String = "" // 1️⃣ Add search query state
-//    
+//
 //    var body: some View {
 //        ZStack {
 //            NavigationView {
@@ -108,13 +109,13 @@ import SwiftUI
 //                                Group {
 //                                    // Extract the String
 //                                    let fileName = photoObj.photo
-//                                    
+//
 //                                    // Map Bool? → Bool
 //                                    let isFav = Binding<Bool>(
 //                                        get: { recipe.isFavorite ?? false },
 //                                        set: { recipe.isFavorite = $0 }
 //                                    )
-//                                    
+//
 //                                    NavigationLink(
 //                                        destination: RecipeDetails(isLike: isFav, id: recipe.id)
 //                                            .navigationBarHidden(true)
@@ -163,11 +164,11 @@ import SwiftUI
 //            }
 //        }
 //    }
-//}
+// }
 struct RecipeInCategoryView: View {
     var categoryId: Int
     @Environment(\.dismiss) var dismiss
-    
+
     @StateObject var homeViewModel = HomeViewModel()
     @State private var searchQuery: String = ""
 
@@ -178,31 +179,28 @@ struct RecipeInCategoryView: View {
         } else {
             return homeViewModel.RecipeInCategory.filter {
                 $0.name.localizedCaseInsensitiveContains(searchQuery) ||
-                $0.description.localizedCaseInsensitiveContains(searchQuery)
+                    $0.description.localizedCaseInsensitiveContains(searchQuery)
             }
         }
     }
-    
+
     var body: some View {
         ZStack {
             NavigationView {
                 VStack {
-                     if homeViewModel.RecipeInCategory.isEmpty{
+                    if homeViewModel.RecipeInCategory.isEmpty {
                         SearchNotFoundComponent(content: "no_data")
-                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                         List{}.refreshable {
-                             print("haha")
-                         }.listStyle(PlainListStyle())
-
-                     }
-                     else if filteredRecipes.isEmpty{
-                         SearchNotFoundComponent(content: "result_not_found")
-                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                             List{}.refreshable {
-                                 print("haha")
-                             }.listStyle(PlainListStyle())
-
-                     }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        List {}.refreshable {
+                            print("haha")
+                        }.listStyle(PlainListStyle())
+                    } else if filteredRecipes.isEmpty {
+                        SearchNotFoundComponent(content: "result_not_found")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        List {}.refreshable {
+                            print("haha")
+                        }.listStyle(PlainListStyle())
+                    }
                     ScrollView {
                         ForEach(filteredRecipes.indices, id: \.self) { index in
                             let recipe = filteredRecipes[index]
@@ -219,7 +217,7 @@ struct RecipeInCategoryView: View {
                                         }
                                     }
                                 )
-                                
+
                                 NavigationLink(
                                     destination: RecipeDetails(isLike: isFav, id: recipe.id)
                                         .navigationBarHidden(true)

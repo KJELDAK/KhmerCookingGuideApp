@@ -13,37 +13,34 @@ struct RecipeView: View {
     @State var selectedType: String = "All"
     @StateObject var homeViewModel = HomeViewModel()
     @StateObject var recipeViewModel = RecipeViewModel()
-    @State var cuisineId : Int = 999
-    
+    @State var cuisineId: Int = 999
+
     @State var isSortByRating: Bool = false
     var body: some View {
-        
-        ZStack{
-            VStack{
-                HStack{
-                   
-                    Button{
+        ZStack {
+            VStack {
+                HStack {
+                    Button {
                         isPresented.toggle()
-                    }label: {
-                        HStack{
+                    } label: {
+                        HStack {
                             Image("filter").resizable()
-                                .frame(width: 24,height: 24)
+                                .frame(width: 24, height: 24)
                             Text("Filter")
-    //                            .customFontMediumLocalize(size: 16)
+                                //                            .customFontMediumLocalize(size: 16)
                                 .customFontRobotoMedium(size: 16)
-                            
+
                         }.padding(.leading)
-                    } .sheet(isPresented: $isPresented){
+                    }.sheet(isPresented: $isPresented) {
                         FoodRecipeFilterComponent(isPresented: $isPresented, selectedType: $selectedType)
                             .presentationDetents([.height(300), .height(305)])
                             .presentationBackground(.white)
                             .presentationCornerRadius(20)
                     }
                     .onChange(of: selectedType) {
-                        if selectedType == "All"{
+                        if selectedType == "All" {
                             isSortByRating = false
-                        }
-                        else {
+                        } else {
                             isSortByRating = true
                         }
                     }
@@ -53,50 +50,46 @@ struct RecipeView: View {
                 FillterList(cuisineId: $cuisineId)
                     .onChange(of: cuisineId) {
                         recipeViewModel.getAllFoodRecipeByCuisineId(cuisineId: cuisineId) { _, _ in
-                            
                         }
                     }
-                ZStack{
-                    if cuisineId == 999{
-                        if homeViewModel.isLoading{
+                ZStack {
+                    if cuisineId == 999 {
+                        if homeViewModel.isLoading {
                             ProgressView()
                         }
-                        //MARK: - hanlde when search not found
-                       else if homeViewModel.foodRecipes.isEmpty{
-                           SearchNotFoundComponent(content: "no_data")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                            List{}.refreshable {
+
+                        // MARK: - hanlde when search not found
+
+                        else if homeViewModel.foodRecipes.isEmpty {
+                            SearchNotFoundComponent(content: "no_data")
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            List {}.refreshable {
                                 print("haha")
                             }.listStyle(PlainListStyle())
-
-                        }
-                        else if searchAllFoodRecipes.isEmpty{
+                        } else if searchAllFoodRecipes.isEmpty {
                             SearchNotFoundComponent(content: "result_not_found")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                List{}.refreshable {
-                                    print("haha")
-                                }.listStyle(PlainListStyle())
-
-                        }
-                        else{
-                            ScrollView{
+                            List {}.refreshable {
+                                print("haha")
+                            }.listStyle(PlainListStyle())
+                        } else {
+                            ScrollView {
                                 let sortedRecipes = isSortByRating
-                                ? searchAllFoodRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
-                                : searchAllFoodRecipes
+                                    ? searchAllFoodRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
+                                    : searchAllFoodRecipes
                                 ForEach(sortedRecipes) { recipe in
                                     if let index = homeViewModel.foodRecipes.firstIndex(where: { $0.id == recipe.id }),
-                                       let firstPhoto = recipe.photo.first {
-
+                                       let firstPhoto = recipe.photo.first
+                                    {
                                         NavigationLink(
-                                            destination: RecipeDetails(isLike:  $homeViewModel.foodRecipes[index].isFavorite, id: recipe.id).navigationBarHidden(true)
+                                            destination: RecipeDetails(isLike: $homeViewModel.foodRecipes[index].isFavorite, id: recipe.id).navigationBarHidden(true)
                                         ) {
                                             FoodCardComponent2(id: recipe.id,
-                                                isFavorite: $homeViewModel.foodRecipes[index].isFavorite, // ✅ Bind it!
-                                                fileName: firstPhoto.photo,
-                                                name: recipe.name,
-                                                               description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level
-                                            )
-                                            .frame(maxWidth: .infinity)
+                                                               isFavorite: $homeViewModel.foodRecipes[index].isFavorite, // ✅ Bind it!
+                                                               fileName: firstPhoto.photo,
+                                                               name: recipe.name,
+                                                               description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level)
+                                                .frame(maxWidth: .infinity)
                                         }
                                     }
                                 }
@@ -104,40 +97,33 @@ struct RecipeView: View {
                             .refreshable {
                                 print("refresh")
                             }
-
                         }
-                    }
-                    else{
-                        if recipeViewModel.isLoading{
+                    } else {
+                        if recipeViewModel.isLoading {
                             ProgressView()
-                        }
-                        else if recipeViewModel.viewAllRecipeByCuisineId.isEmpty{
+                        } else if recipeViewModel.viewAllRecipeByCuisineId.isEmpty {
                             SearchNotFoundComponent(content: "no_data")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                List{}.refreshable {
-                                    print("haha")
-                                }.listStyle(PlainListStyle())
-                        }
-                        else if searchFoodRecipesByCuisineId.isEmpty{
+                            List {}.refreshable {
+                                print("haha")
+                            }.listStyle(PlainListStyle())
+                        } else if searchFoodRecipesByCuisineId.isEmpty {
                             SearchNotFoundComponent(content: "result_not_found")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                List{}.refreshable {
-                                    print("haha")
-                                }.listStyle(PlainListStyle())
-                        }
-                        else{
-
+                            List {}.refreshable {
+                                print("haha")
+                            }.listStyle(PlainListStyle())
+                        } else {
                             ScrollView {
                                 let filteredRecipes = searchFoodRecipesByCuisineId
                                 let sortedRecipes = isSortByRating
                                     ? filteredRecipes.sorted { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
                                     : filteredRecipes
 
-
                                 ForEach(sortedRecipes) { recipe in
                                     if let index = recipeViewModel.viewAllRecipeByCuisineId.firstIndex(where: { $0.id == recipe.id }),
-                                       let firstPhoto = recipe.photo.first {
-
+                                       let firstPhoto = recipe.photo.first
+                                    {
                                         let binding = Binding<Bool>(
                                             get: { recipeViewModel.viewAllRecipeByCuisineId[index].isFavorite },
                                             set: { newValue in
@@ -161,48 +147,43 @@ struct RecipeView: View {
                                 }
                             }
 
-
-
-
                             .refreshable {
                                 print("refresh")
                             }
                         }
-                        
                     }
                 }.padding([.horizontal, .top])
                 Spacer()
             }
         }
-        .onAppear{
-            homeViewModel.getAllFoodRecipes { isSccess, message in
+        .onAppear {
+            homeViewModel.getAllFoodRecipes { _, _ in
                 print("get bannnnn")
             }
-            recipeViewModel.getAllFoodRecipeByCuisineId(cuisineId: cuisineId) { success, message in
+            recipeViewModel.getAllFoodRecipeByCuisineId(cuisineId: cuisineId) { success, _ in
                 if success {
                     print("get data ban hx")
                 }
             }
-           
-            
-        }
-    }
-    var searchFoodRecipesByCuisineId: [FoodRecipeByCuisine] {
-        guard !searchText.isEmpty else { return recipeViewModel.viewAllRecipeByCuisineId }
-        
-        return recipeViewModel.viewAllRecipeByCuisineId.filter { recipe in
-            recipe.description.lowercased().contains(searchText.lowercased()) ||
-            recipe.name.lowercased().contains(searchText.lowercased())
-        }
-    }
-    var searchAllFoodRecipes: [FoodRecipe] {
-        guard !searchText.isEmpty else{ return homeViewModel.foodRecipes}
-        return homeViewModel.foodRecipes.filter{ recipe in
-            recipe.description.lowercased().contains(searchText.lowercased()) ||
-            recipe.name.lowercased().contains(searchText.lowercased())
         }
     }
 
+    var searchFoodRecipesByCuisineId: [FoodRecipeByCuisine] {
+        guard !searchText.isEmpty else { return recipeViewModel.viewAllRecipeByCuisineId }
+
+        return recipeViewModel.viewAllRecipeByCuisineId.filter { recipe in
+            recipe.description.lowercased().contains(searchText.lowercased()) ||
+                recipe.name.lowercased().contains(searchText.lowercased())
+        }
+    }
+
+    var searchAllFoodRecipes: [FoodRecipe] {
+        guard !searchText.isEmpty else { return homeViewModel.foodRecipes }
+        return homeViewModel.foodRecipes.filter { recipe in
+            recipe.description.lowercased().contains(searchText.lowercased()) ||
+                recipe.name.lowercased().contains(searchText.lowercased())
+        }
+    }
 }
 
 #Preview {

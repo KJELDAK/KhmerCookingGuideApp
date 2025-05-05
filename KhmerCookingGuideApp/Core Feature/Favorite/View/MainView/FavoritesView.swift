@@ -14,7 +14,6 @@ struct FavoritesView: View {
     var body: some View {
         NavigationView {
             VStack {
-                
                 if favoriteViewModel.favoriteList.isEmpty {
                     // Empty State
                     VStack {
@@ -36,42 +35,37 @@ struct FavoritesView: View {
                     }
                     .padding()
                 } else {
-                  
                     ScrollView {
-                     
                         LazyVStack(spacing: 16) {
                             ForEach(favoriteViewModel.favoriteList.indices, id: \.self) { index in
                                 let recipe = favoriteViewModel.favoriteList[index]
                                 if let firstPhoto = recipe.photo.first {
                                     NavigationLink(
-                                        destination: RecipeDetails(isLike:  $favoriteViewModel.favoriteList[index].isFavorite,id: recipe.id).navigationBarHidden(true)
+                                        destination: RecipeDetails(isLike: $favoriteViewModel.favoriteList[index].isFavorite, id: recipe.id).navigationBarHidden(true)
                                     ) {
                                         FoodCardComponent2(id: recipe.id,
-                                            isFavorite: $favoriteViewModel.favoriteList[index].isFavorite,
-                                            fileName: firstPhoto.photo,
-                                            name: recipe.name,
-                                                           description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level
-                                        )
-                                        .frame(maxWidth: .infinity)
-                                        .padding(.horizontal)
+                                                           isFavorite: $favoriteViewModel.favoriteList[index].isFavorite,
+                                                           fileName: firstPhoto.photo,
+                                                           name: recipe.name,
+                                                           description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level)
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.horizontal)
                                     }.onChange(of: favoriteViewModel.favoriteList[index].isFavorite) {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                               favoriteViewModel.getAllFavoriteFoodRecipes { success, message in
-                                                   print("Fetch status: \(success), message: \(message)")
-                                               }
-                                           }                                    }
+                                            favoriteViewModel.getAllFavoriteFoodRecipes { success, message in
+                                                print("Fetch status: \(success), message: \(message)")
+                                            }
+                                        }
+                                    }
                                 }
                             }
-
                         }
                         .padding(.top)
                     }
-                   
                 }
             }
-            .toolbar{
+            .toolbar {
                 ToolbarItem(placement: .principal) {
-                    
                     Text("favorites_title")
                         .customFontSemiBoldLocalize(size: 20)
                 }
@@ -85,10 +79,10 @@ struct FavoritesView: View {
     }
 }
 
-
 import Foundation
 
 // MARK: - Root Response
+
 struct FavoriteFoodsResponse: Codable {
     let message: String
     let payload: FavoriteFoodsPayload
@@ -97,12 +91,14 @@ struct FavoriteFoodsResponse: Codable {
 }
 
 // MARK: - Payload
+
 struct FavoriteFoodsPayload: Codable {
     let favoriteFoodSells: [FavoriteFoodSell] // Placeholder if needed later
     let favoriteFoodRecipes: [FavoriteFoodRecipe]
 }
 
 // MARK: - Recipe
+
 struct FavoriteFoodRecipe: Codable, Identifiable {
     let id: Int
     let photo: [RecipePhoto]
@@ -117,11 +113,6 @@ struct FavoriteFoodRecipe: Codable, Identifiable {
     let user: User
 }
 
-
-
-
-
 // MARK: - Placeholder for sells
+
 struct FavoriteFoodSell: Codable {}
-
-

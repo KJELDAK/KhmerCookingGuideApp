@@ -13,7 +13,7 @@ struct DateInputComponent: View {
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(Color(hex: "#374957"))
-                
+
                 ZStack(alignment: .leading) {
                     if dateOfBirth == nil {
                         Text(placeHolder)
@@ -23,7 +23,6 @@ struct DateInputComponent: View {
                         Text(dateOfBirth!.formatted(.dateTime.day().month().year()))
                             .customFont(size: 16)
                             .foregroundColor(Color(hex: "#090920"))
-                          
                     }
                 }
             }
@@ -42,16 +41,15 @@ struct DateInputComponent: View {
                         get: { dateOfBirth ?? Date() },
                         set: { newDate in dateOfBirth = newDate }
                     ), in: ...Date(), displayedComponents: .date)
-                    .onChange(of: dateOfBirth) {
-                        requestDateOfBirth = formatDateToString(dateOfBirth!)
-                        
-                    }
-                    .scaleEffect(x: geo.size.width / 1, anchor: .topLeading)
-                    .labelsHidden()
-                    .frame(width: geo.size.width, height: geo.size.height, alignment: .leading)
-                    .background(Color.clear)
-                    .opacity(0.02) // Transparent for UI
-                    .allowsHitTesting(true) // Enable interaction
+                        .onChange(of: dateOfBirth) {
+                            requestDateOfBirth = formatDateToString(dateOfBirth!)
+                        }
+                        .scaleEffect(x: geo.size.width / 1, anchor: .topLeading)
+                        .labelsHidden()
+                        .frame(width: geo.size.width, height: geo.size.height, alignment: .leading)
+                        .background(Color.clear)
+                        .opacity(0.02) // Transparent for UI
+                        .allowsHitTesting(true) // Enable interaction
                 }
             }
         }
@@ -59,22 +57,24 @@ struct DateInputComponent: View {
             dateOfBirth = nil // Set to nil on appear
         }
     }
+
     // MARK: - Helper function to formart date to string (format: 2024-01-11)
+
     func formatDateToString(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         // Set the desired output format
         dateFormatter.dateFormat = "yyyy-MM-dd"
 //        dateFormatter.timeZone = TimeZone(abbreviation: "UTC") // Set timezone if needed
-        
+
         // Convert the Date to a formatted string
         return dateFormatter.string(from: date)
     }
 }
 
-//#Preview {
+// #Preview {
 //    DateInputComponent(
 //        placeHolder: .constant("Date of birth"),
-//       
+//
 //        image: .constant("calendar")
 //    )
-//}
+// }

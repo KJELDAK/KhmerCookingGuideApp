@@ -1,5 +1,5 @@
 //
-//  FoodView.swift
+//  PopularFoodRecipes.swift
 //  KhmerCookingGuideApp
 //
 //  Created by Sok Reaksa on 4/1/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//struct PopularFoodRecipes: View {
+// struct PopularFoodRecipes: View {
 //    @ObservedObject var homeViewModel: HomeViewModel
 //    var body: some View {
 //        HStack{
@@ -21,14 +21,14 @@ import SwiftUI
 //                            }
 //
 //                        }
-//                        
+//
 //                    }
 //                }
 //            }.scrollIndicators(.hidden)
 //        }
 //
 //    }
-//}
+// }
 struct PopularFoodRecipes: View {
     @Binding var popularRecipes: [FoodRecipe]
 
@@ -57,9 +57,6 @@ struct PopularFoodRecipes: View {
     }
 }
 
-
-
-
-//#Preview {
+// #Preview {
 //    FoodView()
-//}
+// }

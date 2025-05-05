@@ -7,19 +7,17 @@
 
 import SwiftUI
 
-
-
 struct SuccessAndFailedAlert: View {
     var status: Bool
     var message: LocalizedStringKey
-    let duration : Double
+    let duration: Double
     @Binding var isPresented: Bool
-    @State var scale:CGFloat = 0.0
-    @State var opacity:Double = 1
-    
+    @State var scale: CGFloat = 0.0
+    @State var opacity: Double = 1
+
     var body: some View {
         if isPresented {
-            ZStack{
+            ZStack {
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onAppear {
@@ -27,17 +25,17 @@ struct SuccessAndFailedAlert: View {
                             scale = 1
                             opacity = 1
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                                 scale = 0
                                 opacity = 0
                             }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 isPresented = false
                             }
                         }
                     }
-                
+
                 VStack(spacing: 20) {
                     // Status Icon
                     Image(systemName: status == true ? "checkmark" : "multiply")
@@ -63,21 +61,21 @@ struct SuccessAndFailedAlert: View {
                     RoundedRectangle(cornerRadius: 35)
                         .stroke(Color(hex: "#E5E7EB"), lineWidth: 1)
                 )
-                .padding(.horizontal,50)
+                .padding(.horizontal, 50)
                 .scaleEffect(scale)
                 .opacity(opacity)
-                .onAppear{
+                .onAppear {
                     withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                         scale = 1
                         opacity = 1
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                             scale = 0
                             opacity = 0
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             isPresented = false
                         }
                     }
@@ -87,19 +85,17 @@ struct SuccessAndFailedAlert: View {
     }
 }
 
-
-
 struct SmallSuccessAndFailedAlert: View {
     var status: Bool
-     var message: String
-    let duration : Double
+    var message: String
+    let duration: Double
     @Binding var isPresented: Bool
-    @State var scale:CGFloat = 0.0
-    @State var opacity:Double = 1
-    
+    @State var scale: CGFloat = 0.0
+    @State var opacity: Double = 1
+
     var body: some View {
         if isPresented {
-            ZStack{
+            ZStack {
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onAppear {
@@ -107,17 +103,17 @@ struct SmallSuccessAndFailedAlert: View {
                             scale = 1
                             opacity = 1
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                                 scale = 0
                                 opacity = 0
                             }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 isPresented = false
                             }
                         }
                     }
-                
+
                 VStack(spacing: 20) {
                     // Status Icon
                     Image(systemName: status == true ? "checkmark" : "multiply")
@@ -136,7 +132,7 @@ struct SmallSuccessAndFailedAlert: View {
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 30)
                 }
-                
+
                 .frame(maxWidth: .infinity, maxHeight: 250)
                 .background(Color(hex: "#FCFDFF"))
                 .cornerRadius(35)
@@ -144,21 +140,21 @@ struct SmallSuccessAndFailedAlert: View {
                     RoundedRectangle(cornerRadius: 35)
                         .stroke(Color(hex: "#E5E7EB"), lineWidth: 1)
                 )
-                .padding(.horizontal,50)
+                .padding(.horizontal, 50)
                 .scaleEffect(scale)
                 .opacity(opacity)
-                .onAppear{
+                .onAppear {
                     withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                         scale = 1
                         opacity = 1
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + duration){
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                         withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                             scale = 0
                             opacity = 0
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             isPresented = false
                         }
                     }
@@ -168,5 +164,4 @@ struct SmallSuccessAndFailedAlert: View {
             Spacer()
         }
     }
-
 }

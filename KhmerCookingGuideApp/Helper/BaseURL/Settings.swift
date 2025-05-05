@@ -5,8 +5,8 @@
 //  Created by Sok Reaksa on 21/4/25.
 //
 
-
 import Foundation
+
 final class Settings {
     static let shared = Settings()
     private init() {}
@@ -30,17 +30,16 @@ final class Settings {
         let hour = calendar.component(.hour, from: date)
         let partOfDay: String
         switch hour {
-        case 5..<12:
+        case 5 ..< 12:
             partOfDay = "morning"
-        case 12..<17:
+        case 12 ..< 17:
             partOfDay = "afternoon"
-        case 17..<21:
+        case 17 ..< 21:
             partOfDay = "evening"
         default:
             partOfDay = "night"
         }
 
-        return "\(day) \(month) \(year) (\( partOfDay ))"
+        return "\(day) \(month) \(year) (\(partOfDay))"
     }
 }
-

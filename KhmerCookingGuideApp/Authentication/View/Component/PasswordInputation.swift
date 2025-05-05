@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 import SwiftUI
 
 struct PasswordInputation: View {
@@ -57,7 +55,7 @@ struct PasswordInputation: View {
                         isPasswordVisible.toggle()
                     }
             }
-            .frame( maxWidth: .infinity,minHeight: 36, maxHeight: 36)
+            .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36)
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .background(Color(hex: "#F9FAFB"))
@@ -69,7 +67,7 @@ struct PasswordInputation: View {
 
             // Error Message
             if !isValidation && !errorMessage.isEmpty {
-                Text(LocalizedStringKey(errorMessage)) 
+                Text(LocalizedStringKey(errorMessage))
                     .customFontLocalize(size: 12)
                     .foregroundColor(.red)
                     .padding(.leading, 8)
@@ -87,10 +85,10 @@ struct PasswordInputation: View {
 //            errorMessage = ""
 //        }
 //    }
-//}
+    // }
 //
-//// MARK: - Password Validator
-//struct ValidationPassword {
+    //// MARK: - Password Validator
+    // struct ValidationPassword {
 //    func validate(_ password: String) -> String? {
 //        if password.isEmpty {
 //            return "Password is required."

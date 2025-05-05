@@ -5,9 +5,9 @@
 //  Created by Sok Reaksa on 28/4/25.
 //
 
-import SwiftUI
 import Kingfisher
 import PhotosUI
+import SwiftUI
 
 struct EditProfileView: View {
     @ObservedObject var profileViewModel: ProfileViewModel
@@ -22,17 +22,15 @@ struct EditProfileView: View {
     @State private var isShowSuccessAlert: Bool = false
     @State private var isShowErrorAlert: Bool = false
     @State private var isLoadingWhenUploadImage = false
-    
-    
+
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/"
-        
+
         ZStack {
             NavigationView {
                 VStack {
                     ScrollView {
                         VStack(spacing: 16) {
-                            
                             // Your photo picker
                             PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
                                 ZStack {
@@ -57,7 +55,7 @@ struct EditProfileView: View {
                                                 .clipShape(Circle())
                                         }
                                     }
-                                    
+
                                     // Edit Icon
                                     Circle()
                                         .fill(Color.red)
@@ -70,33 +68,33 @@ struct EditProfileView: View {
                                 }
                             }
                             .frame(height: 100)
-                            
+
                             // Editable Fields
                             VStack(alignment: .leading, spacing: 16) {
                                 Text("full_name")
                                     .customFontMediumLocalize(size: 12)
                                     .foregroundColor(Color(hex: "00000"))
-                                
+
                                 InputTextComponent(textInput: $fullName, placeHolder: "enter_full_name")
-                                
+
                                 Text("_gender")
                                     .customFontMediumLocalize(size: 12)
                                     .foregroundColor(Color(hex: "00000"))
-                                
+
                                 InputTextComponent(textInput: $phoneNumber, placeHolder: "enter_phone_number")
                             }
                             .padding()
-                            
+
                             Spacer(minLength: 100) // Add a little space at the bottom if you want
                         }
                     }
-                    
+
                     // Button at bottom
                     ButtonComponent(action: {
-                        saveProfile( fullName: fullName, phoneNumber: phoneNumber)
+                        saveProfile(fullName: fullName, phoneNumber: phoneNumber)
                     }, content: LocalizedStringKey("save_changes"))
-                    .padding()
-                    .background(Color.white) // Optional: background to avoid transparency
+                        .padding()
+                        .background(Color.white) // Optional: background to avoid transparency
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -130,16 +128,17 @@ struct EditProfileView: View {
                     }
                 }
             }
-            if profileViewModel.isLoadingWhenUpdate{
+            if profileViewModel.isLoadingWhenUpdate {
                 LoadingComponent()
             }
             SuccessAndFailedAlert(status: true, message: "update_profile_success", duration: 3, isPresented: $isShowSuccessAlert)
-                .onDisappear{
+                .onDisappear {
                     dismiss()
                 }
             SuccessAndFailedAlert(status: false, message: "update_profile_failed", duration: 3, isPresented: $isShowErrorAlert)
         }
     }
+
     private func saveProfile(fullName: String, phoneNumber: String) {
         if let imageData = selectedImageData {
             // User selected a new image
@@ -147,12 +146,12 @@ struct EditProfileView: View {
                 if success {
                     if let uploadedFileName = FileUploader.shared.image.first {
                         let fileName = (uploadedFileName as NSString).lastPathComponent
-                        
+
                         profileViewModel.updateUserProfile(
                             profileImage: fileName,
                             fullName: fullName,
                             phoneNumber: phoneNumber
-                        ) { success, message in
+                        ) { success, _ in
                             if success {
                                 isShowSuccessAlert = true
                             } else {
@@ -172,12 +171,12 @@ struct EditProfileView: View {
             // User did NOT select a new image — use existing
             if let existingFileName = profileViewModel.userInfo?.payload.profileImage {
                 let fileName = (existingFileName as NSString).lastPathComponent
-                
+
                 profileViewModel.updateUserProfile(
                     profileImage: fileName,
                     fullName: fullName,
                     phoneNumber: phoneNumber
-                ) { success, message in
+                ) { success, _ in
                     if success {
                         isShowSuccessAlert = true
                     } else {
@@ -192,10 +191,11 @@ struct EditProfileView: View {
     }
 
     // MARK: - Edit Field View (Same style as ProfileField but editable)
+
     struct EditProfileField: View {
         var title: String
         @Binding var text: String
-        
+
         var body: some View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
@@ -209,4 +209,5 @@ struct EditProfileView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, 4)
         }
-    }}
+    }
+}

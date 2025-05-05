@@ -5,14 +5,15 @@
 //  Created by Sok Reaksa on 6/1/25.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
+
 struct AllImageInRecipe: View {
     @State var image: [Photo] = []
-    
+
     var body: some View {
         HStack {
-            HStack{
+            HStack {
                 ForEach(image) { img in
                     Button(action: {
                         print("Button clicked: \(img.id), \(img.photo)")
@@ -27,12 +28,12 @@ struct AllImageInRecipe: View {
                     .padding(0)
                 }
             }.padding(8)
-            
         }
         .background(.white.opacity(0.3))
         .cornerRadius(14)
     }
 }
+
 #Preview {
     AllImageInRecipe()
 }

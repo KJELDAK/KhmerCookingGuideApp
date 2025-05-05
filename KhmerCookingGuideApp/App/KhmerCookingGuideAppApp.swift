@@ -5,9 +5,10 @@
 //  Created by Sok Reaksa on 9/12/24.
 //
 
-import SwiftUI
-import SwiftData
 import IQKeyboardManagerSwift
+import SwiftData
+import SwiftUI
+
 @main
 struct KhmerCookingGuideAppApp: App {
 //    @State var lang: String = UserDefaults.standard.string(forKey: "lang") ?? "km"
@@ -16,7 +17,7 @@ struct KhmerCookingGuideAppApp: App {
 
     // Linking the AppDelegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
- 
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -29,10 +30,11 @@ struct KhmerCookingGuideAppApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
     init() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .font: UIFont(name: "Roboto-Bold", size: 20) ?? UIFont.systemFont(ofSize: 15)
+            .font: UIFont(name: "Roboto-Bold", size: 20) ?? UIFont.systemFont(ofSize: 15),
         ]
         UINavigationBar.appearance().standardAppearance = appearance
         let unselectedAttributes: [NSAttributedString.Key: Any] = [
@@ -45,9 +47,9 @@ struct KhmerCookingGuideAppApp: App {
         // Apply the attributes to UITabBarItem for both selected and unselected states
         UITabBarItem.appearance().setTitleTextAttributes(unselectedAttributes, for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes(selectedAttributes, for: .selected)
-        //set color for tabar
+        // set color for tabar
         UITabBar.appearance().unselectedItemTintColor = UIColor(hex: "797979")
-//        
+//
 //        // MARK: - disable keyboard when click any where
 //        IQKeyboardManager.shared.isEnabled = true
 //        IQKeyboardManager.shared.resignOnTouchOutside = true
@@ -67,8 +69,8 @@ struct KhmerCookingGuideAppApp: App {
 //                .environment(\.locale, .init(identifier: lang))
                 .environmentObject(languageManager) // Provide the LanguageManager as an environment object
                 .environmentObject(recipeVM)
-            // 2️⃣ Tell SwiftUI to re‑evaluate every Text(:) on language change:
-                    .environment(\.locale,  .init(identifier: languageManager.lang))
+                // 2️⃣ Tell SwiftUI to re‑evaluate every Text(:) on language change:
+                .environment(\.locale, .init(identifier: languageManager.lang))
 
 //            OTPView()
         }

@@ -5,9 +5,9 @@
 //  Created by Sok Reaksa on 29/4/25.
 //
 
-import SwiftUI
-import PhotosUI
 import Alamofire
+import PhotosUI
+import SwiftUI
 import UIKit
 
 struct UpdateFoodRecipeView: View {
@@ -24,24 +24,22 @@ struct UpdateFoodRecipeView: View {
     @State var isRecipeInputation = false
     @State var isNavigateToPreviouseView = false
     @StateObject var postFoodRecipeViewModel = PostFoodRecipeViewModel()
-    
+
     @State private var apiImages: [UIImage] = []
     @State private var selectedApiImageIndices: Set<Int> = []
     @State private var originalApiImages: [String] = []
     @State private var hasFetched = false
-    
+
     @Environment(\.dismiss) var dismiss
-    
-    
-    
+
     @State var duration: Int = 50
-    var foodId : Int
-    
+    var foodId: Int
+
     let columns: [GridItem] = [
-        GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())
+        GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()),
     ]
-    @ObservedObject var recipeViewModel : RecipeViewModel
-    
+    @ObservedObject var recipeViewModel: RecipeViewModel
+
     var body: some View {
         ZStack {
             if isRecipeInputation {
@@ -68,6 +66,7 @@ struct UpdateFoodRecipeView: View {
                     ScrollView {
                         VStack(alignment: .leading) {
                             // MARK: - Photo Picker Section
+
                             PhotosPicker(
                                 selection: $photoPicker.imageSelections,
                                 matching: .images,
@@ -76,10 +75,10 @@ struct UpdateFoodRecipeView: View {
                                 ZStack {
                                     if !photoPicker.selectedImages.isEmpty {
                                         photoGrid(allowDelete: true)
-                                        
+
                                     } else if !apiImages.isEmpty {
                                         photoGrid(allowDelete: true)
-                                        
+
                                     } else {
                                         placeholderView
                                             .padding(.bottom)
@@ -90,25 +89,27 @@ struct UpdateFoodRecipeView: View {
                             .onChange(of: photoPicker.imageSelections) { _ in
                                 Task { await photoPicker.loadImages() }
                             }
-                            
+
                             if photoPicker.isImageLimitReached {
                                 Text("You can only select up to 5 images.")
                                     .font(.caption)
                                     .foregroundColor(.red)
                                     .padding(.top)
                             }
-                            
+
                             // MARK: - Food Name
+
                             Text("food_name")
                                 .customFontMediumLocalize(size: 16)
-                            
+
                             TextField("enter_food_name", text: $foodName)
                                 .font(.custom("KantumruyPro-Regular", size: 16))
                                 .frame(height: 56)
                                 .padding(.horizontal)
                                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"), lineWidth: 2))
-                            
+
                             // MARK: - Description
+
                             Text("_description")
                                 .customFontMediumLocalize(size: 16)
                                 .padding(.top)
@@ -120,7 +121,7 @@ struct UpdateFoodRecipeView: View {
                             .frame(height: 112)
                             .padding(.horizontal)
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: "D0DBEA"), lineWidth: 2))
-                            
+
                             Spacer()
                         }
                         .padding()
@@ -141,11 +142,13 @@ struct UpdateFoodRecipeView: View {
                             }
                         }
                         .navigationBarTitleDisplayMode(.inline)
-                        
+
                         // MARK: - Duration
+
                         RangeSliderView(requestDuration: $duration)
-                        
+
                         // MARK: - Level + Cuisine + Category
+
                         VStack(alignment: .leading, spacing: 16) {
                             ToggleButtonGroup(
                                 title: "_level",
@@ -153,27 +156,27 @@ struct UpdateFoodRecipeView: View {
                                 selection: $selectedLevel,
                                 isSingleSelection: true
                             )
-                            
+
                             ToggleButtonGroup(
                                 title: "_cuisines",
-                                items: ["_soup", "_salad", "_grill","_fry","_stir_fried", "_dessert"],
+                                items: ["_soup", "_salad", "_grill", "_fry", "_stir_fried", "_dessert"],
                                 selection: $selectedCuisines,
                                 isSingleSelection: true
                             )
-                            
+
                             ToggleButtonGroup(
                                 title: "category",
                                 items: ["_breakfast", "_lunch", "_dinner"],
                                 selection: $selectedCategory,
                                 isSingleSelection: true
                             )
-                            
+
                             ButtonComponent(action: {
-                                print("this is",originalApiImages)
+                                print("this is", originalApiImages)
                                 handleSubmitRecipeUpdate()
                                 isRecipeInputation = true
                             }, content: "_next")
-                            .padding(.top)
+                                .padding(.top)
                         }
                         .padding()
                     }
@@ -182,7 +185,7 @@ struct UpdateFoodRecipeView: View {
                     // only fetch the very first time
                     guard !hasFetched else { return }
                     hasFetched = true
-                    
+
                     recipeViewModel.fetchRecipeById(id: foodId) { success, _ in
                         if success {
                             guard success,
@@ -190,8 +193,8 @@ struct UpdateFoodRecipeView: View {
                             else { return }
                             foodName = recipeViewModel.viewRecipeById?.name ?? ""
                             foodDescription = recipeViewModel.viewRecipeById?.description ?? ""
-                            
-                            switch recipeViewModel.viewRecipeById?.level{
+
+                            switch recipeViewModel.viewRecipeById?.level {
                             case "Easy":
                                 selectedLevel = "_easy"
                             case "Medium":
@@ -201,7 +204,7 @@ struct UpdateFoodRecipeView: View {
                             default:
                                 selectedLevel = "_easy"
                             }
-                            switch recipeViewModel.viewRecipeById?.cuisineName{
+                            switch recipeViewModel.viewRecipeById?.cuisineName {
                             case "Soup":
                                 selectedCuisines = "_soup"
                             case "Salad":
@@ -219,7 +222,7 @@ struct UpdateFoodRecipeView: View {
                             default:
                                 selectedCuisines = "_soup"
                             }
-                            
+
                             switch recipeViewModel.viewRecipeById?.categoryName {
                             case "Breakfast":
                                 selectedCategory = "_breakfast"
@@ -232,7 +235,7 @@ struct UpdateFoodRecipeView: View {
                             }
                             duration = recipeViewModel.viewRecipeById!.durationInMinutes
                             print("this is duration", duration)
-                            
+
                             if let fetchedIngredients = recipeViewModel.viewRecipeById?.ingredients {
                                 if let ingredienthList = fetchedIngredients as? [Ingredienth] {
                                     ingredients = ingredienthList
@@ -241,7 +244,7 @@ struct UpdateFoodRecipeView: View {
                                 }
                             }
                             cookingSteps = recipeViewModel.viewRecipeById?.cookingSteps ?? []
-                            
+
                             originalApiImages = photos.map { $0.photo }
                             // 2️⃣ Clear any previous UIImages
                             apiImages = []
@@ -249,7 +252,7 @@ struct UpdateFoodRecipeView: View {
                             for filename in originalApiImages {
                                 guard let url = URL(string: "http://localhost:8080/api/v1/fileView/\(filename)")
                                 else { continue }
-                                
+
                                 fetchImage(from: url) { image in
                                     guard let image = image else { return }
                                     DispatchQueue.main.async {
@@ -263,6 +266,7 @@ struct UpdateFoodRecipeView: View {
             }
         }
     }
+
     func handleSubmitRecipeUpdate() {
         //  Extract kept API image filenames
         var keptApiImageNames: [String] = []
@@ -273,15 +277,15 @@ struct UpdateFoodRecipeView: View {
         }
         // ✅ Extract only new images to upload
         let newImagesToUpload = photoPicker.selectedImages
-        
+
         print("✅ Keep these image filenames (already uploaded): \(keptApiImageNames)")
         print("📤 New images to upload: \(newImagesToUpload.count)")
-        
     }
+
     @ViewBuilder
     func photoGrid(allowDelete: Bool) -> some View {
         let combinedImages = apiImages + photoPicker.selectedImages
-        
+
         LazyVGrid(columns: columns, spacing: 10) {
             ForEach(Array(combinedImages.enumerated()), id: \.offset) { index, image in
                 ZStack(alignment: .topTrailing) {
@@ -294,7 +298,7 @@ struct UpdateFoodRecipeView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.white, lineWidth: 4)
                         )
-                    
+
                     if allowDelete {
                         Button {
                             if index < apiImages.count {
@@ -319,7 +323,9 @@ struct UpdateFoodRecipeView: View {
         .background(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: "#E5E7EB"), lineWidth: 2))
         .padding(.bottom)
     }
+
     // MARK: - Placeholder View
+
     var placeholderView: some View {
         VStack {
             Image(systemName: "photo.on.rectangle")
@@ -328,7 +334,7 @@ struct UpdateFoodRecipeView: View {
                 .frame(width: 80, height: 80)
                 .foregroundColor(.gray)
                 .padding()
-            
+
             Text("Add dishes Photo")
                 .customFontRobotoBold(size: 15)
                 .foregroundColor(.black.opacity(0.6))
@@ -344,7 +350,9 @@ struct UpdateFoodRecipeView: View {
                 .stroke(Color(hex: "#E5E7EB"), style: StrokeStyle(lineWidth: 2, dash: [10, 5]))
         )
     }
+
     // MARK: - Load Image from URL
+
     func fetchImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         URLSession.shared.dataTask(with: url) { data, _, _ in
             if let data = data {
@@ -355,20 +363,22 @@ struct UpdateFoodRecipeView: View {
         }.resume()
     }
 }
+
 // Extensions for conversion between Ingredient and Ingredienth
 extension Ingredient {
     // Convert Ingredient to Ingredienth
     func toIngredienth() -> Ingredienth {
-        return Ingredienth(id: self.id, name: self.name, quantity: self.quantity, price: self.price)
+        return Ingredienth(id: id, name: name, quantity: quantity, price: price)
     }
 }
 
 extension Ingredienth {
     // Convert Ingredienth to Ingredient
     func toIngredient() -> Ingredient {
-        return Ingredient(id: self.id, name: self.name, quantity: self.quantity, price: self.price)
+        return Ingredient(id: id, name: name, quantity: quantity, price: price)
     }
 }
+
 struct UpdateRecipeEditorView: View {
     @Binding var ingredients: [Ingredienth]
     @Binding var cookingSteps: [CookingStep]
@@ -378,23 +388,23 @@ struct UpdateRecipeEditorView: View {
     @Binding var foodDescription: String
     @Binding var isSheetPresent: Bool
     @ObservedObject var photoPicker: PhotoPicker
-    @Binding var selectedTab : Int
+    @Binding var selectedTab: Int
     @StateObject var postFoodRecipeViewModel = PostFoodRecipeViewModel()
-    @Binding var selectedLevel : String
-    @Binding var selectedCuisines : String
-    @Binding var selectedCategory : String
-    @State var reqLevel : String = ""
+    @Binding var selectedLevel: String
+    @Binding var selectedCuisines: String
+    @Binding var selectedCategory: String
+    @State var reqLevel: String = ""
     @State var reqCuisines = 1
     @State var reqCategory = 1
-    @Binding var duration : Int
+    @Binding var duration: Int
     @State var isPostRecipeSuccess: Bool = false
     @State var isPostRecipeFailed: Bool = false
     @State var messageFromServer: String = ""
     @State private var nextIngredientId: Int = 0 // Set the initial value here, can be dynamically updated later
     @Binding var originalApiImages: [String] // All images from the API originally
-    @Binding var apiImages: [UIImage]        // Only images still kept by the user
-    @ObservedObject var recipeViewModel :RecipeViewModel
-    var foodId : Int
+    @Binding var apiImages: [UIImage] // Only images still kept by the user
+    @ObservedObject var recipeViewModel: RecipeViewModel
+    var foodId: Int
     var body: some View {
         ZStack {
             NavigationView {
@@ -422,7 +432,7 @@ struct UpdateRecipeEditorView: View {
                             )
                             .transition(.scale(scale: 0.9).combined(with: .opacity))
                         }
-                        
+
                         AddButton {
                             withAnimation {
                                 ingredients.append(
@@ -434,7 +444,7 @@ struct UpdateRecipeEditorView: View {
                         }
                         // Cooking Steps Section
                         SectionHeader(title: "step")
-                        
+
                         ForEach(cookingSteps) { step in
                             CookingStepInputView(
                                 step: step,
@@ -464,21 +474,20 @@ struct UpdateRecipeEditorView: View {
                                 )
                             }
                         }
-                        
-                        
+
                         Spacer()
-                        
+
                         HStack {
                             BackButtonComponent(action: {
                                 isNavigateToPreviousView = true
-                                
+
                             }, content: "_back")
-                            
+
                             ButtonComponent(action: {
                                 logRecipeData()
                                 print(photoPicker.prepareImageDataForAPI(), foodName, foodDescription)
-                                print("jhvjhvhj",reqCategory , reqCuisines)
-                                
+                                print("jhvjhvhj", reqCategory, reqCuisines)
+
                                 switch selectedLevel {
                                 case "_hard":
                                     reqLevel = "Hard"
@@ -489,8 +498,8 @@ struct UpdateRecipeEditorView: View {
                                 default:
                                     reqLevel = "Easy" // Default value
                                 }
-                                
-                                switch selectedCategory{
+
+                                switch selectedCategory {
                                 case "_dinner":
                                     reqCategory = 3
                                 case "_lunch":
@@ -500,7 +509,7 @@ struct UpdateRecipeEditorView: View {
                                 default:
                                     reqCategory = 1
                                 }
-                                switch selectedCuisines{
+                                switch selectedCuisines {
                                 case "_steam":
                                     reqCuisines = 7
                                 case "_dessert":
@@ -513,8 +522,8 @@ struct UpdateRecipeEditorView: View {
                                     reqCuisines = 3
                                 case "_salad":
                                     reqCuisines = 2
-                                default :
-                                    
+                                default:
+
                                     reqCuisines = 1
                                 }
                                 let newImageData = photoPicker.prepareImageDataForAPI()
@@ -524,7 +533,7 @@ struct UpdateRecipeEditorView: View {
                                         keptApiImageNames.append(originalApiImages[index])
                                     }
                                 }
-                                
+
                                 if newImageData.isEmpty {
                                     // No new images, just post with kept ones
                                     let fileNames = keptApiImageNames
@@ -541,10 +550,10 @@ struct UpdateRecipeEditorView: View {
                                         ingredients: ingredients,
                                         cookingSteps: cookingSteps
                                     )
-                                    postFoodRecipeViewModel.updateFoodRecipeById(id: foodId,newFoodRecipe) { success, message in
-                                        switch message{
+                                    postFoodRecipeViewModel.updateFoodRecipeById(id: foodId, newFoodRecipe) { success, message in
+                                        switch message {
                                         case"Recipe updated successfully":
-                                            messageFromServer = "recipe_updated_successfully";
+                                            messageFromServer = "recipe_updated_successfully"
                                         default:
                                             messageFromServer = message
                                         }
@@ -573,10 +582,10 @@ struct UpdateRecipeEditorView: View {
                                                 cookingSteps: cookingSteps
                                             )
                                             postFoodRecipeViewModel.updateFoodRecipeById(id: foodId, newFoodRecipe) { success, message in
-                                               
-                                                switch message{
+
+                                                switch message {
                                                 case"Recipe updated successfully":
-                                                    messageFromServer = "recipe_updated_successfully";
+                                                    messageFromServer = "recipe_updated_successfully"
                                                 default:
                                                     messageFromServer = message
                                                 }
@@ -589,24 +598,23 @@ struct UpdateRecipeEditorView: View {
                                         }
                                     }
                                 }
-                                
+
                             }, content: "_submit")
-                            .disabled(
-                                ingredients.isEmpty ||
-                                cookingSteps.isEmpty ||
-                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
-                            )
-                            .opacity(
-                                ingredients.isEmpty ||
-                                cookingSteps.isEmpty ||
-                                ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                    ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
-                                    cookingSteps.contains(where: {$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty})
-                                }) ? 0.4 : 1
-                            )
-                            
+                                .disabled(
+                                    ingredients.isEmpty ||
+                                        cookingSteps.isEmpty ||
+                                        ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                        ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                        cookingSteps.contains(where: { $0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+                                )
+                                .opacity(
+                                    ingredients.isEmpty ||
+                                        cookingSteps.isEmpty ||
+                                        ingredients.contains(where: { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                                ingredients.contains(where: { $0.quantity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) ||
+                                                cookingSteps.contains(where: { $0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty })
+                                        }) ? 0.4 : 1
+                                )
                         }
                     }
                     .padding()
@@ -627,28 +635,24 @@ struct UpdateRecipeEditorView: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                    
                 }
             }
-            if postFoodRecipeViewModel.isLoading{
+            if postFoodRecipeViewModel.isLoading {
                 LoadingComponent()
-            }
-            else{
+            } else {
                 SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeSuccess)
-                    .onDisappear{
+                    .onDisappear {
                         isSheetPresent = false
                         selectedTab = 0
                         recipeViewModel.fetchRecipeById(id: foodId) { success, _ in
-                            if success{
+                            if success {
                                 print("yes yes yes")
                             }
                         }
                         dismiss()
-                        
-                        
                     }
                 SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isPostRecipeFailed)
-                    .onDisappear{
+                    .onDisappear {
                         isSheetPresent = false
                         selectedTab = 0
                     }
@@ -657,12 +661,14 @@ struct UpdateRecipeEditorView: View {
             nextIngredientId = (ingredients.map { $0.id }.max() ?? 0) + 1
         }
     }
+
     // Function to re-adjust step IDs after deletion
     private func updateStepIds() {
         for index in cookingSteps.indices {
             cookingSteps[index].id = index + 1
         }
     }
+
     private func logRecipeData() {
         print("=== Ingredients ===")
         for Ingredienth in ingredients {

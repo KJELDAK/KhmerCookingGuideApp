@@ -10,7 +10,7 @@ struct GenderPickerComponent: View {
     @Binding var placeHolder: String
     @Binding var image: String
     @State private var isPickerVisible = false
-    @State private var genders                    = ""
+    @State private var genders = ""
     @State var isTap = false
     @Binding var requestGender: String
     var body: some View {
@@ -36,22 +36,20 @@ struct GenderPickerComponent: View {
                 Image("angle-right")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 16,height: 16)
+                    .frame(width: 16, height: 16)
                     .overlay(
                         Picker("", selection: $genders) {
                             Text("Male").tag("Male")
                             Text("Female").tag("Female")
                         }
-                            .pickerStyle(MenuPickerStyle())
-                            .labelsHidden()
-                            .colorMultiply(.clear)
-                            .clipped()
+                        .pickerStyle(MenuPickerStyle())
+                        .labelsHidden()
+                        .colorMultiply(.clear)
+                        .clipped()
                     )
                     .onChange(of: genders) {
                         requestGender = genders
-                        
                     }
-                    
             }
             .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36, alignment: .leading)
             .padding(.horizontal, 15)
@@ -62,7 +60,6 @@ struct GenderPickerComponent: View {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color(hex: "#E5E7EB"), lineWidth: 1)
             )
-            }
+        }
     }
 }
-

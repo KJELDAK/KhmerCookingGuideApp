@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
+
 struct MyProfileView: View {
     @State private var selectedTab = "Personal"
     @ObservedObject var profileViewModel: ProfileViewModel
@@ -19,24 +20,20 @@ struct MyProfileView: View {
         NavigationView {
             VStack(spacing: 16) {
                 ZStack {
-                    if profileViewModel.userInfo?.payload.profileImage != "default.jpg"{
-                     
-                        
+                    if profileViewModel.userInfo?.payload.profileImage != "default.jpg" {
                         KFImage(URL(string: imageUrl + "\(profileViewModel.userInfo?.payload.profileImage ?? "")"))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 100, height: 100)
                             .clipShape(Circle())
-                    }
-                    else{
+                    } else {
                         Image("defaultPFMale")
                             .resizable()
                             .scaledToFill()
                             .frame(width: 100, height: 100)
                             .clipShape(Circle())
                     }
-                   
-                    
+
                     // Lock Icon Overlay
                     Circle()
                         .fill(Color.blue)
@@ -47,24 +44,24 @@ struct MyProfileView: View {
                         )
                         .offset(x: 35, y: 35)
                 }
-                    VStack(alignment: .leading, spacing: 16) {
-                        ProfileField(title: "full_name", value: profileViewModel.userInfo?.payload.fullName ?? "")
-                        ProfileField(title: "email_address", value: profileViewModel.userInfo?.payload.email ?? "")
-                        ProfileField(title: "phone_number", value: profileViewModel.userInfo?.payload.phoneNumber ?? "")
-                        ProfileField(title: "created_at", value: createAt)
-                    }
-                    .padding()
-                
+                VStack(alignment: .leading, spacing: 16) {
+                    ProfileField(title: "full_name", value: profileViewModel.userInfo?.payload.fullName ?? "")
+                    ProfileField(title: "email_address", value: profileViewModel.userInfo?.payload.email ?? "")
+                    ProfileField(title: "phone_number", value: profileViewModel.userInfo?.payload.phoneNumber ?? "")
+                    ProfileField(title: "created_at", value: createAt)
+                }
+                .padding()
+
                 Spacer()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button{
+                    Button {
                         dismiss()
-                    }label: {
+                    } label: {
                         Image(systemName: "chevron.left")
-                                               .font(.title2)
-                                               .foregroundColor(.black)
+                            .font(.title2)
+                            .foregroundColor(.black)
                     }
                 }
                 ToolbarItem(placement: .principal) {
@@ -72,15 +69,15 @@ struct MyProfileView: View {
                         .customFontSemiBoldLocalize(size: 20)
                 }
             }
-            .onAppear{
+            .onAppear {
                 profileViewModel.getUserInfo { _, _ in
                     createAt = formatDateString(profileViewModel.userInfo?.payload.createdAt ?? "")
-                    print("wefwe",profileViewModel.userInfo?.payload.createdAt ?? "")
-                    
+                    print("wefwe", profileViewModel.userInfo?.payload.createdAt ?? "")
                 }
             }
         }
     }
+
     func formatDateString(_ isoDate: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -95,14 +92,12 @@ struct MyProfileView: View {
             return "Invalid date"
         }
     }
-
-
 }
 
 struct ProfileField: View {
     var title: String
     var value: String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(LocalizedStringKey(title))

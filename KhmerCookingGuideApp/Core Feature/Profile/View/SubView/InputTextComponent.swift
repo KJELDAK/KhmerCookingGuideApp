@@ -1,16 +1,17 @@
 //
-//  InputComponent.swift
+//  InputTextComponent.swift
 //  KhmerCookingGuideApp
 //
 //  Created by Sok Reaksa on 28/4/25.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
+
 struct InputTextComponent: View {
     @Binding var textInput: String
     @State var placeHolder: String
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -18,7 +19,7 @@ struct InputTextComponent: View {
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(Color(hex: "#374957"))
-                
+
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
                         Text(LocalizedStringKey(placeHolder))

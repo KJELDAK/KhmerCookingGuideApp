@@ -5,13 +5,15 @@
 //  Created by Sok Reaksa on 10/12/24.
 //
 import Foundation
-//MARK: - log in response model
-//struct AuthResponse: Codable {
+
+// MARK: - log in response model
+
+// struct AuthResponse: Codable {
 //    let message: String
 //    let payload: Payload
 //    let statusCode: String
 //    let timestamp: String
-//    
+//
 //    struct Payload: Codable {
 //        let accessToken: String
 //        let refreshToken: String
@@ -19,7 +21,7 @@ import Foundation
 //        let fullName: String
 //        let email: String
 //        let createdDate: String
-//        
+//
 //        enum CodingKeys: String, CodingKey {
 //            case accessToken = "access_token"
 //            case refreshToken = "refresh_token"
@@ -29,7 +31,7 @@ import Foundation
 //            case createdDate = "created_date"
 //        }
 //    }
-//}
+// }
 import Foundation
 
 struct AuthResponse: Codable {
@@ -48,7 +50,7 @@ struct Payload: Codable {
     let fullName: String
     let email: String
     let createdDate: String
-    
+
     enum CodingKeys: String, CodingKey {
         case role, deleted, email
         case accessToken = "access_token"
@@ -58,7 +60,9 @@ struct Payload: Codable {
         case createdDate = "created_date"
     }
 }
-//MARK: - errror response model
+
+// MARK: - errror response model
+
 struct ErrorResponse: Codable {
     let type: String
     let title: String
@@ -74,14 +78,18 @@ struct ErrorResponseInLogin: Codable {
     let statusCode: String
     let timestamp: String
 }
-//MARK: - email validation response
+
+// MARK: - email validation response
+
 struct EmailResponse: Codable {
     let message: String
     let payload: String
     let statusCode: String
     let timestamp: String
 }
-//MARK: - OTP response
+
+// MARK: - OTP response
+
 struct OTPResponse: Codable {
     let message: String
     let payload: Payload
@@ -94,22 +102,24 @@ struct OTPResponse: Codable {
     }
 }
 
-
 struct VeryEmailPayload: Codable {
     let email: String
     let isEmailVerified: Bool
     let verifiedAt: String
 }
+
 struct ResetPasswordPayload: Codable {
     let payload: String
 }
-//MAIN MODEL
-struct ResponseWrapper <T: Codable>: Codable {
+
+// MAIN MODEL
+struct ResponseWrapper<T: Codable>: Codable {
     let message: String
     let payload: T
     let statusCode: String
     let timestamp: String
 }
+
 struct APIErrorResponseInVeryOTP: Decodable {
     let type: String
     let title: String
@@ -119,7 +129,8 @@ struct APIErrorResponseInVeryOTP: Decodable {
     let timestamp: String
     let time: String?
 }
-//Create password
+
+// Create password
 struct UserPayload: Codable {
     let accessToken: String
     let refreshToken: String
@@ -134,10 +145,11 @@ struct UserPayload: Codable {
         case refreshToken = "refresh_token"
         case profileImage = "profile_image"
         case fullName = "full_name"
-        case email = "email"
+        case email
         case createdDate = "created_date"
     }
 }
+
 struct ErrorResponseInCreatePassword: Codable {
     let type: String
     let title: String
@@ -145,7 +157,6 @@ struct ErrorResponseInCreatePassword: Codable {
     let detail: String
     let instance: String
     let timestamp: String
-
 }
 
 struct SuccessCreatePasswordResponse: Codable {
@@ -167,7 +178,7 @@ struct SuccessCreatePasswordResponse: Codable {
             case refreshToken = "refresh_token"
             case profileImage = "profile_image"
             case fullName = "full_name"
-            case email = "email"
+            case email
             case createdDate = "created_date"
         }
     }

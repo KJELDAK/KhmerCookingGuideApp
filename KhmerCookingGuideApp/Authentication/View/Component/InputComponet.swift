@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct InputComponent: View {
-    @Binding var textInput:String
-    @State var placeHolder : /*LocalizedStringKey*/ String
+    @Binding var textInput: String
+    @State var placeHolder: /* LocalizedStringKey */ String
     @Binding var errorMessage: String
-    @Binding var isValidation:Bool
-    
+    @Binding var isValidation: Bool
+
     // Create an instance of the EmailValidator
     private let validator = ValidationEmail()
-    
+
     // Function to validate the password using the PasswordValidator
     func validateEmail(_ email: String) {
         if let validationResult = validator.validate(email) {
@@ -26,15 +26,15 @@ struct InputComponent: View {
             errorMessage = ""
         }
     }
-    
+
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             HStack {
                 Image("emailePlaceholder")
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(Color(hex: "#374957"))
-                
+
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
                         Text(placeHolder)
@@ -44,14 +44,14 @@ struct InputComponent: View {
                     TextField("", text: $textInput)
                         .customFontLocalize(size: 20)
                         .multilineTextAlignment(.leading)
-                        .onChange(of: textInput){
+                        .onChange(of: textInput) {
 //                            newValue in
                             validateEmail(textInput)
                         }
                 }
             }
-            .frame( maxWidth: .infinity,minHeight: 36, maxHeight: 36)
-            .padding(.horizontal,15)
+            .frame(maxWidth: .infinity, minHeight: 36, maxHeight: 36)
+            .padding(.horizontal, 15)
             .padding(.vertical, 10)
             .background(Color(hex: "#F9FAFB"))
             .cornerRadius(10)
@@ -71,15 +71,14 @@ struct InputComponent: View {
 }
 
 struct ValidationEmail {
-    
     func validate(_ email: String) -> String? {
         if email.isEmpty {
             return "email_is_empty"
-        }
-        else {
+        } else {
             return nil
         }
     }
+
     // Email validation using regex
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,64}$"
@@ -87,4 +86,3 @@ struct ValidationEmail {
         return emailPredicate.evaluate(with: email)
     }
 }
-

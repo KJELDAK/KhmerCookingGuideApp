@@ -1,19 +1,21 @@
 //
-//  File.swift
+//  HomeModel.swift
 //  KhmerCookingGuideApp
 //
 //  Created by Sok Reaksa on 24/12/24.
 //
 
 import Foundation
-struct CategoryResponsePayload : Codable, Identifiable, Hashable{
-   var id : Int
-    var categoryName : String
+
+struct CategoryResponsePayload: Codable, Identifiable, Hashable {
+    var id: Int
+    var categoryName: String
 }
 
 import Foundation
 
 // MARK: - Main Response
+
 struct FoodRecipesResponse: Codable {
     let message: String
     let payload: [FoodRecipe]
@@ -22,6 +24,7 @@ struct FoodRecipesResponse: Codable {
 }
 
 // MARK: - Food Recipe
+
 struct FoodRecipe: Codable, Identifiable {
     let id: Int
     let photo: [Photo]
@@ -36,16 +39,18 @@ struct FoodRecipe: Codable, Identifiable {
 }
 
 // MARK: - Photo
-struct Photo: Codable , Identifiable{
+
+struct Photo: Codable, Identifiable {
     var id: Int
     let photo: String
-    enum CodingKeys: String ,CodingKey {
+    enum CodingKeys: String, CodingKey {
         case id = "photoId"
-        case photo = "photo"
+        case photo
     }
 }
 
 // MARK: - User
+
 struct User: Codable {
     let id: Int
     let fullName: String
@@ -53,6 +58,7 @@ struct User: Codable {
 }
 
 // MARK: - PopularFoodResponse Model
+
 struct PopularFoodResponse: Codable {
     let message: String
     let payload: PopularFoodPayload
@@ -61,23 +67,30 @@ struct PopularFoodResponse: Codable {
 }
 
 // MARK: - Payload Model
+
 struct PopularFoodPayload: Codable {
     let popularSells: [String] // Assuming an empty array for now
     let popularRecipes: [PopularRecipe]
 }
+
 // MARK: - view recipe by category model Model
+
 struct ViewRecipeByCategory: Codable {
-    let message : String
+    let message: String
     let payload: ViewRecipeByCategoryPayload
     let statusCode: String
     let timestamp: String
 }
+
 // MARK: - Payload Model
-struct ViewRecipeByCategoryPayload: Codable{
+
+struct ViewRecipeByCategoryPayload: Codable {
     let popularRecipes: [PopularRecipe]
     let popularSells: [String] // Assuming an empty array for now
 }
+
 // MARK: - Popular Recipe Model
+
 struct PopularRecipe: Codable, Identifiable {
     let id: Int
     let photo: [RecipePhoto]
@@ -92,22 +105,26 @@ struct PopularRecipe: Codable, Identifiable {
 }
 
 // MARK: - Recipe Photo Model
+
 struct RecipePhoto: Codable {
     let photoId: Int
     let photo: String
 }
 
 // MARK: - User Model
+
 struct RecipeUser: Codable {
     let id: Int
     let fullName: String
     let profileImage: String
 }
+
 ///
 ///
 /// import Foundation
 
 // MARK: - Main Response
+
 struct FoodResponse: Codable {
     let message: String
     let payload: CaytegoryPayload
@@ -116,12 +133,14 @@ struct FoodResponse: Codable {
 }
 
 // MARK: - Payload
+
 struct CaytegoryPayload: Codable {
     let foodRecipes: [FoodRecipeInCategory]
     let foodSells: [FoodSell] // Assuming foodSells is an array of similar objects (empty in your example)
 }
 
 // MARK: - Food Recipe
+
 struct FoodRecipeInCategory: Codable, Identifiable {
     let id: Int
     let photo: [FoodPhoto]
@@ -135,18 +154,15 @@ struct FoodRecipeInCategory: Codable, Identifiable {
     var isFavorite: Bool? // ✅ MUST BE OPTIONAL
 }
 
-
-
 // MARK: - Food Photo
+
 struct FoodPhoto: Codable, Identifiable {
     let photoId: Int
     let photo: String
-    
+
     var id: Int { photoId }
 }
 
-
 // MARK: - Food Sell (Empty Array in Example)
+
 struct FoodSell: Codable {} // Define this if needed
-
-

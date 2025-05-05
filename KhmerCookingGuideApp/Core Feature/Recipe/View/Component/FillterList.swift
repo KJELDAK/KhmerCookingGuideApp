@@ -1,11 +1,12 @@
 //
-//  FilterList.swift
+//  FillterList.swift
 //  KhmerCookingGuideApp
 //
 //  Created by Sok Reaksa on 6/1/25.
 //
 
 import SwiftUI
+
 struct FillterList: View {
     @StateObject var homeViewModel = HomeViewModel()
     @State var filters: [Cuisine] = []
@@ -24,7 +25,7 @@ struct FillterList: View {
                             .padding(.vertical, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .fill(selectedFilter == filter.cuisineName ? Color(hex: "primary"): Color.clear)
+                                    .fill(selectedFilter == filter.cuisineName ? Color(hex: "primary") : Color.clear)
                                     .stroke(Color.gray.opacity(0.3), lineWidth: 2)
                             )
                             .onTapGesture {
@@ -37,31 +38,27 @@ struct FillterList: View {
                 }
             }
             .onAppear {
-                homeViewModel.getAllCategories { isSucces, message in
+                homeViewModel.getAllCategories { isSucces, _ in
                     print("hello")
                     if isSucces {
 //                        filters = homeViewModel.categories
                         print("filters", filters)
 //                        let all = CategoryResponsePayload(id: 999, categoryName: "All")
 //                        filters.insert(all, at: 0)
-                    }
-                    else{
+                    } else {
                         print("error hx")
                     }
                 }
-                recipeViewModel.getAllCuisine { success, message in
-                    if success{
+                recipeViewModel.getAllCuisine { success, _ in
+                    if success {
                         filters = recipeViewModel.cuision
                         print("filters", filters)
                         let all = Cuisine(id: 999, cuisineName: "All")
                         filters.insert(all, at: 0)
-                        
-                    }
-                    else{
+                    } else {
                         print("faild to get cuisine")
                     }
                 }
-                
             }
             .padding(.horizontal)
         }

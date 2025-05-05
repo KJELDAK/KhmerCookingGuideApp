@@ -33,7 +33,6 @@ struct TotalStarRating: View {
     }
 }
 
-
 #Preview {
     TotalStarRating()
 }

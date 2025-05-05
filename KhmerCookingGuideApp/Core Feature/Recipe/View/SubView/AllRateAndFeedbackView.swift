@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct AllRateAndFeedbackView: View {
-    @ObservedObject var  recipeViewModel : RecipeViewModel
+    @ObservedObject var recipeViewModel: RecipeViewModel
     var rateAndFeebackPayload: [RatingFeedback]
     var userRateAndFeedbackPayload: UserFoodFeedbackResponse
     @StateObject var profileViewModel = ProfileViewModel()
     @Environment(\.dismiss) var dismiss
     @State var isNavigateToUpdateRateAndFeedBack: Bool = false
-    @State var isDeleteRateAndFeedbackTapped : Bool = false
+    @State var isDeleteRateAndFeedbackTapped: Bool = false
     @State var messageFromServerWhenDelete = ""
     @State var isShowDeleteRateAndFeedbackFailAlert = false
     @State var isAllRateAndFeedbackEmpty: Bool = false
     var body: some View {
-        ZStack{
+        ZStack {
             NavigationView {
                 ScrollView {
                     if rateAndFeebackPayload.isEmpty && userRateAndFeedbackPayload.payload == nil {
@@ -58,9 +58,7 @@ struct AllRateAndFeedbackView: View {
                                     userName: feedback.user.fullName,
                                     reviewText: feedback.commentText,
                                     rating: feedback.ratingValue,
-                                    isHasThreeDots: false, onEditTapped: {
-                                        
-                                    },onDeleteTapped: {}
+                                    isHasThreeDots: false, onEditTapped: {}, onDeleteTapped: {}
                                 )
                                 .padding(.horizontal)
                             }
@@ -69,26 +67,26 @@ struct AllRateAndFeedbackView: View {
                     }
                 }
                 .navigationDestination(isPresented: $isNavigateToUpdateRateAndFeedBack, destination: {
-                    updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isNavigateToUpdateRateAndFeedBack , profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id).navigationBarBackButtonHidden(true)
+                    updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isNavigateToUpdateRateAndFeedBack, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id).navigationBarBackButtonHidden(true)
                 })
                 .toolbar {
-                    ToolbarItem(placement: .principal){
+                    ToolbarItem(placement: .principal) {
                         Text("all_rating_and_review")
                             .customFontSemiBoldLocalize(size: 20)
                     }
-                    ToolbarItem( placement: .navigationBarLeading) {
-                        Button{
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
                             dismiss()
-                        }label: {
+                        } label: {
                             Image("backButton")
                         }
                     }
                 }
-               
+
                 .navigationBarTitleDisplayMode(.inline)
                 .background(Color(.systemGroupedBackground).ignoresSafeArea())
             }
-            if isDeleteRateAndFeedbackTapped{
+            if isDeleteRateAndFeedbackTapped {
                 DeleteView(
                     status: false,
                     title: "delete_title",
@@ -96,11 +94,11 @@ struct AllRateAndFeedbackView: View {
                 ) {
                     recipeViewModel.deleteRateAndFeedbackById(id: recipeViewModel.userFoodFeedback?.payload?.id ?? 0) { success, message in
                         messageFromServerWhenDelete = message
-                        
+
                         if success {
-                            recipeViewModel.getAllRateAndFeedback(foodId: recipeViewModel.viewRecipeById?.id ?? 0) {_, _ in}
-                            recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: recipeViewModel.viewRecipeById?.id ?? 0) {_,_ in}
-                            recipeViewModel.fetchRecipeById(id: recipeViewModel.viewRecipeById?.id ?? 0) { _, _ in}
+                            recipeViewModel.getAllRateAndFeedback(foodId: recipeViewModel.viewRecipeById?.id ?? 0) { _, _ in }
+                            recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: recipeViewModel.viewRecipeById?.id ?? 0) { _, _ in }
+                            recipeViewModel.fetchRecipeById(id: recipeViewModel.viewRecipeById?.id ?? 0) { _, _ in }
                         } else {
                             isShowDeleteRateAndFeedbackFailAlert = true
                         }
@@ -109,15 +107,13 @@ struct AllRateAndFeedbackView: View {
                 } cancelAction: {
                     isDeleteRateAndFeedbackTapped = false
                 }
-            }
-            else if recipeViewModel.isLoadingWhenPerfromAction{
+            } else if recipeViewModel.isLoadingWhenPerfromAction {
                 LoadingComponent()
             }
             SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServerWhenDelete), duration: 3, isPresented: $isShowDeleteRateAndFeedbackFailAlert)
         }
-        .onAppear{
+        .onAppear {
             profileViewModel.getUserInfo { _, _ in
-                
             }
         }
     }

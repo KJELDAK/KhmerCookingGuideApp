@@ -5,8 +5,8 @@
 //  Created by Sok Reaksa on 11/12/24.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 // Main View for OTP fields
 struct OTPView: View {
@@ -14,6 +14,7 @@ struct OTPView: View {
     enum FocusPin {
         case pinOne, pinTwo, pinThree, pinFour, pinFive, pinSix
     }
+
     @FocusState private var pinFocusState: FocusPin?
     @State private var pinOne = ""
     @State private var pinTwo = ""
@@ -23,8 +24,8 @@ struct OTPView: View {
     @State private var pinSix = ""
     @State private var resendEnabled = false // To track resend button state
     @State private var messageFromAPI: String = ""
-    @ObservedObject  var authenticationViewModel: AuthenticationViewModel
-    @State private var timerValue = 120      // Timer countdown value in seconds
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @State private var timerValue = 120 // Timer countdown value in seconds
     @State private var timerCancellable: AnyCancellable? // For managing the timer
     @State var isOTPvalid: Bool = false
     @State var isOTPNotValid: Bool = false
@@ -50,19 +51,20 @@ struct OTPView: View {
                 }
             }
     }
+
     @Binding var isRegister: Bool
-    
+
     // Verify OTP Action
-    private func verifyOtp() -> String{
+    private func verifyOtp() -> String {
         // Logic to verify OTP
-        return( pinOne + pinTwo + pinThree + pinFour + pinFive + pinSix)
+        return pinOne + pinTwo + pinThree + pinFour + pinFive + pinSix
     }
-    
+
     var body: some View {
-        ZStack{
-            NavigationView{
+        ZStack {
+            NavigationView {
                 VStack {
-                    HStack{
+                    HStack {
                         Image("logo")
                             .resizable()
                             .scaledToFit()
@@ -71,24 +73,24 @@ struct OTPView: View {
                             .resizable()
                             .scaledToFit()
                     }
-                    .padding(.top,-40)
-                    HStack{
-                        VStack(alignment: .leading, spacing: 10){
+                    .padding(.top, -40)
+                    HStack {
+                        VStack(alignment: .leading, spacing: 10) {
                             Text("verification_code")
                                 .customFontMediumLocalize(size: 22)
                                 .fontWeight(.semibold)
-                            Group{
+                            Group {
                                 Text("enter_otp_message")
-                                
+
                                 Text(email)
                             }
-                            
+
                             .customFontLocalize(size: 13)
                         }
                         .padding(.leading)
                         Spacer()
                     }
-                    
+
                     // OTP Input Fields
                     HStack(spacing: 15) {
                         otpTextField(text: $pinOne, focus: .pinOne, nextFocus: .pinTwo)
@@ -99,31 +101,24 @@ struct OTPView: View {
                         otpTextField(text: $pinSix, focus: .pinSix, prevFocus: .pinFive)
                     }
                     .padding(.vertical)
-                    
+
                     if resendEnabled {
                         Button("resend_code") {
                             startTimer()
                             print("Resend code triggered")
-                            authenticationViewModel.sendOTP (email: email){ isSuccess, message in
-                                if isSuccess {
-                                    
-                                }
+                            authenticationViewModel.sendOTP(email: email) { isSuccess, _ in
+                                if isSuccess {}
                             }
-                            
                         }
                         .customFontLocalize(size: 14)
                         .foregroundColor(.blue)
                     } else {
-                        HStack{
+                        HStack {
                             Text("resend_in")
                             Text("\(String(format: "%02d:%02d", timerValue / 60, timerValue % 60))")
-                               
                         }
                         .foregroundColor(.gray)
                         .customFontLocalize(size: 14)
-   
-
-
                     }
                     ButtonComponent(action: {
                         let otp = verifyOtp()
@@ -138,7 +133,7 @@ struct OTPView: View {
                                 messageFromAPI = "invalid_otp_provided"
                             case"OTP validated and email verified successfully":
                                 messageFromAPI = "otp_validated_and_email_verified"
-                            default :
+                            default:
                                 messageFromAPI = message
                             }
                             print(message)
@@ -149,9 +144,9 @@ struct OTPView: View {
                             }
                         }
                     }, content: "_continue")
-                    .disabled(!isOTPComplete)
-                    .opacity(isOTPComplete ? 1.0 : 0.5)
-                    .padding()
+                        .disabled(!isOTPComplete)
+                        .opacity(isOTPComplete ? 1.0 : 0.5)
+                        .padding()
 
                     Spacer()
                 }
@@ -162,31 +157,30 @@ struct OTPView: View {
                     pinFocusState = .pinOne // Focus on the first field on appear
                     startTimer() // Start timer on appear
                 }
-                .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: {
                             dismiss()
-                        }){
+                        }) {
                             Image("backButton")
                         }
                     }
                 }
-                
-    //            Spacer()
+
+                //            Spacer()
             }
-            
-            if isOTPvalid{
+
+            if isOTPvalid {
                 SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isOTPvalid)
-                    .onDisappear{
+                    .onDisappear {
                         isNavigationToCreatePasswordView = true
                     }
-            }
-            else if isOTPNotValid{
+            } else if isOTPNotValid {
                 SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isOTPNotValid)
             }
         }
-        
     }
+
     // Reusable OTP text field with focus management
     private func otpTextField(text: Binding<String>, focus: FocusPin, nextFocus: FocusPin? = nil, prevFocus: FocusPin? = nil) -> some View {
         TextField("", text: text)
@@ -213,19 +207,18 @@ struct OTPView: View {
     }
 }
 
-
 // Modifier for limiting input and styling text fields
 struct OTPModifier: ViewModifier {
     @Binding var pin: String
     var textLimit: Int = 1
     var isFocused: Bool // Added to handle focus state
-    
+
     func limitText(_ upper: Int) {
         if pin.count > upper {
             pin = String(pin.prefix(upper))
         }
     }
-    
+
     func body(content: Content) -> some View {
         content
             .multilineTextAlignment(.center)

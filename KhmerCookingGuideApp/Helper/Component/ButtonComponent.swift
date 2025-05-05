@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ButtonComponent: View {
-    var action: () -> ()
+    var action: () -> Void
     var content: LocalizedStringKey
-    
+
     var body: some View {
         Button(action: {
             action()
@@ -18,7 +18,6 @@ struct ButtonComponent: View {
             Text(content)
 //                .customFontBold(size: 16)
                 .customFontSemiBoldLocalize(size: 16)
-               
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(CustomButtonStyle())
@@ -38,6 +37,3 @@ struct CustomButtonStyle: ButtonStyle {
             .animation(.easeInOut(duration: 0.4), value: configuration.isPressed)
     }
 }
-
-
-

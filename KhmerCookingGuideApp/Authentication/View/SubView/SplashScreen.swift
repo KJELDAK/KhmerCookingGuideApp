@@ -5,7 +5,8 @@
 //  Created by Sok Reaksa on 9/12/24.
 //
 import SwiftUI
-//struct SplashScreen: View {
+
+// struct SplashScreen: View {
 //    @State private var isActive = false
 //
 //    var body: some View {
@@ -23,13 +24,13 @@ import SwiftUI
 //                            .resizable()
 //                            .scaledToFit()
 //                            .frame(width: 180, height: 180)
-//                     
+//
 //                    }
 //                }
 //            }
 //        }
 //        .onAppear {
-//           
+//
 //            // Timer to simulate launch delay
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
 //                withAnimation {
@@ -38,7 +39,7 @@ import SwiftUI
 //            }
 //        }
 //    }
-//}
+// }
 struct SplashScreen: View {
     @State private var isActive = false
     @State private var isLoggedIn = false
@@ -52,7 +53,6 @@ struct SplashScreen: View {
                     if isLoggedIn {
                         ContentView()
 
-                        
                     } else {
                         AuthenticationView()
                     }
@@ -72,7 +72,7 @@ struct SplashScreen: View {
                 authenticationViewModel.autoLogin { success, message in
                     if success {
                         self.isLoggedIn = true
-                        profileViewModel.getUserInfo { success, message in
+                        profileViewModel.getUserInfo { _, _ in
                             print("User info loaded after auto-login")
                         }
                     } else {
@@ -89,4 +89,3 @@ struct SplashScreen: View {
         }
     }
 }
-

@@ -16,9 +16,9 @@ struct LanguageSelectionView: View {
     }
 
     func handleSelected() {
-           languageManager.setLanguage(displayName: Langeselected) // Update the language in LanguageManager
-           showLanguageSheet = false
-       }
+        languageManager.setLanguage(displayName: Langeselected) // Update the language in LanguageManager
+        showLanguageSheet = false
+    }
 
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
@@ -32,20 +32,19 @@ struct LanguageSelectionView: View {
 
                 LanguageOption(language: "_khmer", flag: "khmerLogo", isSelected: $Langeselected)
                 LanguageOption(language: "_english", flag: "usa", isSelected: $Langeselected)
-                
             }
             .padding(.top, 10)
 
             ButtonComponent(action: {
                 handleSelected()
             }, content: "_select")
-            .padding(.bottom)
+                .padding(.bottom)
         }
         .padding(.top, 30)
         .padding(.horizontal, 20)
         .presentationDetents([
             screenWidth <= 375 ? .height(330) : .height(340),
-            screenWidth <= 375 ? .height(330) : /*.medium*/ .height(340)
+            screenWidth <= 375 ? .height(330) : /* .medium */ .height(340),
         ])
         .presentationBackground(.white)
         .presentationCornerRadius(20)
@@ -53,11 +52,10 @@ struct LanguageSelectionView: View {
         .background(Color.white)
         .cornerRadius(20)
         .onAppear {
-                   Langeselected = languageManager.displayName // Initialize with the current language
-               }
+            Langeselected = languageManager.displayName // Initialize with the current language
+        }
     }
 }
-
 
 import SwiftUI
 
@@ -65,30 +63,30 @@ struct LanguageOption: View {
     let language: String
     let flag: String
     @Binding var isSelected: String
-    
+
     var body: some View {
-        GeometryReader{
-            geo in
-            Button(action:{
+        GeometryReader {
+            _ in
+            Button(action: {
                 isSelected = language
-            }){
+            }) {
                 HStack {
                     Image(flag)
                         .resizable()
-                        .frame(width: 60,height: 60)
+                        .frame(width: 60, height: 60)
                         .scaledToFill()
-                        .padding(.vertical,-10)
-                        .padding(.trailing,20)
-                    
+                        .padding(.vertical, -10)
+                        .padding(.trailing, 20)
+
                     Text(LocalizedStringKey(language))
-                        .font(.system(size: 18,weight: isSelected == language ? .semibold : .medium))
+                        .font(.system(size: 18, weight: isSelected == language ? .semibold : .medium))
                         .foregroundColor(.primary)
                     Spacer()
-                    
+
                     if isSelected == language {
                         Image(systemName: "checkmark")
                             .foregroundColor(.blue)
-                            .font(.system(size: 24,weight: .bold))
+                            .font(.system(size: 24, weight: .bold))
                     }
                 }
 //                .frame(minWidth: 200,maxWidth: geo.size.width * 0.9)
@@ -100,4 +98,3 @@ struct LanguageOption: View {
         }
     }
 }
-

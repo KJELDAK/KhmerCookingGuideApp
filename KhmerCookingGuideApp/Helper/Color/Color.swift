@@ -8,15 +8,14 @@
 import SwiftUI
 
 extension Color {
-    
     // Initializes a Color from a hex string.
     init(hex: String) {
         var hex = Color.resolvePredefinedColor(hex: hex)
-         hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
-        
+
         switch hex.count {
         case 3:
             // Handle shorthand notation (e.g. "123" => RGB)
@@ -31,7 +30,7 @@ extension Color {
             // Default to fully opaque black
             (a, r, g, b) = (255, 0, 0, 0)
         }
-        
+
         self.init(
             .sRGB,
             red: Double(r) / 255,
@@ -53,6 +52,7 @@ extension Color {
         }
     }
 }
+
 import UIKit
 
 extension UIColor {

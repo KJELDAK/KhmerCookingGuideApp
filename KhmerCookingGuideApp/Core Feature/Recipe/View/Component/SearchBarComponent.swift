@@ -7,15 +7,14 @@
 
 import SwiftUI
 
-
 struct SearchBarComponent: View {
     @Binding var searchText: String
     var body: some View {
-        HStack{
+        HStack {
             Image("search")
                 .resizable()
                 .frame(width: 22, height: 22)
-                .padding(.leading,9)
+                .padding(.leading, 9)
             ZStack(alignment: .leading) {
                 // Placeholder text
                 if searchText.isEmpty {
@@ -29,10 +28,10 @@ struct SearchBarComponent: View {
                     .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
             }
             .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
-            if !searchText.isEmpty{
-                Button{
+            if !searchText.isEmpty {
+                Button {
                     searchText = ""
-                }label: {
+                } label: {
                     Image("cancel")
                         .resizable()
                         .frame(width: 9, height: 9)
@@ -40,17 +39,11 @@ struct SearchBarComponent: View {
                         .zIndex(0)
                 }
                 .padding(.trailing)
-            }
-            else{
-                
-            }
+            } else {}
         }
         .background(Color(red: 0.953, green: 0.953, blue: 0.949))
         .cornerRadius(12)
         .zIndex(2)
         .padding()
-        
     }
 }
-
-

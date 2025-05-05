@@ -5,13 +5,13 @@
 ////  Created by Sok Reaksa on 12/12/24.
 ////
 //
-//import SwiftUI
+// import SwiftUI
 //
 //
-//struct ContentView: View {
+// struct ContentView: View {
 //    @State var selectedTab: Int = 0
 //    @State var isPresented: Bool = false
-//   
+//
 //    var body: some View {
 //        NavigationControllerWrapper{
 //            ZStack{
@@ -67,13 +67,13 @@
 //            }
 //            .onAppear{
 //                print("token",HeaderToken.shared.token)
-//                
+//
 //            }
 //        }
 //    }
-//}
+// }
 //
-//struct CustomTabBar<Content: View>: View {
+// struct CustomTabBar<Content: View>: View {
 //    let content: Content
 //
 //    init(@ViewBuilder content: () -> Content) {
@@ -87,22 +87,22 @@
 //            CustomTabBarOverlay()
 //        }
 //    }
-//}
+// }
 //
-//struct CustomTabBarOverlay: View {
+// struct CustomTabBarOverlay: View {
 //    var body: some View {
 //        GeometryReader { geometry in
 //            VStack {
 //                Spacer()
 //                HStack {
 //                    Spacer()
-//                    
+//
 //                    // First Tab
 //                    Spacer()
 //
 //                    // Second Tab: Add Circle Background
 //                    Button{
-//                        
+//
 //                    }label: {
 //                        Circle()
 //                            .fill(Color(hex: "FF0000"))
@@ -125,11 +125,11 @@
 //            .allowsHitTesting(false) // Prevent the custom view from blocking taps
 //        }
 //    }
-//}
+// }
 //
-//#Preview {
+// #Preview {
 //    ContentView()
-//}
+// }
 //
 //  ContentView.swift
 //  KhmerCookingGuideApp
@@ -138,52 +138,61 @@
 //
 
 import SwiftUI
+
 struct ContentView: View {
     @State var selectedTab: Int = 0
     @State var isPresented: Bool = false
-    @State var isShowLogoutAlert : Bool = false
+    @State var isShowLogoutAlert: Bool = false
     @StateObject var authenticationViewModel = AuthenticationViewModel()
     @State var isLogout: Bool = false
     var body: some View {
-        ZStack{
-            NavigationControllerWrapper{
-                if HeaderToken.shared.role == "ROLE_ADMIN"{
-                    ZStack{
+        ZStack {
+            NavigationControllerWrapper {
+                if HeaderToken.shared.role == "ROLE_ADMIN" {
+                    ZStack {
                         Spacer().fullScreenCover(isPresented: $isPresented) {
                             PostFoodRecipeView(isSheetPresent: $isPresented, selectedTab: $selectedTab)
                         }
                         CustomTabBar {
                             TabView(selection: $selectedTab) {
-                                //MARK: - First Tab
-                                VStack{
+                                // MARK: - First Tab
+
+                                VStack {
                                     HomeScreenView(selectedTab: $selectedTab)
                                 }
                                 .tag(0)
                                 .tabItem {
                                     Label("Home", image: selectedTab == 0 ? "activeHome" : "home")
                                 }
-                                
-                                //MARK: - Second Tab
-                                VStack{
+
+                                // MARK: - Second Tab
+
+                                VStack {
                                     RecipeView()
                                 }
                                 .tag(1)
                                 .tabItem {
                                     Label("Recipe", image: selectedTab == 1 ? "activeRecipe" : "recipe")
                                 }
-                                //MARK: - Third Tab
+
+                                // MARK: - Third Tab
+
                                 Text("")
                                     .tag(2)
-                                //MARK: - fourth Tab
-                                VStack{
+
+                                // MARK: - fourth Tab
+
+                                VStack {
                                     FavoritesView(selectedTab: $selectedTab)
                                 }
                                 .tag(3)
                                 .tabItem {
                                     Label("Favorite", image: selectedTab == 3 ? "activeFavorite" : "favorite")
                                 }
-                                //MARK: - Five Tab
-                                VStack{
+
+                                // MARK: - Five Tab
+
+                                VStack {
                                     ProfileView(selectedTab: $selectedTab, isShowLogoutAlert: $isShowLogoutAlert)
                                 }
                                 .tag(4)
@@ -198,52 +207,56 @@ struct ContentView: View {
                                 }
                             }
                         }
-                        
                     }
-                    .onAppear{
-                        print("token",HeaderToken.shared.token)
-                        print("userRole",HeaderToken.shared.role)
-                        
+                    .onAppear {
+                        print("token", HeaderToken.shared.token)
+                        print("userRole", HeaderToken.shared.role)
                     }
-                    
-                }
-                else{
-                    ZStack{
+                } else {
+                    ZStack {
                         Spacer().fullScreenCover(isPresented: $isPresented) {
                             PostFoodRecipeView(isSheetPresent: $isPresented, selectedTab: $selectedTab)
                         }
                         CustomTabBar {
                             TabView(selection: $selectedTab) {
-                                //MARK: - First Tab
-                                VStack{
-                                    HomeScreenView( selectedTab: $selectedTab)
+                                // MARK: - First Tab
+
+                                VStack {
+                                    HomeScreenView(selectedTab: $selectedTab)
                                 }
                                 .tag(0)
                                 .tabItem {
                                     Label("Home", image: selectedTab == 0 ? "activeHome" : "home")
                                 }
-                                
-                                //MARK: - Second Tab
-                                VStack{
+
+                                // MARK: - Second Tab
+
+                                VStack {
                                     RecipeView()
                                 }
                                 .tag(1)
                                 .tabItem {
                                     Label("Recipe", image: selectedTab == 1 ? "activeRecipe" : "recipe")
                                 }
-                                //MARK: - Third Tab
+
+                                // MARK: - Third Tab
+
                                 //                            Text("")
                                 //                                .tag(2)
-                                //MARK: - fourth Tab
-                                VStack{
+
+                                // MARK: - fourth Tab
+
+                                VStack {
                                     FavoritesView(selectedTab: $selectedTab)
                                 }
                                 .tag(3)
                                 .tabItem {
                                     Label("Favorite", image: selectedTab == 3 ? "activeFavorite" : "favorite")
                                 }
-                                //MARK: - Five Tab
-                                VStack{
+
+                                // MARK: - Five Tab
+
+                                VStack {
                                     ProfileView(selectedTab: $selectedTab, isShowLogoutAlert: $isShowLogoutAlert)
                                 }
                                 .tag(4)
@@ -252,23 +265,19 @@ struct ContentView: View {
                                 }
                             }
                             .accentColor(Color(hex: "FF0000"))
-                            .onChange(of: selectedTab) { newValue in
+                            .onChange(of: selectedTab) { _ in
                                 if selectedTab == 2 {
                                     isPresented = true
                                 }
                             }
                         }
-                        
-                        
                     }
-                    .onAppear{
-                        print("token",HeaderToken.shared.token)
-                        
+                    .onAppear {
+                        print("token", HeaderToken.shared.token)
                     }
-                    
                 }
             }
-            if isShowLogoutAlert{
+            if isShowLogoutAlert {
                 DeleteView(status: false, title: "logout_title", message: "logout_message") {
                     authenticationViewModel.logout()
                     isLogout = true
@@ -281,18 +290,17 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isLogout, content: {
             AuthenticationView()
         })
-        
     }
 }
 
 struct CustomTabBar<Content: View>: View {
     let content: Content
-    
+
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
         UITabBar.appearance().backgroundColor = UIColor.systemBackground // Default background color
     }
-    
+
     var body: some View {
         ZStack {
             content
@@ -303,20 +311,18 @@ struct CustomTabBar<Content: View>: View {
 
 struct CustomTabBarOverlay: View {
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
-                    
+
                     // First Tab
                     Spacer()
-                    
+
                     // Second Tab: Add Circle Background
-                    if HeaderToken.shared.role == "ROLE_ADMIN"{
-                        Button{
-                            
-                        }label: {
+                    if HeaderToken.shared.role == "ROLE_ADMIN" {
+                        Button {} label: {
                             Circle()
                                 .fill(Color(hex: "FF0000"))
                                 .frame(width: 50, height: 50)
@@ -327,13 +333,12 @@ struct CustomTabBarOverlay: View {
                                 )
                             //                            .offset(y: -10)
                         }
-                    }
-                    else{}
+                    } else {}
                     //                    .hidden()
                     //                        .disabled(true)
-                    
+
                     Spacer()
-                    
+
                     Spacer() // Additional spacing for other tabs
                 }
             }

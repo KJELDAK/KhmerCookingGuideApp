@@ -5,15 +5,13 @@
 //  Created by Sok Reaksa on 29/4/25.
 //
 
-
-import Foundation
 import Alamofire
+import Foundation
 
 final class FileUploader {
-    
-    static let shared = FileUploader()  // Singleton instance
-    private init() {}                   // Prevent external instantiation
-    
+    static let shared = FileUploader() // Singleton instance
+    private init() {} // Prevent external instantiation
+
     var isLoading = false
     var image: [String] = []
 
@@ -39,11 +37,11 @@ final class FileUploader {
         .responseDecodable(of: UploadFileResponse.self) { response in
             self.isLoading = false
             switch response.result {
-            case .success(let value):
+            case let .success(value):
                 print("✅ File uploaded successfully: \(value)")
                 self.image = value.payload
                 completion(true, "Upload successful")
-            case .failure(let error):
+            case let .failure(error):
                 print("❌ File upload failed sdsd: \(error.localizedDescription)")
                 completion(false, "Upload failed: \(error.localizedDescription)")
             }

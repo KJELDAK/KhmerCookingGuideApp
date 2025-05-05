@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct PostFoodRequest: Codable {
     let photo: [Photo]
     let name: String
@@ -17,12 +18,14 @@ struct PostFoodRequest: Codable {
     let ingredients: [Ingredienth]
     let cookingSteps: [CookingStep]
 }
-struct PostFoodResponse: Codable{
+
+struct PostFoodResponse: Codable {
     let message: String
     let payload: FoodRecipe // 🔹 payload is a single object
-      let statusCode: String
-      let timestamp: String
+    let statusCode: String
+    let timestamp: String
 }
+
 struct UploadFileResponse: Codable {
     let message: String
     let status: Int

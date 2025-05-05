@@ -5,12 +5,12 @@
 //  Created by Sok Reaksa on 30/4/25.
 //
 
-
 import SwiftUI
+
 struct PopupView: View {
     @Binding var showPopup: Bool
     var onEditTapped: () -> Void // Callback when "Edit" is tapped
-    var onDeleteTapped: () -> Void 
+    var onDeleteTapped: () -> Void
     var body: some View {
         VStack(alignment: .leading) {
             Button(action: {
@@ -53,4 +53,3 @@ struct PopupView: View {
         .zIndex(10)
     }
 }
-

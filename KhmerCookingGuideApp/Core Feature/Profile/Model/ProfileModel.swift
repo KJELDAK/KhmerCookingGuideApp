@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Foundation
 
 // Root Model
 struct NewUserInfoResponse: Codable {

@@ -5,20 +5,21 @@
 //  Created by Sok Reaksa on 30/12/24.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
+
 struct FoodCardComponent: View {
     var id: Int?
     @State var isFavorite: Bool
     //    @State var isLike: Bool = false
     var fileName: String
     var name: String
-    var description : String
-    var level : String
-    
+    var description: String
+    var level: String
+
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
-        
+
         VStack(spacing: 0) {
             // Image Section
             KFImage(URL(string: imageUrl))
@@ -28,7 +29,7 @@ struct FoodCardComponent: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .cornerRadius(15, corners: [.topLeft, .topRight])
-            
+
             // Text Section
             VStack(alignment: .leading, spacing: 6) {
                 Text(name)
@@ -59,11 +60,10 @@ struct FoodCardComponent: View {
                 isLiked: $isFavorite, // ideally you’d track this at view level
                 foodId: id ?? 112,
                 itemType: "FOOD_RECIPE"
-                
-            )                .
-            padding()
+
+            ).padding()
         }
-        
+
         .overlay(alignment: .topLeading) {
             TotalStarRating()
                 .padding()
@@ -71,21 +71,22 @@ struct FoodCardComponent: View {
     }
 }
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
+
 struct FoodCardComponent2: View {
     var id: Int?
     @Binding var isFavorite: Bool
     //    @State var isLike: Bool = false
     var fileName: String
     var name: String
-    var description : String
+    var description: String
     var rating: Double
-    var level : String
-    
+    var level: String
+
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
-        
+
         VStack(spacing: 0) {
             // Image Section
             KFImage(URL(string: imageUrl))
@@ -95,10 +96,10 @@ struct FoodCardComponent2: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .cornerRadius(15, corners: [.topLeft, .topRight])
-            
+
             // Text Section
             VStack(alignment: .leading, spacing: 6) {
-                if LanguageDetector.shared.isKhmerText(name){
+                if LanguageDetector.shared.isKhmerText(name) {
                     Text(name)
                         .customFontKhmer(size: 14)
                         .foregroundColor(Color.black)
@@ -107,7 +108,7 @@ struct FoodCardComponent2: View {
                         .customFontKhmer(size: 12)
                         .foregroundColor(.black.opacity(0.4))
                         .lineLimit(1)
-                }else{
+                } else {
                     Text(name)
                         .customFontRobotoRegular(size: 14)
                         .foregroundColor(Color.black)
@@ -137,20 +138,20 @@ struct FoodCardComponent2: View {
                 isLiked: $isFavorite, // ideally you’d track this at view level
                 foodId: id ?? 112,
                 itemType: "FOOD_RECIPE"
-                
-            )                .
-            padding()
+
+            ).padding()
         }
-        
+
         .overlay(alignment: .topLeading) {
             TotalStarRating(rating: rating)
                 .padding()
         }
-        .onAppear{
+        .onAppear {
             print("this is food :", id, isFavorite)
         }
     }
-    func mapLevel (level: String) -> String {
+
+    func mapLevel(level: String) -> String {
         switch level {
         case "Easy":
             return "_easy"

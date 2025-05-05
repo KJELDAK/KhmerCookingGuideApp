@@ -7,28 +7,27 @@
 import SwiftUI
 
 struct ToggleButtonGroup: View {
-    let title: String               // Title for the section
-    let items: [String]             // Array of items to display as buttons
+    let title: String // Title for the section
+    let items: [String] // Array of items to display as buttons
     @Binding var selection: String // Binding for the selected items (multi-selection)
-    let isSingleSelection: Bool     // Flag to toggle between single and multi-selection
-    
+    let isSingleSelection: Bool // Flag to toggle between single and multi-selection
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LocalizedStringKey(title))
                 .customFontMediumLocalize(size: 16)
-            
 
-            ScrollView(.horizontal){
+            ScrollView(.horizontal) {
                 HStack {
                     ForEach(items, id: \.self) { item in
                         Button(action: {
 //                            if isSingleSelection {
-                                // Single selection behavior
-                            
+                            // Single selection behavior
+
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                                           selection = item
-                                                       }
-                                
+                                selection = item
+                            }
+
 //                            } else {
 //                                // Multi-selection behavior
 //                                if selection.contains(item) {
@@ -52,7 +51,6 @@ struct ToggleButtonGroup: View {
                         }
                     }
                 }
-
             }
             .scrollIndicators(.hidden)
         }

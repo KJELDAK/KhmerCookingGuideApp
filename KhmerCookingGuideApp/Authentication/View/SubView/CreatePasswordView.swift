@@ -14,20 +14,20 @@ struct CreatePasswordView: View {
     @State var confirmPassword: String = ""
     @State var confirmPasswordErrorMessage: String = ""
     @State var isValidationConfirmPassword: Bool = true
-    @ObservedObject var authenticationViewModel : AuthenticationViewModel
-    @State var isNavigateToLoginView : Bool = false
-    @State var isCreatePasswordSuccess : Bool = false
-    @State var isCreatePasswordFailed : Bool = false
-    @State var messageFromAPI : String = ""
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @State var isNavigateToLoginView: Bool = false
+    @State var isCreatePasswordSuccess: Bool = false
+    @State var isCreatePasswordFailed: Bool = false
+    @State var messageFromAPI: String = ""
     @Binding var email: String
     @Binding var isRegister: Bool
-    @State var isNavigateToAddUserInfoView : Bool = false
+    @State var isNavigateToAddUserInfoView: Bool = false
     @Environment(\.dismiss) var dissmiss
-    
+
     // Validate Passwords
     private func validatePasswords() -> Bool {
         var isValid = true
-        
+
         if newPassword.isEmpty {
             newPasswordErrorMessage = "enter_new_password"
             isValidationNewPassword = false
@@ -40,8 +40,7 @@ struct CreatePasswordView: View {
             confirmPasswordErrorMessage = "enter_confirm_password"
             isValidationConfirmPassword = false
             isValid = false
-        }
-        else if newPassword != confirmPassword {
+        } else if newPassword != confirmPassword {
             confirmPasswordErrorMessage = "passwords_do_not_match"
             isValidationConfirmPassword = false
             isValid = false
@@ -53,42 +52,40 @@ struct CreatePasswordView: View {
     }
 
     var body: some View {
-        ZStack{
-            NavigationView{
-                VStack(alignment: .leading){
+        ZStack {
+            NavigationView {
+                VStack(alignment: .leading) {
                     Text("create_new_password")
                         .customFontSemiBoldLocalize(size: 18)
-                    HStack{
+                    HStack {
                         Text("new_password")
                             .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
                         Text("*").foregroundColor(Color(hex: "primary"))
-                        
                     }
                     .padding(.top)
                     PasswordInputation(password: $newPassword, errorMessage: $newPasswordErrorMessage, isValidation: $isValidationNewPassword)
-                        .onChange(of: newPassword){ _ in
+                        .onChange(of: newPassword) { _ in
                             _ = validatePasswords()
                         }
-                        .padding(.top,-10)
-                  
-                    HStack{
+                        .padding(.top, -10)
+
+                    HStack {
                         Text("confirm_new_password")
                             .customFontMediumLocalize(size: 16)
                             .foregroundColor(Color(hex: "0A0019"))
                         Text("*").foregroundColor(Color(hex: "primary"))
-                        
                     }
                     .padding(.top)
                     PasswordInputation(password: $confirmPassword, errorMessage: $confirmPasswordErrorMessage, isValidation: $isValidationConfirmPassword)
-                        .padding(.top,-10)
-                        .onChange(of: confirmPassword){ _ in
+                        .padding(.top, -10)
+                        .onChange(of: confirmPassword) { _ in
                             _ = validatePasswords()
                         }
                     ButtonComponent(action: {
                         print(confirmPassword, newPassword)
-                        if newPassword == confirmPassword{
-                            if isRegister{
+                        if newPassword == confirmPassword {
+                            if isRegister {
                                 authenticationViewModel.createPassword(email: email, password: confirmPassword) { isSuccess, message in
                                     messageFromAPI = message
                                     switch messageFromAPI {
@@ -97,54 +94,48 @@ struct CreatePasswordView: View {
                                     default:
                                         messageFromAPI = message
                                     }
-                                    if isSuccess{
+                                    if isSuccess {
                                         print("true")
                                         isCreatePasswordSuccess = true
-                                        
-                                       
-                                    }else{
+
+                                    } else {
                                         print("faild")
                                         isCreatePasswordFailed = true
                                     }
                                 }
-                            }
-                            else{
+                            } else {
                                 print(HeaderToken.shared.token)
                                 authenticationViewModel.createPassword(email: email, password: confirmPassword) { isSuccess, message in
                                     messageFromAPI = message
-                                    if isSuccess{
-
+                                    if isSuccess {
                                         isCreatePasswordSuccess = true
-                                    }else{
+                                    } else {
                                         print("faild")
                                         isCreatePasswordFailed = true
                                     }
                                 }
                             }
-                        }
-                        else{
+                        } else {
                             print("does not match")
-                            confirmPasswordErrorMessage =  "passwords_do_not_match"
-                           
+                            confirmPasswordErrorMessage = "passwords_do_not_match"
+
                             isValidationConfirmPassword = false
                         }
-                        
-                        
+
                     }, content: "_next").padding(.top)
                         .disabled(!isValidationConfirmPassword)
                         .opacity(isValidationNewPassword && isValidationConfirmPassword ? 1 : 0.5)
 
-
                     Spacer()
                 }
-                
+
                 .padding()
-                .frame(maxWidth: .infinity,alignment: .leading)
-                .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
                         Button(action: {
                             dissmiss()
-                        }){
+                        }) {
                             Image("backButton")
                         }
                     }
@@ -152,24 +143,20 @@ struct CreatePasswordView: View {
                 .navigationDestination(isPresented: $isNavigateToAddUserInfoView) {
                     AdditionalInformationView().navigationBarBackButtonHidden(true)
                 }
-                
             }
-            SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI) , duration: 3, isPresented: $isCreatePasswordSuccess)
-                .onDisappear{
-                    if isRegister{
-                        //dfghjk
+            SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isCreatePasswordSuccess)
+                .onDisappear {
+                    if isRegister {
+                        // dfghjk
                         isNavigateToAddUserInfoView = true
-                    }
-                    else{
+                    } else {
                         isNavigateToLoginView = true
                     }
                 }
-            SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI) , duration: 3, isPresented: $isCreatePasswordFailed)
+            SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromAPI), duration: 3, isPresented: $isCreatePasswordFailed)
         }
         .fullScreenCover(isPresented: $isNavigateToLoginView) {
             AuthenticationView()
         }
-
-        
     }
 }
