@@ -63,6 +63,7 @@ struct TermsAndConditionsView: View {
                 }
                 .padding()
             }
+            .scrollIndicators(.hidden)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {

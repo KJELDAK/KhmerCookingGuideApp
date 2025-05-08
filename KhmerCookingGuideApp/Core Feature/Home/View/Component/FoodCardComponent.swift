@@ -146,9 +146,6 @@ struct FoodCardComponent2: View {
             TotalStarRating(rating: rating)
                 .padding()
         }
-        .onAppear {
-            print("this is food :", id, isFavorite)
-        }
     }
 
     func mapLevel(level: String) -> String {

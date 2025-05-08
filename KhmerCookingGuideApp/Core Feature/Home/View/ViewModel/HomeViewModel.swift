@@ -23,7 +23,6 @@ class HomeViewModel: ObservableObject {
             .responseDecodable(of: ResponseWrapper<[CategoryResponsePayload]>.self) { response in
                 switch response.result {
                 case let .success(value):
-                    print("get ban all categories")
                     self.categories = value.payload
                     self.isLoading = false
                     completion(true, value.message)
@@ -55,7 +54,6 @@ class HomeViewModel: ObservableObject {
 
                     self.foodRecipes = value.payload
                     completion(true, value.message)
-//                    print("this is food recipes\(self.foodRecipes)")
                     self.isLoading = false
                 case let .failure(error):
                     print("errpr", error)
@@ -114,7 +112,7 @@ class HomeViewModel: ObservableObject {
                     print("error get food by category", error)
                     if let data = response.data {
                         if let jsonString = String(data: data, encoding: .utf8) {
-                            print("Raw response JSON: \(jsonString)")
+                            
                         }
 
                         if let severError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data) {

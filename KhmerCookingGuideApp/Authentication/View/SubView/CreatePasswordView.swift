@@ -83,7 +83,6 @@ struct CreatePasswordView: View {
                             _ = validatePasswords()
                         }
                     ButtonComponent(action: {
-                        print(confirmPassword, newPassword)
                         if newPassword == confirmPassword {
                             if isRegister {
                                 authenticationViewModel.createPassword(email: email, password: confirmPassword) { isSuccess, message in
@@ -95,11 +94,9 @@ struct CreatePasswordView: View {
                                         messageFromAPI = message
                                     }
                                     if isSuccess {
-                                        print("true")
                                         isCreatePasswordSuccess = true
 
                                     } else {
-                                        print("faild")
                                         isCreatePasswordFailed = true
                                     }
                                 }
@@ -110,13 +107,11 @@ struct CreatePasswordView: View {
                                     if isSuccess {
                                         isCreatePasswordSuccess = true
                                     } else {
-                                        print("faild")
                                         isCreatePasswordFailed = true
                                     }
                                 }
                             }
                         } else {
-                            print("does not match")
                             confirmPasswordErrorMessage = "passwords_do_not_match"
 
                             isValidationConfirmPassword = false

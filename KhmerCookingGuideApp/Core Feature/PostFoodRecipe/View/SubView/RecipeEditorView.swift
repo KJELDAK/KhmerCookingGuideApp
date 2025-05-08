@@ -108,7 +108,6 @@ struct RecipeEditorView: View {
                             ButtonComponent(action: {
                                 logRecipeData()
                                 print(photoPicker.prepareImageDataForAPI(), foodName, foodDescription)
-                                print("Ingredients:", ingredients)
                                 print("_hard:", cookingSteps, reqLevel)
                                 switch selectedLevel {
                                 case "_hard":
@@ -220,7 +219,7 @@ struct RecipeEditorView: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                }
+                }.scrollIndicators(.hidden)
             }
             if postFoodRecipeViewModel.isLoading {
                 LoadingComponent()

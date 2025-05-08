@@ -31,7 +31,7 @@ class ProfileViewModel: ObservableObject {
                             completion(false, severError.message)
                         }
                     } else {
-                        print("yoo", error.localizedDescription)
+                        print( error.localizedDescription)
                         completion(false, error.localizedDescription)
                         self.isLoading = false
                     }
@@ -63,7 +63,7 @@ class ProfileViewModel: ObservableObject {
                             completion(false, severError.detail)
                         }
                     } else {
-                        print("yoo", error.localizedDescription)
+                        print( error.localizedDescription)
                         completion(false, "Could not update profile,please try again later")
                         self.isLoadingWhenUpdate = false
                     }

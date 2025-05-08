@@ -28,7 +28,7 @@ struct FoodRecipeResponseByCuisinseId: Codable {
 
 // MARK: - FoodRecipePayload
 
-struct FoodRecipePayload: Codable {
+struct FoodRecipePayload: Codable{
     let id: Int
     let photo: [Photo]
     let name: String

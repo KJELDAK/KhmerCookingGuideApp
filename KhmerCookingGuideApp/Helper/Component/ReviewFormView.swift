@@ -59,9 +59,6 @@ struct ReviewFormView: View {
                                 .foregroundColor(.black)
                             StarRatingView(rating: $rating) // Interactive stars
                         }
-                        .onAppear {
-                            print("dsgsdg", userName)
-                        }
 
                         Spacer()
                     }

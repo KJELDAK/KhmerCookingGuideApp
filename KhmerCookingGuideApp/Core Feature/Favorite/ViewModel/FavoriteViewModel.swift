@@ -22,13 +22,11 @@ class FavoriteViewModel: ObservableObject {
             switch response.result {
             case let .success(data):
                 self.favoriteList = data.payload.favoriteFoodRecipes
-                print("Data response:", data.payload.favoriteFoodRecipes)
                 completion(true, data.message)
             case let .failure(error):
                 self.isLoading = false
                 if let data = response.data {
-                    print("Raw JSON Response:")
-                    print(String(data: data, encoding: .utf8) ?? "Unable to convert data to string")
+//                    print(String(data: data, encoding: .utf8) ?? "Unable to convert data to string")
                     if let severError = try? JSONDecoder().decode(ErrorResponseInLogin.self, from: data) {
                         print(severError.payload)
                         completion(false, severError.payload)
@@ -36,7 +34,6 @@ class FavoriteViewModel: ObservableObject {
                         completion(false, error.localizedDescription)
                     }
                 } else {
-                    print("faild to get all categories")
                     completion(false, error.localizedDescription)
                 }
             }
@@ -72,7 +69,7 @@ class FavoriteViewModel: ObservableObject {
             "foodId": foodId,
             "itemType": itemType,
         ]
-        print("add to favorite parameters\(parameters)")
+        print("remove to favorite parameters\(parameters)")
         isLoading = true
         AF.request(url, method: .delete, parameters: parameters, encoding: URLEncoding(destination: .queryString), headers: HeaderToken.shared.headerToken)
             .validate(statusCode: 200 ..< 500) // Include 400 range so we can parse custom error messages

@@ -68,7 +68,6 @@ class RecipeViewModel: ObservableObject {
             .responseDecodable(of: FoodRecipeResponseByCuisinseId.self) { response in
                 switch response.result {
                 case let .success(value):
-                    print("get recipe by cuisine id success")
                     self.viewAllRecipeByCuisineId = value.payload
                     completion(true, value.message)
                     self.isLoading = false
@@ -157,7 +156,6 @@ class RecipeViewModel: ObservableObject {
             "ratingValue": ratingValue,
             "commentText": commentText,
         ]
-        print("ajaj", parameter)
         print("post rate and feedback url: \(url)")
         AF.request(url, method: .post, parameters: parameter, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken).validate()
             .responseDecodable(of: FeedbackResponse.self) { response in

@@ -60,8 +60,9 @@ struct FavoritesView: View {
                                 }
                             }
                         }
-                        .padding(.top)
-                    }
+                       
+                    }.scrollIndicators(.hidden)
+                       
                 }
             }
             .toolbar {
@@ -70,11 +71,13 @@ struct FavoritesView: View {
                         .customFontSemiBoldLocalize(size: 20)
                 }
             }
+            .toolbarTitleDisplayMode(.inline)
             .onAppear {
                 favoriteViewModel.getAllFavoriteFoodRecipes { success, message in
                     print("Fetch status: \(success), message: \(message)")
                 }
             }
+
         }
     }
 }

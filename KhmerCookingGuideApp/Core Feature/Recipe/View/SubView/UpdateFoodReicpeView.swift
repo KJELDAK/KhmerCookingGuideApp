@@ -159,7 +159,7 @@ struct UpdateFoodRecipeView: View {
 
                             ToggleButtonGroup(
                                 title: "_cuisines",
-                                items: ["_soup", "_salad", "_grill", "_fry", "_stir_fried", "_dessert"],
+                                items: ["_soup", "_salad", "_grill", "_fry", "_stir_fried", "_dessert", "_steam"],
                                 selection: $selectedCuisines,
                                 isSingleSelection: true
                             )
@@ -172,7 +172,6 @@ struct UpdateFoodRecipeView: View {
                             )
 
                             ButtonComponent(action: {
-                                print("this is", originalApiImages)
                                 handleSubmitRecipeUpdate()
                                 isRecipeInputation = true
                             }, content: "_next")
@@ -180,6 +179,7 @@ struct UpdateFoodRecipeView: View {
                         }
                         .padding()
                     }
+                    .scrollIndicators(.hidden)
                 }
                 .onAppear {
                     // only fetch the very first time
@@ -234,8 +234,6 @@ struct UpdateFoodRecipeView: View {
                                 selectedCategory = "_breakfast"
                             }
                             duration = recipeViewModel.viewRecipeById!.durationInMinutes
-                            print("this is duration", duration)
-
                             if let fetchedIngredients = recipeViewModel.viewRecipeById?.ingredients {
                                 if let ingredienthList = fetchedIngredients as? [Ingredienth] {
                                     ingredients = ingredienthList
@@ -486,8 +484,6 @@ struct UpdateRecipeEditorView: View {
                             ButtonComponent(action: {
                                 logRecipeData()
                                 print(photoPicker.prepareImageDataForAPI(), foodName, foodDescription)
-                                print("jhvjhvhj", reqCategory, reqCuisines)
-
                                 switch selectedLevel {
                                 case "_hard":
                                     reqLevel = "Hard"
@@ -635,7 +631,7 @@ struct UpdateRecipeEditorView: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                }
+                }.scrollIndicators(.hidden)
             }
             if postFoodRecipeViewModel.isLoading {
                 LoadingComponent()

@@ -16,7 +16,7 @@ struct AllImageInRecipe: View {
             HStack {
                 ForEach(image) { img in
                     Button(action: {
-                        print("Button clicked: \(img.id), \(img.photo)")
+//                        print("Button clicked: \(img.id), \(img.photo)")
                     }) {
                         Image(img.photo)
                             .resizable()

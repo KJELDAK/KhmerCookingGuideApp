@@ -208,7 +208,7 @@ struct PostFoodRecipeView: View {
                                 // Cuisines (Multi-Selection)
                                 ToggleButtonGroup(
                                     title: "_cuisines",
-                                    items: ["_soup", "_salad", "_grill", "_fry", "_stir_fried", "_dessert"],
+                                    items: ["_soup", "_salad", "_grill", "_fry", "_stir_fried", "_dessert", "_steam"],
                                     selection: $selectedCuisines,
                                     isSingleSelection: true
                                 )
@@ -233,11 +233,8 @@ struct PostFoodRecipeView: View {
 
                             }.padding()
                         }
+                        .scrollIndicators(.hidden)
                     }
-                }
-
-                .onAppear {
-                    print("sdvhb", selectedTab, selectedLevel)
                 }
             }
         }

@@ -16,7 +16,7 @@ struct TotalStarRating: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 7, height: 7)
-                Text(String(rating))
+                Text(String(format: "%.1f", rating))
                     .customFontMedium(size: 10)
             }
         }

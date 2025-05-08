@@ -85,11 +85,5 @@ struct ReviewCardView: View {
                 }
             }
         }
-        .onChange(of: isHasThreeDots) {
-            print("ach", reviewText, rating, userName, isHasThreeDots)
-        }
-        .onAppear {
-            print("fasdkjfv", reviewText, rating, userName)
-        }
     }
 }

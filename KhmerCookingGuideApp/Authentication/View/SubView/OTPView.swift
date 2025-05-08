@@ -105,7 +105,6 @@ struct OTPView: View {
                     if resendEnabled {
                         Button("resend_code") {
                             startTimer()
-                            print("Resend code triggered")
                             authenticationViewModel.sendOTP(email: email) { isSuccess, _ in
                                 if isSuccess {}
                             }
@@ -122,8 +121,6 @@ struct OTPView: View {
                     }
                     ButtonComponent(action: {
                         let otp = verifyOtp()
-                        print(otp)
-                        print(pinOne)
                         authenticationViewModel.verifyOTP(email: email, otp: otp) { isSuccess, message in
                             messageFromAPI = message
                             switch message {

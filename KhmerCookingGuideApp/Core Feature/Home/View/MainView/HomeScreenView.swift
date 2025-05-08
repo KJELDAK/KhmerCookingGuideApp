@@ -61,7 +61,7 @@ struct HomeScreenView: View {
                     SearchNotFoundComponent(content: "no_data")
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     List {}.refreshable {
-                        print("haha")
+                        
                     }.listStyle(PlainListStyle())
                         .padding(.top)
                 } else {

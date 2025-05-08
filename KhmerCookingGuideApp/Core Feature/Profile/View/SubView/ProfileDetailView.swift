@@ -72,7 +72,6 @@ struct MyProfileView: View {
             .onAppear {
                 profileViewModel.getUserInfo { _, _ in
                     createAt = formatDateString(profileViewModel.userInfo?.payload.createdAt ?? "")
-                    print("wefwe", profileViewModel.userInfo?.payload.createdAt ?? "")
                 }
             }
         }

@@ -33,7 +33,8 @@ struct LanguageSelectionView: View {
                 LanguageOption(language: "_khmer", flag: "khmerLogo", isSelected: $Langeselected)
                 LanguageOption(language: "_english", flag: "usa", isSelected: $Langeselected)
             }
-            .padding(.top, 10)
+            .padding(.vertical, 10)
+            .padding(.bottom, 20)
 
             ButtonComponent(action: {
                 handleSelected()

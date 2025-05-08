@@ -76,8 +76,6 @@ class AuthenticationViewModel: ObservableObject {
     func CheckEmailExists(email: String, completion: @escaping (Bool, String) -> Void) {
         isLoading = true
         let url = "\(API.baseURL)/auth/check-email-exist?email=\(email)"
-//        let url = "http://localhost:8080/api/v1/auth/check-email-exist?email=sreaksa492%40gmail.com"
-        print("this is url : ", url)
         AF.request(url, method: .get, encoding: JSONEncoding.default)
             .validate()
             .responseDecodable(of: EmailResponse.self) { response in
@@ -93,7 +91,6 @@ class AuthenticationViewModel: ObservableObject {
                     print("error in login : ", error.localizedDescription)
                     if let data = response.data {
                         if let severError = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
-//                        print(severError.detail)
                             completion(false, severError.detail)
                             self.isLoading = false
                         } else {
@@ -103,7 +100,6 @@ class AuthenticationViewModel: ObservableObject {
                                 self.isLoading = false
                             } else {
                                 self.isLoading = false
-                                // Fallback to a generic error message
                                 completion(false, "email_not_exist")
                             }
                         }
@@ -145,8 +141,6 @@ class AuthenticationViewModel: ObservableObject {
             .responseDecodable(of: ResponseWrapper<String>.self) { response in
                 switch response.result {
                 case let .success(Value):
-
-                    print("success")
                     self.isLoading = false
                     completion(true, Value.message)
                 case let .failure(error):
@@ -206,7 +200,6 @@ class AuthenticationViewModel: ObservableObject {
             .responseDecodable(of: ResponseWrapper<VeryEmailPayload>.self) { response in
                 switch response.result {
                 case let .success(value):
-                    print("fghj", value.message)
                     self.isLoading = false
                     completion(true, value.message)
                 case let .failure(error):
@@ -217,7 +210,6 @@ class AuthenticationViewModel: ObservableObject {
                             completion(false, severError.detail)
                         }
                     } else {
-                        print("yoo", error.localizedDescription)
                         completion(false, "technical_error")
                         self.isLoading = false
                     }
@@ -272,4 +264,42 @@ class AuthenticationViewModel: ObservableObject {
         HeaderToken.shared.role = ""
         isAuthenticated = false
     }
+    func isTokenExpired(_ token: String) -> Bool {
+        let segments = token.split(separator: ".")
+        guard segments.count == 3 else { return true } // Invalid token
+
+        let payloadSegment = segments[1]
+        var base64 = String(payloadSegment)
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+
+        // Padding
+        while base64.count % 4 != 0 {
+            base64 += "="
+        }
+
+        guard let payloadData = Data(base64Encoded: base64),
+              let payloadJson = try? JSONSerialization.jsonObject(with: payloadData) as? [String: Any],
+              let exp = payloadJson["exp"] as? TimeInterval else {
+            return true // Invalid payload or no expiry
+        }
+
+        let expiryDate = Date(timeIntervalSince1970: exp)
+        return Date() >= expiryDate
+    }
+    func validateLocalToken() {
+        let token = HeaderToken.shared.token
+        guard !token.isEmpty else {
+            logout()
+            return
+        }
+
+        if isTokenExpired(token) {
+            logout()
+        } else {
+            isAuthenticated = true
+        }
+    }
+
+
 }

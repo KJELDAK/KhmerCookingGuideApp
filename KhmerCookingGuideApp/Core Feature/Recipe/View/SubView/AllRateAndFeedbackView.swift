@@ -66,6 +66,7 @@ struct AllRateAndFeedbackView: View {
                         .padding(.top)
                     }
                 }
+                .scrollIndicators(.hidden)
                 .navigationDestination(isPresented: $isNavigateToUpdateRateAndFeedBack, destination: {
                     updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isNavigateToUpdateRateAndFeedBack, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id).navigationBarBackButtonHidden(true)
                 })

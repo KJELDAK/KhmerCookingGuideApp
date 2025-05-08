@@ -287,9 +287,13 @@ struct ContentView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
         .fullScreenCover(isPresented: $isLogout, content: {
             AuthenticationView()
         })
+        .onAppear {
+            authenticationViewModel.validateLocalToken()
+        }
     }
 }
 
@@ -343,7 +347,10 @@ struct CustomTabBarOverlay: View {
                 }
             }
             .allowsHitTesting(false) // Prevent the custom view from blocking taps
+            
         }
+        
+
     }
 }
 

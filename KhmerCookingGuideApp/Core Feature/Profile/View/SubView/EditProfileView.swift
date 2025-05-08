@@ -87,7 +87,7 @@ struct EditProfileView: View {
 
                             Spacer(minLength: 100) // Add a little space at the bottom if you want
                         }
-                    }
+                    }.scrollIndicators(.hidden)
 
                     // Button at bottom
                     ButtonComponent(action: {

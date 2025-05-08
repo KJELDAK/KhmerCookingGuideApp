@@ -36,6 +36,7 @@ struct TextEditorWithPlaceholder: View {
                     .opacity(text.isEmpty ? 0.85 : 1)
                     .lineSpacing(8) // Add space between lines
                     .kerning(1.5) // Add space between characters
+                    .scrollIndicators(.hidden)
 
                 Spacer()
             }

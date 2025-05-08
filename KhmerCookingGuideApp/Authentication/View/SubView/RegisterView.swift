@@ -52,7 +52,6 @@ struct RegistrationView: View {
             }
         }
         .onAppear {
-            recipeViewModel.isLoading ? print("hello") : print("bye")
             print(recipeViewModel.isLoading)
         }
     }

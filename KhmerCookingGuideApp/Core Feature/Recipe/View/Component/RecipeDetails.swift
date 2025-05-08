@@ -67,27 +67,27 @@ struct RecipeDetails: View {
                         .frame(height: imageHeight)
                     Spacer()
                 }
-
+                
                 .sheet(isPresented: $isSheetPresent) {
                     let sheetHeight = screenHeight - imageHeight - 79
                     NavigationStack {
                         FoodDetails(recipeViewModel: recipeViewModel, isRatingFormPresent: $isRatingFormPresent, isNavigateToAllRateAndFeedbackView: $isNavigateToAllRateAndFeedbackView, isNavigateToEditRateAndFeedbackView: $isNavigateToEditRateAndFeedbackView, onDelete: {
                             isDeleteRateAndFeedbackTapped = true
                         }, foodId: id)
-
-                            .navigationDestination(isPresented: $isRatingFormPresent) {
-                                ReviewFormView(recipeViewModel: recipeViewModel, isPresented: $isRatingFormPresent, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id)
-                                    .navigationBarBackButtonHidden()
-                            }
-                            .padding(.top)
-                            .navigationDestination(isPresented: $isNavigateToAllRateAndFeedbackView) {
-                                AllRateAndFeedbackView(recipeViewModel: recipeViewModel, rateAndFeebackPayload: recipeViewModel.viewAllRateAndFeedBack, userRateAndFeedbackPayload: recipeViewModel.userFoodFeedback ?? UserFoodFeedbackResponse(message: "", payload: nil, statusCode: "", timestamp: ""))
-                                    .navigationBarBackButtonHidden()
-                            }
-                            .navigationDestination(isPresented: $isNavigateToEditRateAndFeedbackView) {
-                                updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isRatingFormPresent, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id)
-                                    .navigationBarBackButtonHidden()
-                            }
+                        
+                        .navigationDestination(isPresented: $isRatingFormPresent) {
+                            ReviewFormView(recipeViewModel: recipeViewModel, isPresented: $isRatingFormPresent, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id)
+                                .navigationBarBackButtonHidden()
+                        }
+                        .padding(.top)
+                        .navigationDestination(isPresented: $isNavigateToAllRateAndFeedbackView) {
+                            AllRateAndFeedbackView(recipeViewModel: recipeViewModel, rateAndFeebackPayload: recipeViewModel.viewAllRateAndFeedBack, userRateAndFeedbackPayload: recipeViewModel.userFoodFeedback ?? UserFoodFeedbackResponse(message: "", payload: nil, statusCode: "", timestamp: ""))
+                                .navigationBarBackButtonHidden()
+                        }
+                        .navigationDestination(isPresented: $isNavigateToEditRateAndFeedbackView) {
+                            updateRateAndFeedbackView(recipeViewModel: recipeViewModel, isPresented: $isRatingFormPresent, profile: profileViewModel.userInfo?.payload.profileImage ?? "", userName: profileViewModel.userInfo?.payload.fullName ?? "", foodId: recipeViewModel.viewRecipeById?.id)
+                                .navigationBarBackButtonHidden()
+                        }
                     }
                     .fullScreenCover(
                         isPresented: $isEditTapped,
@@ -103,7 +103,7 @@ struct RecipeDetails: View {
                         UpdateFoodRecipeView(foodId: id, recipeViewModel: recipeViewModel)
                     }
                     .presentationDetents([.height(sheetHeight), /* .height(sheetHeight + 10)] */ /* .fraction(0.9), */ // almost full screen
-                                          .large])
+                        .large])
                     .presentationBackground(.white)
                     .presentationCornerRadius(20)
                     .interactiveDismissDisabled()
@@ -120,7 +120,7 @@ struct RecipeDetails: View {
                                     }
                                 }
                                 isDeleteTapped = false
-
+                                
                             } cancelAction: {
                                 isDeleteTapped = false
                             }
@@ -133,7 +133,7 @@ struct RecipeDetails: View {
                             ) {
                                 recipeViewModel.deleteRateAndFeedbackById(id: recipeViewModel.userFoodFeedback?.payload?.id ?? 0) { success, message in
                                     messageFromServerWhenDelete = message
-
+                                    
                                     if success {
                                         recipeViewModel.getAllRateAndFeedback(foodId: id) { _, _ in }
                                         recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: id) { _, _ in }
@@ -277,7 +277,7 @@ struct FoodDetails: View {
                             .customFontKhmerMedium(size: 16)
                             .foregroundColor(Color(hex: "9FA5C0"))
                             Spacer()
-
+                            
                             Text(Settings.shared.formattedDate(from: recipeViewModel.viewRecipeById?.createdAt ?? ""))
                                 .customFontKhmer(size: 10)
                                 .padding(.top, 2)
@@ -290,7 +290,7 @@ struct FoodDetails: View {
                                 .resizable()
                                 .frame(width: 32, height: 32)
                                 .cornerRadius(16)
-
+                            
                         } else {
                             KFImage(URL(string: imageUrl))
                                 .resizable()
@@ -308,7 +308,7 @@ struct FoodDetails: View {
                                 .customFontKhmer(size: 16)
                                 .opacity(0.6)
                                 .lineSpacing(6)
-
+                            
                         } else {
                             Text(recipeViewModel.viewRecipeById?.description ?? "")
                                 .customFontRobotoRegular(size: 16)
@@ -346,7 +346,7 @@ struct FoodDetails: View {
                 }
                 .padding(.horizontal)
                 Divider()
-                ForEach(recipeViewModel.viewRecipeById?.cookingSteps ?? []) { cookingStep in
+                ForEach(Array(zip(1..., recipeViewModel.viewRecipeById?.cookingSteps ?? [])), id: \.1.description) { (index, cookingStep) in
                     VStack(alignment: .leading) {
                         Text("step")
                             .customFontSemiBoldLocalize(size: 16)
@@ -355,7 +355,7 @@ struct FoodDetails: View {
                                 .frame(width: 24, height: 24)
                                 .foregroundColor(Color(hex: "2E3E5C"))
                                 .overlay {
-                                    Text(String(cookingStep.id))
+                                    Text(String(index))
                                         .foregroundColor(.white)
                                         .customFontRobotoBold(size: 12)
                                 }
@@ -373,24 +373,24 @@ struct FoodDetails: View {
                 })
                 Spacer()
                 let isMyFeedbackValid = (recipeViewModel.userFoodFeedback?.payload?.commentText.isEmpty == false)
-                    && (recipeViewModel.userFoodFeedback?.payload?.user.fullName.isEmpty == false)
-
+                && (recipeViewModel.userFoodFeedback?.payload?.user.fullName.isEmpty == false)
+                
                 var userProfile = isMyFeedbackValid
-                    ? (recipeViewModel.userFoodFeedback?.payload?.user.profileImage ?? "")
-                    : (recipeViewModel.viewAllRateAndFeedBack.first?.user.profileImage ?? "")
-
+                ? (recipeViewModel.userFoodFeedback?.payload?.user.profileImage ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.user.profileImage ?? "")
+                
                 var userName = isMyFeedbackValid
-                    ? (recipeViewModel.userFoodFeedback?.payload?.user.fullName ?? "")
-                    : (recipeViewModel.viewAllRateAndFeedBack.first?.user.fullName ?? "")
-
+                ? (recipeViewModel.userFoodFeedback?.payload?.user.fullName ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.user.fullName ?? "")
+                
                 var reviewText = isMyFeedbackValid
-                    ? (recipeViewModel.userFoodFeedback?.payload?.commentText ?? "")
-                    : (recipeViewModel.viewAllRateAndFeedBack.first?.commentText ?? "")
-
+                ? (recipeViewModel.userFoodFeedback?.payload?.commentText ?? "")
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.commentText ?? "")
+                
                 var totalRating = isMyFeedbackValid
-                    ? (recipeViewModel.userFoodFeedback?.payload?.ratingValue ?? 0)
-                    : (recipeViewModel.viewAllRateAndFeedBack.first?.ratingValue ?? 0)
-
+                ? (recipeViewModel.userFoodFeedback?.payload?.ratingValue ?? 0)
+                : (recipeViewModel.viewAllRateAndFeedBack.first?.ratingValue ?? 0)
+                
                 ReviewSectionView(
                     writingReviewButton: {
                         isRatingFormPresent = true
@@ -412,6 +412,7 @@ struct FoodDetails: View {
                 }
             }.frame(maxWidth: .infinity, alignment: .leading)
         }
+        .scrollIndicators(.hidden)
         .onAppear {
             recipeViewModel.getAllRateAndFeedback(foodId: foodId) { _, message in
                 print(message)

@@ -38,21 +38,12 @@ struct FillterList: View {
                 }
             }
             .onAppear {
-                homeViewModel.getAllCategories { isSucces, _ in
-                    print("hello")
-                    if isSucces {
-//                        filters = homeViewModel.categories
-                        print("filters", filters)
-//                        let all = CategoryResponsePayload(id: 999, categoryName: "All")
-//                        filters.insert(all, at: 0)
-                    } else {
-                        print("error hx")
-                    }
+                homeViewModel.getAllCategories { isSucces, message in
+                   print(message)
                 }
                 recipeViewModel.getAllCuisine { success, _ in
                     if success {
                         filters = recipeViewModel.cuision
-                        print("filters", filters)
                         let all = Cuisine(id: 999, cuisineName: "All")
                         filters.insert(all, at: 0)
                     } else {

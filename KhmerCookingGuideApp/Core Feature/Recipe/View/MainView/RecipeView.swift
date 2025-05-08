@@ -94,6 +94,7 @@ struct RecipeView: View {
                                     }
                                 }
                             }
+                            .scrollIndicators(.hidden)
                             .refreshable {
                                 print("refresh")
                             }
@@ -146,6 +147,7 @@ struct RecipeView: View {
                                     }
                                 }
                             }
+                            .scrollIndicators(.hidden)
 
                             .refreshable {
                                 print("refresh")
@@ -158,11 +160,11 @@ struct RecipeView: View {
         }
         .onAppear {
             homeViewModel.getAllFoodRecipes { _, _ in
-                print("get bannnnn")
+               
             }
             recipeViewModel.getAllFoodRecipeByCuisineId(cuisineId: cuisineId) { success, _ in
                 if success {
-                    print("get data ban hx")
+                   
                 }
             }
         }
