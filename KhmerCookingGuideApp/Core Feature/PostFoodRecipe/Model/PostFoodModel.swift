@@ -21,7 +21,7 @@ struct PostFoodRequest: Codable {
 
 struct PostFoodResponse: Codable {
     let message: String
-    let payload: FoodRecipe // 🔹 payload is a single object
+    let payload: FoodRecipe 
     let statusCode: String
     let timestamp: String
 }

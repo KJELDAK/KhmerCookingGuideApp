@@ -80,11 +80,6 @@ struct RecipeInCategoryView: View {
                     .padding()
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
-//                            Button {
-//                                dismiss()
-//                            } label: {
-//                                Image(.backButton2)
-//                            }
                                 Button {
                                     dismiss()
                                 } label: {

@@ -7,28 +7,6 @@
 
 import SwiftUI
 
-// struct PopularFoodRecipes: View {
-//    @ObservedObject var homeViewModel: HomeViewModel
-//    var body: some View {
-//        HStack{
-//            ScrollView(.horizontal){
-//                HStack{
-//                    ForEach(homeViewModel.foodRecipes){ foodRecipe in
-//                        ForEach(foodRecipe.photo){ photo in
-//                            NavigationLink(destination: RecipeDetails(id: foodRecipe.id).navigationBarHidden(true)){
-//                                FoodCardComponent(fileName: photo.photo, name: foodRecipe.description)
-//                                    .frame(maxWidth: 300)
-//                            }
-//
-//                        }
-//
-//                    }
-//                }
-//            }.scrollIndicators(.hidden)
-//        }
-//
-//    }
-// }
 struct PopularFoodRecipes: View {
     @Binding var popularRecipes: [FoodRecipe]
 
@@ -56,7 +34,3 @@ struct PopularFoodRecipes: View {
         }
     }
 }
-
-// #Preview {
-//    FoodView()
-// }

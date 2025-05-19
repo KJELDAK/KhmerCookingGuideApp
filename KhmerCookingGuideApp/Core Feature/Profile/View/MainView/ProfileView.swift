@@ -103,9 +103,6 @@ struct ProfileView: View {
                         ProfileOptionRow(icon: "arrow.left.circle.fill", title: "logout")
                     }
                 }
-//                .fullScreenCover(isPresented: $isLogout, content: {
-//                    AuthenticationView()
-//                })
                 .sheet(isPresented: $isShowLanguagePicker) {
                     LanguageSelectionView(showLanguageSheet: $isShowLanguagePicker)
                         .environmentObject(languageManager) // passed from App level

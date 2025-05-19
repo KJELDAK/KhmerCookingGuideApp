@@ -254,12 +254,9 @@ struct updateRateAndFeedbackView: View {
                 .background(Color.white)
                 SuccessAndFailedAlert(status: true, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowSuccesAlert)
                     .onDisappear {
-                        recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: foodId ?? 0) { _, _ in
-                        }
-                        recipeViewModel.getAllRateAndFeedback(foodId: foodId ?? 0) { _, _ in
-                        }
-                        recipeViewModel.fetchRecipeById(id: foodId ?? 0) { _, _ in
-                        }
+                        recipeViewModel.getFeedBackByFoodItemForCurrentUser(foodId: foodId ?? 0) { _, _ in}
+                        recipeViewModel.getAllRateAndFeedback(foodId: foodId ?? 0) { _, _ in}
+                        recipeViewModel.fetchRecipeById(id: foodId ?? 0) { _, _ in}
                         dismiss()
                     }
                 SuccessAndFailedAlert(status: false, message: LocalizedStringKey(messageFromServer), duration: 3, isPresented: $isShowFaildAlert)

@@ -5,13 +5,6 @@
 //  Created by Sok Reaksa on 5/1/25.
 //
 
-//
-//  LeaveaAndOvertimeFilterComponent.swift
-//  WeHR
-//
-//  Created by Sok Reaksa on 1/11/24.
-//
-
 import SwiftUI
 
 struct FoodRecipeFilterComponent: View {

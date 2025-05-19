@@ -265,7 +265,7 @@ struct ContentView: View {
                                 }
                             }
                             .accentColor(Color(hex: "FF0000"))
-                            .onChange(of: selectedTab) { _ in
+                            .onChange(of: selectedTab) { 
                                 if selectedTab == 2 {
                                     isPresented = true
                                 }

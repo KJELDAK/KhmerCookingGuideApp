@@ -265,13 +265,4 @@ class RecipeViewModel: ObservableObject {
     }
 }
 
-import Foundation
 
-// MARK: - Feedback Response for Food Item by Current User
-
-struct UserFoodFeedbackResponse: Codable {
-    let message: String
-    let payload: RatingFeedback?
-    let statusCode: String
-    let timestamp: String
-}

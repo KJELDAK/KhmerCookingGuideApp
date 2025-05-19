@@ -15,7 +15,7 @@ struct InputTextComponent: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image("usernamePlaceholder") // Adjusted for username placeholder image
+                Image("usernamePlaceholder")
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(Color(hex: "#374957"))
@@ -23,7 +23,6 @@ struct InputTextComponent: View {
                 ZStack(alignment: .leading) {
                     if textInput.isEmpty {
                         Text(LocalizedStringKey(placeHolder))
-//
                             .customFontLocalize(size: 16)
                             .foregroundColor(Color(hex: "#757575"))
                     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Root Model
+//MARK: - Root Model
 struct NewUserInfoResponse: Codable {
     let message: String
     let payload: NewUserPayload
@@ -15,7 +15,7 @@ struct NewUserInfoResponse: Codable {
     let timestamp: String
 }
 
-// Payload Model
+//MARK: - Payload Model
 struct NewUserPayload: Codable {
     let id: Int
     let fullName: String
@@ -27,4 +27,25 @@ struct NewUserPayload: Codable {
     let createdAt: String
     let emailVerifiedAt: String?
     let emailVerified: Bool
+}
+//MARK: - Update profile Response
+struct UpdateProfileResponse: Codable {
+    let message: String
+    let payload: UserProfile
+    let statusCode: String
+    let timestamp: String
+}
+
+struct UserProfile: Codable {
+    let id: Int
+    let fullName: String
+    let email: String
+    let profileImage: String
+    let phoneNumber: String
+    let password: String
+    let role: String
+    let createdAt: String
+    let emailVerifiedAt: String
+    let emailVerified: Bool
+    let deleted: Bool
 }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 import Kingfisher
 import SwiftUI
 
@@ -76,7 +75,6 @@ struct MyProfileView: View {
             }
         }
     }
-
     func formatDateString(_ isoDate: String) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")

@@ -73,26 +73,3 @@ class ProfileViewModel: ObservableObject {
             }
     }
 }
-
-import Foundation
-
-struct UpdateProfileResponse: Codable {
-    let message: String
-    let payload: UserProfile
-    let statusCode: String
-    let timestamp: String
-}
-
-struct UserProfile: Codable {
-    let id: Int
-    let fullName: String
-    let email: String
-    let profileImage: String
-    let phoneNumber: String
-    let password: String
-    let role: String
-    let createdAt: String
-    let emailVerifiedAt: String
-    let emailVerified: Bool
-    let deleted: Bool
-}

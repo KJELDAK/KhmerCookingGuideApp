@@ -56,6 +56,8 @@ struct ReviewCardView: View {
                 Text(reviewText)
                     .font(.system(size: 14))
                     .foregroundColor(Color(.darkGray))
+                    .lineSpacing(10)
+                    .padding(.top,5)
             }
             .padding()
             .background(Color.gray.opacity(0.1))
