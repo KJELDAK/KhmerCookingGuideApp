@@ -336,8 +336,8 @@ struct FoodDetails: View {
                                     .frame(width: 24, height: 24)
                             }.opacity(0.6)
                             Group {
-                                Text(ingredient.quantity)
                                 Text(ingredient.name)
+                                Text(ingredient.quantity)
                             }
                             .opacity(0.6)
                             .customFontKhmer(size: 17)
