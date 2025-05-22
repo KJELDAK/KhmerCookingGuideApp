@@ -335,12 +335,10 @@ struct FoodDetails: View {
                                     .resizable()
                                     .frame(width: 24, height: 24)
                             }.opacity(0.6)
-                            Group {
-                                Text(ingredient.name)
-                                Text(ingredient.quantity)
-                            }
+                                Text(ingredient.name + ingredient.quantity)
                             .opacity(0.6)
                             .customFontKhmer(size: 17)
+                            .lineSpacing(10)
                         }
                     }
                 }
@@ -375,19 +373,19 @@ struct FoodDetails: View {
                 let isMyFeedbackValid = (recipeViewModel.userFoodFeedback?.payload?.commentText.isEmpty == false)
                 && (recipeViewModel.userFoodFeedback?.payload?.user.fullName.isEmpty == false)
                 
-                var userProfile = isMyFeedbackValid
+                let userProfile = isMyFeedbackValid
                 ? (recipeViewModel.userFoodFeedback?.payload?.user.profileImage ?? "")
                 : (recipeViewModel.viewAllRateAndFeedBack.first?.user.profileImage ?? "")
                 
-                var userName = isMyFeedbackValid
+                let userName = isMyFeedbackValid
                 ? (recipeViewModel.userFoodFeedback?.payload?.user.fullName ?? "")
                 : (recipeViewModel.viewAllRateAndFeedBack.first?.user.fullName ?? "")
                 
-                var reviewText = isMyFeedbackValid
+                let reviewText = isMyFeedbackValid
                 ? (recipeViewModel.userFoodFeedback?.payload?.commentText ?? "")
                 : (recipeViewModel.viewAllRateAndFeedBack.first?.commentText ?? "")
                 
-                var totalRating = isMyFeedbackValid
+                let totalRating = isMyFeedbackValid
                 ? (recipeViewModel.userFoodFeedback?.payload?.ratingValue ?? 0)
                 : (recipeViewModel.viewAllRateAndFeedBack.first?.ratingValue ?? 0)
                 

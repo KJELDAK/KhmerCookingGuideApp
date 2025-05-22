@@ -133,7 +133,7 @@ struct RecipeEditorView: View {
                                     reqCuisines = 7
                                 case "_dessert":
                                     reqCuisines = 6
-                                case "_stir-Fried":
+                                case "_stir_fried":
                                     reqCuisines = 5
                                 case "_fry":
                                     reqCuisines = 4

@@ -45,7 +45,7 @@ class HomeViewModel: ObservableObject {
 
     func getAllFoodRecipes(completion: @escaping (Bool, String) -> Void) {
         isLoading = true
-        let url = "\(API.baseURL)/food-recipe/list"
+        let url = "\(API.baseURL)/food-recipe/list?page=0&size=10000"
         AF.request(url, method: .get, encoding: JSONEncoding.default, headers: HeaderToken.shared.headerToken)
             .validate()
             .responseDecodable(of: FoodRecipesResponse.self) { response in
