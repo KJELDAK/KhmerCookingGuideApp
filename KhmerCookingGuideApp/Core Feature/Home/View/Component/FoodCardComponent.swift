@@ -83,6 +83,7 @@ struct FoodCardComponent2: View {
     var description: String
     var rating: Double
     var level: String
+    var imageHeight : CGFloat = 135
 
     var body: some View {
         let imageUrl = "\(API.baseURL)/fileView/\(fileName)"
@@ -92,7 +93,7 @@ struct FoodCardComponent2: View {
             KFImage(URL(string: imageUrl))
                 .resizable()
                 .scaledToFill()
-                .frame(height: 135) // Directly setting height
+                .frame(height: imageHeight) // Directly setting height
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .cornerRadius(15, corners: [.topLeft, .topRight])

@@ -47,8 +47,9 @@ struct FavoritesView: View {
                                                            isFavorite: $favoriteViewModel.favoriteList[index].isFavorite,
                                                            fileName: firstPhoto.photo,
                                                            name: recipe.name,
-                                                           description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level)
+                                                           description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level, imageHeight: 185)
                                             .frame(maxWidth: .infinity)
+                                           
                                             .padding(.horizontal)
                                     }.onChange(of: favoriteViewModel.favoriteList[index].isFavorite) {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

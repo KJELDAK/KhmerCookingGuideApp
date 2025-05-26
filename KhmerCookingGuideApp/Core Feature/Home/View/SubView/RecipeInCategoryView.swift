@@ -69,7 +69,7 @@ struct RecipeInCategoryView: View {
                                         name: recipe.name,
                                         description: recipe.description,
                                         rating: recipe.averageRating ?? 0,
-                                        level: recipe.level
+                                        level: recipe.level,imageHeight: 185
                                     )
                                     .frame(maxWidth: .infinity)
                                 }

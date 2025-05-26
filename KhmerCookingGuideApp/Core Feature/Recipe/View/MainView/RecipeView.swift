@@ -88,7 +88,7 @@ struct RecipeView: View {
                                                                isFavorite: $homeViewModel.foodRecipes[index].isFavorite, // ✅ Bind it!
                                                                fileName: firstPhoto.photo,
                                                                name: recipe.name,
-                                                               description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level)
+                                                               description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level, imageHeight: 185)
                                                 .frame(maxWidth: .infinity)
                                         }
                                     }
@@ -140,7 +140,7 @@ struct RecipeView: View {
                                                 isFavorite: binding,
                                                 fileName: firstPhoto.photo,
                                                 name: recipe.name,
-                                                description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level
+                                                description: recipe.description, rating: recipe.averageRating ?? 0, level: recipe.level, imageHeight: 185
                                             )
                                             .frame(maxWidth: .infinity)
                                         }
